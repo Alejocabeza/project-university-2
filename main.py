@@ -1,4 +1,4 @@
-import app
+from view.Login import Login
 
-app = app.Main()
-app.mainloop()
+login = Login()
+login.mainloop()
