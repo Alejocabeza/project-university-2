@@ -1,58 +1,53 @@
 import tkinter as tk
-from tkinter import font
-import utils.util_window as util_window
-from config import COLOR_MENU_BACKGROUND, COLOR_SIDEBAR_BACKGROUND, COLOR_BODY_MAIN, COLOR_MENU_CURSOR
 from services.User import User
 
 # This class is used as the main window
-class Login(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.config_window()
-        self.panel()
-        self.form()
-        self.user = User()
+class Login(tk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        self.user = User() 
+        self.create_widgets()
 
-    def config_window(self):
-        self.title("Proyecto Universidad Trayecto 2 - Login")
-        w, h = 1024, 600
-        util_window.window_center(self, w, h)
-
-    def panel(self):
-        self.body = tk.Frame(self, bg=COLOR_MENU_BACKGROUND, height=150)
-        self.body.pack(fill="both", expand=True)
-
-    def form(self):
-        self.frameForm = tk.Frame(self.body, bg=COLOR_BODY_MAIN)
+    def create_widgets(self):
+        # Frame
+        self.frameForm = tk.LabelFrame(self, text="Login")
+        self.frameForm.config()
         self.frameForm.pack(fill="both", expand=True, pady=150, padx=350)
 
-        self.LabelForm = tk.Label(self.frameForm, text="Login", font=font.Font(size=30, weight="bold"), bg=COLOR_BODY_MAIN, fg=COLOR_MENU_CURSOR)
-        self.LabelForm.pack(fill="x", padx=10, pady=10)
+        # Email
+        self.LabelEmail = tk.Label(self.frameForm, text="Email", justify="left", anchor='w')
+        self.LabelEmail.pack(fill="both", padx=50, pady=5)
+        self.inputEmail = tk.Entry(self.frameForm, name="email")
+        self.inputEmail.pack(fill="both", padx=50, pady=0)
 
-        self.labelEmail = tk.Label(self.frameForm, text="Correo Electrónico", bg=COLOR_BODY_MAIN, fg=COLOR_MENU_CURSOR)
-        self.labelEmail.pack(fill="both")
-        self.inputEmail = tk.Entry(self.frameForm)
-        self.inputEmail.pack(fill="x", padx=50, pady=10)
+        # Password
+        self.LabelPass = tk.Label(self.frameForm, text="password", justify="left", anchor='w')
+        self.LabelPass.pack(fill="both", padx=50, pady=5)
+        self.inputPass = tk.Entry(self.frameForm, name="password", show="*")
+        self.inputPass.pack(fill="both", padx=50, pady=0)
 
-        self.labelPassword = tk.Label(self.frameForm, text="Contraseña", bg=COLOR_BODY_MAIN, fg=COLOR_MENU_CURSOR)
-        self.labelPassword.pack(fill="both")
-        self.inputPassword = tk.Entry(self.frameForm, show="*")
-        self.inputPassword.pack(fill="x", padx=50, pady=10)
+        # Confirmed Password
+        self.LabelPassConfirmed = tk.Label(self.frameForm, text="Confirmed Password", justify="left", anchor='w')
+        self.LabelPassConfirmed.pack(fill="both", padx=50, pady=5)
+        self.inputPassConfirmed = tk.Entry(self.frameForm, name="confirmed Password", show="*")
+        self.inputPassConfirmed.pack(fill="both", padx=50, pady=0)
 
-        self.labelConfirmedPassword = tk.Label(self.frameForm, text="Confirma tú contraseña", bg=COLOR_BODY_MAIN, fg=COLOR_MENU_CURSOR)
-        self.labelConfirmedPassword.pack(fill="both")
-        self.inputConfirmedPassword = tk.Entry(self.frameForm, show="*")
-        self.inputConfirmedPassword.pack(fill="x", padx=50, pady=10)
+        self.btnSubmit = tk.Button(
+            self.frameForm,
+            text="Login",
+            command=lambda: self._handleSubmit(self.inputEmail.get(), self.inputPass.get(), self.inputPassConfirmed.get()))
+        self.btnSubmit.pack(fill="both", padx=50, pady=20)
 
-        self.submitButton = tk.Button(self.frameForm, text="Login", command=lambda: handleSubmit(self.inputEmail.get(), self.inputPassword.get(), self.inputConfirmedPassword.get()))
-        self.submitButton.pack(fill="x", padx=50, pady=10)
+        self.btnRegiser = tk.Button(
+            self.frameForm,
+            text="Register",
+            command=lambda: self.controller.show_frame("Register"))
+        self.btnRegiser.pack(fill="both", padx=50, pady=20)
 
-        self.inputRemember = tk.Checkbutton(self.frameForm, text="Remember me")
-        self.inputRemember.pack(fill="x", padx=50, pady=10)
-
-        def handleSubmit(email, password, confirmedPassword):
-            print(email, password, confirmedPassword)
-            result = self.user.login(email, password, confirmedPassword)
-            if(result is None):
-                print("Login failed")
-            print(result)
+    def _handleSubmit(self, email, password, confirmedPassword):
+        print(email, password, confirmedPassword)
+        result = self.user.login(email, password, confirmedPassword)
+        if(result is None):
+            print("Login failed")
+        print(result)
