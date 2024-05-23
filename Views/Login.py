@@ -1,18 +1,17 @@
 import tkinter as tk
-from services.User import User
+from Repository.UserRepository import User
 
 # This class is used as the main window
 class Login(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.user = User() 
+        self.user = User()
         self.create_widgets()
 
     def create_widgets(self):
         # Frame
         self.frameForm = tk.LabelFrame(self, text="Login")
-        self.frameForm.config()
         self.frameForm.pack(fill="both", expand=True, pady=150, padx=350)
 
         # Email

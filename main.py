@@ -1,7 +1,7 @@
 import tkinter as tk
-from utils import util_window
-from view.Login import Login
-from view.Register import Register
+from Utils import util_window
+from Views.Login import Login
+from Views.Register import Register
 
 class Main(tk.Tk):
     def __init__(self):
