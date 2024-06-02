@@ -3,25 +3,24 @@ from Repository.BaseRepository import BaseRepository
 
 class User (BaseRepository):
     def __init__(self):
-        super().__init__('users')
+        super().__init__('usuarios')
         self.bcrypt = bcrypt
 
     def login(self, email, password, confirmedPassword):
         user = self.__findByEmail(email)
         userPass = user[5]
-        userPass2 = user[6]
-        print(user, userPass, userPass2)
+        print(userPass, password)
 
         if user is None:
             return "El usuario con el email %s no existe" % email
 
+        # verificación de la confirmación de la contraseña
         if(password != confirmedPassword):
             return "Las contraseñas no coinciden"
 
+        # verificación de la contraseña
         checkPass = self.__verify_password(password, userPass)
-        checkPass2 = self.__verify_password(confirmedPassword, userPass2)
-
-        if checkPass is not True and checkPass2 is not True:
+        if checkPass is not True:
             return "La contraseña es incorrecta"
 
         return user
@@ -32,16 +31,17 @@ class User (BaseRepository):
             return "El usuario con el email %s ya existe" % data['email']
 
         data['password'] = self.__hash_password(data['password'])
-        data['confirmedPassword'] = self.__hash_password(data['password'])
-        data['role'] = 'admin'
-        data['active'] = False
+        data['avatar'] = data['avatar']
+        data['email'] = data['email']
+        data['nombre'] = data['nombre']
+        data['rol'] = 'user'
 
         res = self._save(data)
         return res
 
     def __findByEmail(self, email):
         try:
-            sql = "SELECT * FROM users WHERE email = %s"
+            sql = "SELECT * FROM usuarios WHERE email = %s"
             self.cursor.execute(sql, (email,))
             return self.cursor.fetchone()
         except Exception as ex:

@@ -5,5 +5,5 @@ def db():
         host="localhost",
         user="root",
         passwd="",
-        database="university"
+        database="proyecto_universidad"
     )
