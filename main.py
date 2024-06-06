@@ -1,21 +1,23 @@
-import tkinter as tk
-from Utils import util_window
-from Views.Login import Login
-from Views.Register import Register
+import customtkinter as ctk
+from views.login import Login
+from views.register import Register
+from views.dashboard import Dashboard
+from lib import util_window
 
-class Main(tk.Tk):
+
+class Main(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Proyecto Universidad Trayecto 2")
         w, h = 1024, 600
         util_window.window_center(self, w, h)
         self.frames = {}
-        container = tk.Frame(self)
+        container = ctk.CTkFrame(self)
         container.pack(fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        for F in (Login, Register):
+        for F in (Login, Register, Dashboard):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -26,6 +28,7 @@ class Main(tk.Tk):
     def show_frame(self, page_name):
         frame = self.frames[page_name]
         frame.tkraise()
+
 
 if __name__ == "__main__":
     app = Main()

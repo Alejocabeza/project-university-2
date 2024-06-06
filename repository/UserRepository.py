@@ -1,22 +1,19 @@
 from passlib.hash import bcrypt
-from Repository.BaseRepository import BaseRepository
+from repository.BaseRepository import BaseRepository
 
-class User (BaseRepository):
+
+class User(BaseRepository):
     def __init__(self):
-        super().__init__('usuarios')
+        super().__init__("usuarios")
         self.bcrypt = bcrypt
 
-    def login(self, email, password, confirmedPassword):
+    def login(self, email, password):
         user = self.__findByEmail(email)
         userPass = user[5]
         print(userPass, password)
 
         if user is None:
             return "El usuario con el email %s no existe" % email
-
-        # verificación de la confirmación de la contraseña
-        if(password != confirmedPassword):
-            return "Las contraseñas no coinciden"
 
         # verificación de la contraseña
         checkPass = self.__verify_password(password, userPass)
@@ -26,15 +23,14 @@ class User (BaseRepository):
         return user
 
     def register(self, data):
-        userCheck = self.__findByEmail(data['email'])
+        userCheck = self.__findByEmail(data["email"])
         if userCheck is not None:
-            return "El usuario con el email %s ya existe" % data['email']
+            return "El usuario con el email %s ya existe" % data["email"]
 
-        data['password'] = self.__hash_password(data['password'])
-        data['avatar'] = data['avatar']
-        data['email'] = data['email']
-        data['nombre'] = data['nombre']
-        data['rol'] = 'user'
+        data["password"] = self.__hash_password(data["password"])
+        data["email"] = data["email"]
+        data["nombre"] = data["nombre"]
+        data["rol"] = "user"
 
         res = self._save(data)
         return res
@@ -62,4 +58,3 @@ class User (BaseRepository):
             return self.bcrypt.verify(password, hash)
         except:
             return False
-
