@@ -9,8 +9,8 @@ class User(BaseRepository):
 
     def login(self, email, password):
         user = self.__findByEmail(email)
+        print(user)
         userPass = user[5]
-        print(userPass, password)
 
         if user is None:
             return "El usuario con el email %s no existe" % email
@@ -38,14 +38,11 @@ class User(BaseRepository):
     def __findByEmail(self, email):
         try:
             sql = "SELECT * FROM usuarios WHERE email = %s"
-            self.cursor.execute(sql, (email,))
-            return self.cursor.fetchone()
+            self.connect.execute(sql, (email))
+            return self.connect.fetchone()
         except Exception as ex:
             print("Error al ejecutar la consulta %s" % ex)
             return None
-        finally:
-            self.cursor.close()
-            self.connect.close()
 
     def __hash_password(self, password):
         try:

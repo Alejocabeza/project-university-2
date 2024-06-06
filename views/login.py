@@ -29,14 +29,14 @@ class Login(ctk.CTkFrame):
 
         # Input Email
         self.emailInput = ctk.CTkEntry(
-            self.container, placeholder_text="Write your email...", width=500
+            self.container, placeholder_text="Escribe tu email...", width=500
         )
         self.emailInput.pack()
 
         # Input Password
         self.passwordInput = ctk.CTkEntry(
             self.container,
-            placeholder_text="Write your password...",
+            placeholder_text="Escribe tu contraseña...",
             width=500,
             show="*",
         )

@@ -26,20 +26,20 @@ class Register(ctk.CTkFrame):
 
         # input Name
         self.nameInput = ctk.CTkEntry(
-            self.container, placeholder_text="Write your name please...", width=500
+            self.container, placeholder_text="Escribe aquí tu nombre...", width=500
         )
         self.nameInput.pack(pady=5)
 
         # input Email
         self.emailInput = ctk.CTkEntry(
-            self.container, placeholder_text="Write your email please...", width=500
+            self.container, placeholder_text="Escribe aquí tu email...", width=500
         )
         self.emailInput.pack(pady=5)
 
         # input Password
         self.inputPassword = ctk.CTkEntry(
             self.container,
-            placeholder_text="Write your password please...",
+            placeholder_text="Escribe tu contraseña...",
             width=500,
             show="*",
         )
@@ -48,7 +48,7 @@ class Register(ctk.CTkFrame):
         # input confirmed Password
         self.inputPasswordConfirmed = ctk.CTkEntry(
             self.container,
-            placeholder_text="confirmed your password...",
+            placeholder_text="Confirma tu contraseña...",
             width=500,
             show="*",
         )
