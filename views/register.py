@@ -1,16 +1,22 @@
 import customtkinter as ctk
-from tkinter import font
-from repository.UserRepository import User
+from repository.UserRepository import UserRepository
 
 
-class Register(ctk.CTkFrame):
+class Register (ctk.CTkFrame):
+    """
+    Muestra el frame de Crear una Cuenta
+    """
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.userService = User()
-        self.create_widget()
+        self.create_widgets()
+        self.user_repository= UserRepository()
 
-    def create_widget(self):
+    def create_widgets(self):
+        """
+        Crea los elementos de la interfaz
+        """
+        # screen
         self.screen = ctk.CTkFrame(self)
         self.screen.pack(fill=ctk.BOTH, expand=ctk.YES)
 
@@ -25,67 +31,67 @@ class Register(ctk.CTkFrame):
         self.title.pack(pady=20)
 
         # input Name
-        self.nameInput = ctk.CTkEntry(
+        self.input_name = ctk.CTkEntry(
             self.container, placeholder_text="Escribe aquí tu nombre...", width=500
         )
-        self.nameInput.pack(pady=5)
+        self.input_name.pack(pady=5)
 
         # input Email
-        self.emailInput = ctk.CTkEntry(
+        self.input_email = ctk.CTkEntry(
             self.container, placeholder_text="Escribe aquí tu email...", width=500
         )
-        self.emailInput.pack(pady=5)
+        self.input_email.pack(pady=5)
 
         # input Password
-        self.inputPassword = ctk.CTkEntry(
+        self.input_password = ctk.CTkEntry(
             self.container,
             placeholder_text="Escribe tu contraseña...",
             width=500,
             show="*",
         )
-        self.inputPassword.pack(pady=5)
+        self.input_password.pack(pady=5)
 
         # input confirmed Password
-        self.inputPasswordConfirmed = ctk.CTkEntry(
+        self.input_confirmed_password = ctk.CTkEntry(
             self.container,
             placeholder_text="Confirma tu contraseña...",
             width=500,
             show="*",
         )
-        self.inputPasswordConfirmed.pack(pady=5)
+        self.input_confirmed_password.pack(pady=5)
 
         # Button Box
-        self.buttonBox = ctk.CTkFrame(
+        self.container_buttons = ctk.CTkFrame(
             self.container, bg_color="transparent", fg_color="transparent"
         )
-        self.buttonBox.pack(pady=10)
+        self.container_buttons.pack(pady=10)
 
         # Button Register
-        self.btnRegister = ctk.CTkButton(
-            self.buttonBox,
+        self.btn_login = ctk.CTkButton(
+            self.container_buttons,
             bg_color="transparent",
             fg_color="transparent",
             text="Ya tienes una cuenta?",
             command=lambda: self.controller.show_frame("Login"),
         )
-        self.btnRegister.pack(side="left")
+        self.btn_login.pack(side="left")
 
         # Button Submit
-        self.btnSubmit = ctk.CTkButton(
-            self.buttonBox,
+        self.btn_submit = ctk.CTkButton(
+            self.container_buttons,
             text="Craer Cuenta",
-            command=lambda: self.__handleSubmit(),
+            command=lambda: self.__handle_submit(),
         )
-        self.btnSubmit.pack(side="right", padx=8)
+        self.btn_submit.pack(side="right", padx=8)
 
-    def __handleSubmit(self):
+    def __handle_submit(self):
         data_to_insert = {
-            "nombre": self.nameInput.get(),
-            "email": self.emailInput.get(),
-            "password": self.inputPassword.get(),
-            "confirmedPassword": self.inputPasswordConfirmed.get(),
+            "nombre": self.input_name.get(),
+            "email": self.input_email.get(),
+            "password": self.input_password.get(),
+            "confirmedPassword": self.input_confirmed_password.get(),
         }
-        result = self.userService.register(data=data_to_insert)
+        result = self.user_repository.register(data=data_to_insert)
         if result is False:
             print("Register failed")
         else:

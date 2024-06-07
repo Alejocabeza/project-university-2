@@ -4,8 +4,10 @@ from views.register import Register
 from views.dashboard import Dashboard
 from lib import util_window
 
-
 class Main(ctk.CTk):
+    """
+        Clase principal del proyecto
+    """
     def __init__(self):
         super().__init__()
         self.title("Proyecto Universidad Trayecto 2")
@@ -26,6 +28,9 @@ class Main(ctk.CTk):
         self.show_frame("Login")
 
     def show_frame(self, page_name):
+        """
+        Muestra el frame correspondiente al nombre de la clase
+        """
         frame = self.frames[page_name]
         frame.tkraise()
 

@@ -1,17 +1,22 @@
 import customtkinter as ctk
-from repository.UserRepository import User
-from config import BLUE, WHITE
+from repository.UserRepository import UserRepository
+from repository.SessionRepository import SessionRepository
 
-
-# This class is used as the main window
 class Login(ctk.CTkFrame):
+    """
+    Frame de inicio de sesión
+    """
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        self.user = User()
+        self.user_repository = UserRepository()
+        self.session_repository = SessionRepository()
         self.create_widgets()
 
     def create_widgets(self):
+        """
+        Crear los elementos de la interfaz
+        """
         # screen
         self.screen = ctk.CTkFrame(self)
         self.screen.pack(fill=ctk.BOTH, expand=ctk.YES)
@@ -23,54 +28,55 @@ class Login(ctk.CTkFrame):
         self.container.pack(fill=ctk.BOTH, expand=ctk.YES, pady=195, padx=240)
 
         self.title = ctk.CTkLabel(
-            self.container, text="Iniciar Sesion", font=("Arial", 30)
+            self.container, text="Iniciar Sesión", font=("Arial", 30)
         )
         self.title.pack(pady=20)
 
         # Input Email
-        self.emailInput = ctk.CTkEntry(
+        self.email_input = ctk.CTkEntry(
             self.container, placeholder_text="Escribe tu email...", width=500
         )
-        self.emailInput.pack()
+        self.email_input.pack()
 
         # Input Password
-        self.passwordInput = ctk.CTkEntry(
+        self.password_input = ctk.CTkEntry(
             self.container,
             placeholder_text="Escribe tu contraseña...",
             width=500,
             show="*",
         )
-        self.passwordInput.pack(pady=15)
+        self.password_input.pack(pady=15)
 
         # Button Box
-        self.buttonBox = ctk.CTkFrame(
+        self.container_buttons = ctk.CTkFrame(
             self.container, bg_color="transparent", fg_color="transparent"
         )
-        self.buttonBox.pack(pady=8)
+        self.container_buttons.pack(pady=8)
 
         # Button Register
-        self.btnRegister = ctk.CTkButton(
-            self.buttonBox,
+        self.register_button = ctk.CTkButton(
+            self.container_buttons,
             bg_color="transparent",
             fg_color="transparent",
             text="Aun no tienes cuenta?",
             command=lambda: self.controller.show_frame("Register"),
         )
-        self.btnRegister.pack(side="left")
+        self.register_button.pack(side="left")
 
         # Button Submit
-        self.btnSubmit = ctk.CTkButton(
-            self.buttonBox,
-            text="Iniciar Sesion",
-            command=lambda: self._handleSubmit(
-                self.emailInput.get(), self.passwordInput.get()
+        self.submit_button = ctk.CTkButton(
+            self.container_buttons,
+            text="Iniciar Sesión",
+            command=lambda: self._handle_submit(
+                self.email_input.get(), self.password_input.get()
             ),
         )
-        self.btnSubmit.pack(side="right", padx=8)
+        self.submit_button.pack(side="right", padx=8)
 
-    def _handleSubmit(self, email, password):
-        result = self.user.login(email, password)
+    def _handle_submit(self, email, password):
+        result = self.user_repository.login(email, password)
         if result is None:
             print("Login failed")
         else:
+            self.session_repository.create_session(result)
             self.controller.show_frame("Dashboard")
