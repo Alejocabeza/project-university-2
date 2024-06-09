@@ -1,2 +1,6 @@
-BLUE = "#1c64f2"
-WHITE = "#ffffff"
+# Slate Theme
+SLATE700="#334155"
+SLATE800="#0f172a"
+WHITE="#f1f5f9"
+GRAY="#cbd5e1"
+BLACK="#334155"

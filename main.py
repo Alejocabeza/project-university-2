@@ -1,16 +1,20 @@
 import customtkinter as ctk
-from views.login import Login
-from views.register import Register
-from views.dashboard import Dashboard
+from views.Login import Login
+from views.Register import Register
+from views.Dashboard import Dashboard
+from views.Profile import Profile
 from lib import util_window
+from config import SLATE700
+
 
 class Main(ctk.CTk):
     """
-        Clase principal del proyecto
+    Clase principal del proyecto
     """
+
     def __init__(self):
         super().__init__()
-        self.title("Proyecto Universidad Trayecto 2")
+        self.title("Grupo Imnova")
         w, h = 1024, 600
         util_window.window_center(self, w, h)
         self.frames = {}
@@ -19,7 +23,7 @@ class Main(ctk.CTk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
-        for F in (Login, Register, Dashboard):
+        for F in (Login, Register):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame

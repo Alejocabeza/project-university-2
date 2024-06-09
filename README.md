@@ -46,6 +46,11 @@ CREATE TABLE sesiones_de_usuarios (
     fecha_y_hora_de_inicio DATETIME,
     fecha_y_hora_finalizacion DATETIME,
     estado BOOLEAN NOT NULL DEFAULT 1,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+ALTER TABLE sesiones_de_usuarios
+ADD CONSTRAINT sesiones_de_usuarios_ibfk_1
+FOREIGN KEY (usuario_id)
+REFERENCES usuarios(id)
+ON DELETE CASCADE;
 ```
