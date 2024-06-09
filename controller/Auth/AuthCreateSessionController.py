@@ -1,5 +1,5 @@
 from controller.Controller import Controller
-from repository.SessionRepository import SessionRepository
+from modal.SessionRepository import SessionRepository
 
 
 class AuthCreateSessionController(Controller):

@@ -1,5 +1,6 @@
 from controller.Controller import Controller
-from repository.UserRepository import UserRepository
+from modal.UserRepository import UserRepository
+
 
 class AuthLoginController(Controller):
     def __init__(self):

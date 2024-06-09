@@ -1,5 +1,6 @@
 from controller.Controller import Controller
-from repository.SessionRepository import SessionRepository
+from modal.SessionRepository import SessionRepository
+
 
 class AuthCloseSessionController(Controller):
     def __init__(self):
@@ -8,7 +9,9 @@ class AuthCloseSessionController(Controller):
 
     def close_session(self):
         try:
-            return self.session_repository.close_session(self._current_session().get('id'))
+            return self.session_repository.close_session(
+                self._current_session().get("id")
+            )
         except Exception as ex:
             print(f"Error al cerrar la sesión: {ex}")
             return None

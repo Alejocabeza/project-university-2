@@ -1,5 +1,6 @@
 from controller.Controller import Controller
-from repository.UserRepository import UserRepository
+from modal.UserRepository import UserRepository
+
 
 class AuthUpdateController(Controller):
     def __init__(self):
@@ -11,7 +12,7 @@ class AuthUpdateController(Controller):
         print(data)
         if data:
             try:
-                return self.user_repository.update(user.get('id'), data)
+                return self.user_repository.update(user.get("id"), data)
             except Exception as ex:
                 print(f"Error al actualizar el usuario: {ex}")
                 return None

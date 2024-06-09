@@ -1,5 +1,6 @@
-from repository.UserRepository import UserRepository;
-from repository.SessionRepository import SessionRepository;
+from modal.UserRepository import UserRepository
+from modal.SessionRepository import SessionRepository
+
 
 class Controller:
     def __init__(self):
@@ -15,7 +16,9 @@ class Controller:
 
     def _current_user(self):
         try:
-            return self.user_repository.finder_user_by_id(self._current_session().get("usuario_id"))
+            return self.user_repository.finder_user_by_id(
+                self._current_session().get("usuario_id")
+            )
         except Exception as ex:
             print(f"Error al obtener el usuario actual: {ex}")
             return None
