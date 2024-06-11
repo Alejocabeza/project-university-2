@@ -1,11 +1,11 @@
 from controller.Controller import Controller
-from modal.UserRepository import UserRepository
+from models.UserModel import UserModel
 
 
 class AuthRemoveAccountController(Controller):
     def __init__(self):
         super().__init__()
-        self.user_repository = UserRepository()
+        self.user_repository = UserModel()
 
     def remove_account(self):
         user = self._current_user()

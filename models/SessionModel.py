@@ -1,8 +1,8 @@
-from repository.BaseRepository import BaseRepository
 from datetime import datetime
+from models.BaseModel import BaseModel
 
 
-class SessionRepository(BaseRepository):
+class SessionModel(BaseModel):
     """
     Clase para el manejar las sesiones del usuario
     """

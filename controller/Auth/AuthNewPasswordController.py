@@ -1,11 +1,11 @@
 from controller.Controller import Controller
-from modal.UserRepository import UserRepository
+from models.UserModel import UserModel
 
 
 class AuthNewPasswordController(Controller):
     def __init__(self):
         super().__init__()
-        self.user_repository = UserRepository()
+        self.user_repository = UserModel()
 
     def new_password(self, data):
         user = self._current_user()

@@ -1,11 +1,11 @@
-from modal.UserRepository import UserRepository
-from modal.SessionRepository import SessionRepository
+from models.UserModel import UserModel
+from models.SessionModel import SessionModel
 
 
 class Controller:
     def __init__(self):
-        self.user_repository = UserRepository()
-        self.session_repository = SessionRepository()
+        self.user_repository = UserModel()
+        self.session_repository = SessionModel()
 
     def _current_session(self):
         try:

@@ -1,1 +1,1 @@
-NAVIGATION = ["Dashboard", "Clientes", "Proyectos"]
+NAVIGATION = ["Dashboard", "Clientes", "Proyectos", "Usuarios", "Reportes"]

@@ -1,57 +1,49 @@
 import re
 import customtkinter as ctk
+
 from controller.Auth.AuthLoginController import AuthLoginController
 from controller.Auth.AuthCreateSessionController import AuthCreateSessionController
+from lib.util_window import window_center
+from views.Home import Home
+from config import COLOR_ONE, COLOR_TWO
 
 
-class Login(ctk.CTkFrame):
-    """
-    Frame de inicio de sesión
-    """
-
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
+class Login(ctk.CTk):
+    def __init__(self):
+        super().__init__()
         self.auth_login_create_controller = AuthLoginController()
         self.auth_create_session_contoller = AuthCreateSessionController()
+        self.config_windows()
         self.create_widgets()
         self.show_errors = False
         self.error_labels = []
+
+    def config_windows(self):
+        self.title("Grupo Imnova - Login")
+        # self.iconbitmap('../resources/logo.png')
+        w, h = 1024, 600
+        window_center(self, w, h)
 
     def create_widgets(self):
         """
         Crear los elementos de la interfaz
         """
         # screen
-        self.screen = ctk.CTkScrollableFrame(self)
-        self.screen.pack(fill=ctk.BOTH, expand=ctk.YES)
-
-        # container
-        self.container = ctk.CTkFrame(
-            self.screen,
-        )
+        self.container = ctk.CTkScrollableFrame(self)
         self.container.pack(fill=ctk.BOTH, expand=ctk.YES)
 
-        self.title = ctk.CTkLabel(
-            self.container, text="Iniciar Sesión", font=("Arial", 30)
-        )
-        self.title.pack(pady=20)
+        self.title_primary = ctk.CTkLabel(self.container, text="Iniciar Sesión", font=("Roboto", 30))
+        self.title_primary.pack(pady=20)
 
         # Input Email
-        self.email_label = ctk.CTkLabel(
-            self.container, text="Email", font=("Arial", 15), anchor="w", width=500
-        )
+        self.email_label = ctk.CTkLabel(self.container, text="Email", font=("Roboto", 15), anchor="w", width=500)
         self.email_label.pack(pady=5)
-        self.email_input = ctk.CTkEntry(
-            self.container, placeholder_text="Escribe tu email...", width=500
-        )
+        self.email_input = ctk.CTkEntry(self.container, placeholder_text="Escribe tu email...", width=500)
         self.email_input.focus()
         self.email_input.pack()
 
         # Input Password
-        self.password_label = ctk.CTkLabel(
-            self.container, text="Contraseña", font=("Arial", 15), anchor="w", width=500
-        )
+        self.password_label = ctk.CTkLabel(self.container, text="Contraseña", font=("Roboto", 15), anchor="w", width=500)
         self.password_label.pack(pady=5)
         self.password_input = ctk.CTkEntry(
             self.container,
@@ -61,29 +53,14 @@ class Login(ctk.CTkFrame):
         )
         self.password_input.pack()
 
-        # Button Box
-        self.container_buttons = ctk.CTkFrame(
-            self.container, bg_color="transparent", fg_color="transparent"
-        )
-        self.container_buttons.pack(pady=20)
-
-        # Button Register
-        self.register_button = ctk.CTkButton(
-            self.container_buttons,
-            bg_color="transparent",
-            fg_color="transparent",
-            text="Aun no tienes cuenta?",
-            command=lambda: self.controller.show_frame("Register"),
-        )
-        self.register_button.pack(side="left")
-
         # Button Submit
         self.submit_button = ctk.CTkButton(
-            self.container_buttons,
+            self.container,
             text="Iniciar Sesión",
+            width=500,
             command=lambda: self._handle_submit(),
         )
-        self.submit_button.pack(side="right", padx=8)
+        self.submit_button.pack(padx=10, pady=20)
 
     def show_validation_errors(self, errors):
         for label in self.error_labels:
@@ -111,7 +88,6 @@ class Login(ctk.CTkFrame):
         password = self.password_input.get()
         if not errors:
             user = self.auth_login_create_controller.login(email, password)
-            print(user)
             if user is None:
                 print("Login failed")
             else:
@@ -119,7 +95,8 @@ class Login(ctk.CTkFrame):
                 self.email_input.delete(0, ctk.END)
                 self.email_input.delete(0, ctk.END)
                 self.show_errors = False
-                self.controller.show_frame("Dashboard")
+                self.destroy()
+                Home()
         else:
             self.show_errors = True
 

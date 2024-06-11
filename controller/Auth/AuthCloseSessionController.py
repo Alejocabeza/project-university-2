@@ -1,11 +1,11 @@
 from controller.Controller import Controller
-from modal.SessionRepository import SessionRepository
+from models.SessionModel import SessionModel
 
 
 class AuthCloseSessionController(Controller):
     def __init__(self):
         super().__init__()
-        self.session_repository = SessionRepository()
+        self.session_repository = SessionModel()
 
     def close_session(self):
         try:

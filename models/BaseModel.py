@@ -1,7 +1,7 @@
 from services.mysql import db
 
 
-class BaseRepository:
+class BaseModel:
     """
     Clase base para la base de datos
     """
@@ -71,6 +71,18 @@ class BaseRepository:
             cursor = self.connect.cursor()
             cursor.execute(sql)
             result = self.connect.commit()
+            cursor.close()
+            return result
+        except Exception as ex:
+            print(f"Error al ejecutar la consulta: {ex}")
+            return None
+
+    def _find_all(self):
+        try:
+            sql = f"SELECT * FROM {self.table}"
+            cursor = self.connect.cursor(dictionary=True)
+            cursor.execute(sql)
+            result = cursor.fetchall()
             cursor.close()
             return result
         except Exception as ex:

@@ -1,8 +1,8 @@
 from passlib.hash import bcrypt
-from repository.BaseRepository import BaseRepository
+from models.BaseModel import BaseModel
 
 
-class UserRepository(BaseRepository):
+class UserModel(BaseModel):
     """
     Clase para el manejo de usuarios
     """
@@ -97,8 +97,12 @@ class UserRepository(BaseRepository):
         """
         return self._find_one_by({"id": user_id})
 
+    def find_all(self):
+        return self._find_all()
+
     def _hash_password(self, password):
         return self.bcrypt.hash(password)
 
     def _verify_password(self, password, hash_pass):
         return self.bcrypt.verify(password, hash_pass)
+

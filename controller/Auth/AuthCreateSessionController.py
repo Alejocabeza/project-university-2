@@ -1,11 +1,11 @@
 from controller.Controller import Controller
-from modal.SessionRepository import SessionRepository
+from models.SessionModel import SessionModel
 
 
 class AuthCreateSessionController(Controller):
     def __init__(self):
         super().__init__()
-        self.session_repository = SessionRepository()
+        self.session_repository = SessionModel()
 
     def new_session(self, user_id):
         try:
