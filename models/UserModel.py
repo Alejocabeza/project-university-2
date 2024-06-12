@@ -50,19 +50,10 @@ class UserModel(BaseModel):
         if user_check is not None:
             return f"The user with email {data.get('email')} already exists"
 
-        if data.get("password") != data.get("confirmedPassword"):
-            return "The passwords do not match"
+        pass_hash = self._hash_password(data.get("password"))
+        data["password"] = pass_hash
 
-        data_to_insert = {
-            "nombre": data.get("nombre"),
-            "password": self._hash_password(data.get("password")),
-            "cedula": None,
-            "email": data.get("email"),
-            "avatar": None,
-            "rol": "user",
-        }
-
-        self._save(data_to_insert)
+        self._save(data)
 
     def update(self, user_id, data):
         """
@@ -105,4 +96,3 @@ class UserModel(BaseModel):
 
     def _verify_password(self, password, hash_pass):
         return self.bcrypt.verify(password, hash_pass)
-

@@ -7,9 +7,11 @@ class AuthRegisterController(Controller):
         super().__init__()
         self.user_repository = UserModel()
 
-    def register(self, data):
+    def create(self, data):
         try:
-            return self.user_repository.register(data)
+            if data is not None:
+                # print(data)
+                return self.user_repository.register(data)
         except Exception as ex:
             print(f"Error al registrar el usuario: {ex}")
             return None

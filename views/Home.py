@@ -8,6 +8,7 @@ from config import COLOR_ONE, COLOR_TWO
 from views.Profile import Profile
 from views.Dashboard import Dashboard
 from views.Clients import Clients
+
 # from views.Projects import Projects
 # from views.Reports import Reports
 from views.Users import Users
@@ -28,6 +29,7 @@ class Home(ctk.CTk):
     def config_windows(self):
         self.title("Grupo Imnova")
         # self.iconbitmap('../resources/logo.png')
+        self.resizable(False, False)
         w, h = 1024, 600
         window_center(self, w, h)
 
@@ -56,7 +58,6 @@ class Home(ctk.CTk):
         Crea los elementos de la barra superior
         """
         font_awesome = ctk.CTkFont(family="FontAwesome", size=20)
-
         self.label_title = ctk.CTkLabel(
             self.widget_top,
             text=f"Bienvenido {self.auth_get_data_controller.get_user_data().get('nombre')}",
@@ -67,21 +68,22 @@ class Home(ctk.CTk):
         )
         self.label_title.pack(side=ctk.LEFT, padx=20)
 
-        self.btn_close_session = ctk.CTkButton(
-            self.widget_top,
-            text="  ",
-            font=font_awesome,
-            fg_color="transparent",
-            bg_color="transparent",
-            hover_color="red",
-            width=40,
-            command=lambda: self.logout(),
-        )
-        self.btn_close_session.pack(side=ctk.RIGHT, padx=10)
+        # self.btn_close_session = ctk.CTkButton(
+        #     self.widget_top,
+        #     text="  ",
+        #     font=font_awesome,
+        #     fg_color="transparent",
+        #     bg_color="transparent",
+        #     hover_color="red",
+        #     width=40,
+        #     command=self.logout,
+        # )
+        # self.btn_close_session.pack(side=ctk.RIGHT, padx=10)
 
         self.btn_profile_config = ctk.CTkButton(
             self.widget_top,
-            text="  ", font=font_awesome,
+            text="  ",
+            font=font_awesome,
             fg_color="transparent",
             bg_color="transparent",
             hover_color="blue",
@@ -114,9 +116,14 @@ class Home(ctk.CTk):
         ]
 
         for text, icon, button, command in buttons_info:
-            if text == "Usuarios" and self.auth_get_data_controller.get_user_data().get("rol") != "admin":
+            if (
+                text == "Usuarios"
+                and self.auth_get_data_controller.get_user_data().get("rol") != "admin"
+            ):
                 continue
-            self.config_btn_menu(button, text, icon, font_awesome, width, height, command)
+            self.config_btn_menu(
+                button, text, icon, font_awesome, width, height, command
+            )
 
     def widget_body_config(self):
         """
@@ -129,6 +136,8 @@ class Home(ctk.CTk):
 
     def logout(self):
         self.session_close_controller.close_session()
+        self.destroy()
+        Login()
 
     def init_profile_widget(self):
         self.clear_widgets(self.widget_body)
@@ -158,6 +167,6 @@ class Home(ctk.CTk):
             height=height,
             command=command,
             fg_color="transparent",
-            bg_color="transparent"
+            bg_color="transparent",
         )
         button.pack(side=ctk.TOP, pady=5, padx=10)

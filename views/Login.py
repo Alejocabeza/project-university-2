@@ -21,15 +21,17 @@ class Login(ctk.CTk):
     def config_windows(self):
         self.title("Grupo Imnova - Login")
         # self.iconbitmap('../resources/logo.png')
-        w, h = 1024, 600
+        w, h = 450, 600
         window_center(self, w, h)
 
     def create_widgets(self):
         """
         Crear los elementos de la interfaz
         """
+        self.screen = ctk.CTkFrame(self, fg_color="transparent")
+        self.screen.pack(fill=ctk.BOTH, expand=ctk.YES, pady=40, padx=40)
         # screen
-        self.container = ctk.CTkScrollableFrame(self)
+        self.container = ctk.CTkFrame(self.screen, fg_color="transparent")
         self.container.pack(fill=ctk.BOTH, expand=ctk.YES)
 
         self.title_primary = ctk.CTkLabel(self.container, text="Iniciar Sesión", font=("Roboto", 30))
@@ -58,7 +60,7 @@ class Login(ctk.CTk):
             self.container,
             text="Iniciar Sesión",
             width=500,
-            command=lambda: self._handle_submit(),
+            command=self._handle_submit,
         )
         self.submit_button.pack(padx=10, pady=20)
 
@@ -71,15 +73,15 @@ class Login(ctk.CTk):
         if self.show_errors:
             for field, error_message in errors.items():
                 error_text = f"{field}: {error_message} \t"
-                error_label = self.error_box = ctk.CTkLabel(
-                    self.container,
+                error_label = ctk.CTkLabel(
+                    self.screen,
                     text=error_text,
                     width=500,
                     anchor="w",
                     fg_color="red",
                     corner_radius=5,
                 )
-                error_label.pack(expand=True, pady=10)
+                error_label.pack(expand=ctk.NO, pady=10)
                 self.error_labels.append(error_label)
 
     def _handle_submit(self):
