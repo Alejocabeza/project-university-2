@@ -17,9 +17,9 @@ class BaseModel:
             sql = f"INSERT INTO {self.table} ({fields}) VALUES ({placeholders})"
             cursor = self.connect.cursor()
             cursor.execute(sql, tuple(data.values()))
-            result = self.connect.commit()
+            self.connect.commit()
             cursor.close()
-            return result
+            return True
         except Exception as ex:
             print(f"Error al ejecutar la consulta: {ex}")
             return None
@@ -30,9 +30,9 @@ class BaseModel:
             sql = f"UPDATE {self.table} SET {fields} WHERE id = {id}"
             cursor = self.connect.cursor()
             cursor.execute(sql, tuple(data.values()))
-            result = self.connect.commit()
+            self.connect.commit()
             cursor.close()
-            return result
+            return True
         except Exception as ex:
             print(f"Error al ejecutar la consulta: {ex}")
             return None

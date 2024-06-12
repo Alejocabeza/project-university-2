@@ -53,7 +53,7 @@ class UserModel(BaseModel):
         pass_hash = self._hash_password(data.get("password"))
         data["password"] = pass_hash
 
-        self._save(data)
+        return self._save(data)
 
     def update(self, user_id, data):
         """

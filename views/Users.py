@@ -137,7 +137,7 @@ class Users(ctk.CTk):
         self.table.bind("<Button-1>", self.on_row_click)
 
     def open_window_new_user(self):
-        self.window_create = WindowComponent(
+        self.window_modal = WindowComponent(
             self.options,
             self.auth_register_controller,
             "Crear un nuevo usuario",
@@ -145,8 +145,8 @@ class Users(ctk.CTk):
             None,
             None,
         )
-        self.window_create.grab_set()
-        self.window_create.protocol("WM_DELETE_WINDOW", self.close_window_create)
+        self.window_modal.grab_set()
+        self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
 
     def on_row_click(self, event):
         item = self.table.identify_row(event.y)
@@ -160,7 +160,7 @@ class Users(ctk.CTk):
                     "rol": values[3],
                     "email": values[4],
                 }
-                self.window_create = WindowComponent(
+                self.window_modal = WindowComponent(
                     self.options,
                     self.update_user_controller,
                     "Actualizar el usuario",
@@ -168,16 +168,18 @@ class Users(ctk.CTk):
                     data,
                     self.remove_user_controller,
                 )
+                self.window_modal.grab_set()
+                self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
 
     def refresh(self):
         self.__clear_widgets(self.screen)
         self.__render_data()
 
-    def close_window_create(self):
+    def close_window_modal(self):
         self.__clear_widgets(self.screen)
         self.__render_data()
-        self.window_create.grab_release()
-        self.window_create.destroy()
+        self.window_modal.grab_release()
+        self.window_modal.destroy()
 
     def __clear_widgets(self, widget):
         for w in widget.winfo_children():

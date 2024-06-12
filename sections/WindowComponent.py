@@ -4,7 +4,7 @@ import customtkinter as ctk
 from lib.util_window import window_center
 
 
-class WindowComponent(ctk.CTk):
+class WindowComponent(ctk.CTkToplevel):
     def __init__(
         self, field_options, controller, window_name, type, values, ctrl_remove
     ):
@@ -108,13 +108,16 @@ class WindowComponent(ctk.CTk):
 
     def on_submit(self):
         try:
+            res = False
             if self.type_action == "update":
-                print(self.__get_input_data())
-                # self.controller.update(self.values.get("id"), self.__get_input_data())
+                res = self.controller.update(
+                    self.values.get("id"), self.__get_input_data()
+                )
             else:
-                self.controller.create(self.__get_input_data())
+                res = self.controller.create(self.__get_input_data())
 
-            self.destroy()
+            if res:
+                self.destroy()
         except Exception as ex:
             print(f"Error al ejecutar la petición: {ex}")
             return None
@@ -173,8 +176,8 @@ class WindowComponent(ctk.CTk):
                             data[name] = value
                     else:
                         widget.configure(border_color="green")
-                        data[name.lower()] = value
-
+                        if value:
+                            data[name.lower()] = value
             elif isinstance(widget, ctk.CTkComboBox):
                 rol = widget.get()
                 if rol == "Administrador":
