@@ -34,18 +34,30 @@ class Login(ctk.CTk):
         self.container = ctk.CTkFrame(self.screen, fg_color="transparent")
         self.container.pack(fill=ctk.BOTH, expand=ctk.YES)
 
-        self.title_primary = ctk.CTkLabel(self.container, text="Iniciar Sesión", font=("Roboto", 30))
+        self.title_primary = ctk.CTkLabel(
+            self.container, text="Iniciar Sesión", font=("Roboto", 30)
+        )
         self.title_primary.pack(pady=20)
 
         # Input Email
-        self.email_label = ctk.CTkLabel(self.container, text="Email", font=("Roboto", 15), anchor="w", width=500)
+        self.email_label = ctk.CTkLabel(
+            self.container, text="Email", font=("Roboto", 15), anchor="w", width=500
+        )
         self.email_label.pack(pady=5)
-        self.email_input = ctk.CTkEntry(self.container, placeholder_text="Escribe tu email...", width=500)
+        self.email_input = ctk.CTkEntry(
+            self.container, placeholder_text="Escribe tu email...", width=500
+        )
         self.email_input.focus()
         self.email_input.pack()
 
         # Input Password
-        self.password_label = ctk.CTkLabel(self.container, text="Contraseña", font=("Roboto", 15), anchor="w", width=500)
+        self.password_label = ctk.CTkLabel(
+            self.container,
+            text="Contraseña",
+            font=("Roboto", 15),
+            anchor="w",
+            width=500,
+        )
         self.password_label.pack(pady=5)
         self.password_input = ctk.CTkEntry(
             self.container,

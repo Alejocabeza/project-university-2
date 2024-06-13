@@ -1,7 +1,7 @@
 from controller.Controller import Controller
 from models.UserModel import UserModel
 
-class AuthFindAllUser(Controller):
+class FindAllUserController(Controller):
     def __init__(self):
         super().__init__()
         self.user_model = UserModel()

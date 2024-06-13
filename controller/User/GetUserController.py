@@ -1,7 +1,7 @@
 from controller.Controller import Controller
 
 
-class AuthGetDataController(Controller):
+class GetUserController(Controller):
     def __init__(self):
         super().__init__()
 

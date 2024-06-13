@@ -8,7 +8,7 @@ class UserModel(BaseModel):
     """
 
     def __init__(self):
-        super().__init__("usuarios")
+        super().__init__("users")
         self.bcrypt = bcrypt
 
     def login(self, email, password):

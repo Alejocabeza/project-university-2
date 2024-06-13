@@ -2,7 +2,7 @@ import re
 import customtkinter as ctk
 
 from controller.Auth.AuthUpdateController import AuthUpdateController
-from controller.Auth.AuthGetDataController import AuthGetDataController
+from controller.User.GetUserController import GetUserController
 from controller.Auth.AuthNewPasswordController import AuthNewPasswordController
 from controller.Auth.AuthRemoveAccountController import AuthRemoveAccountController
 from config import (
@@ -15,11 +15,12 @@ from config import (
 )
 
 
-class Profile(ctk.CTk):
+class Profile(ctk.CTkFrame):
     def __init__(self, parent):
+        super().__init__(parent)
         self.parent = parent
         self.auth_update_controller = AuthUpdateController()
-        self.auth_get_data_controller = AuthGetDataController()
+        self.auth_get_data_controller = GetUserController()
         self.auth_new_password_controller = AuthNewPasswordController()
         self.auth_remove_account_controller = AuthRemoveAccountController()
         self.show_errors = False
@@ -308,12 +309,12 @@ class Profile(ctk.CTk):
     def __set_placeholder(self, field):
         match field:
             case "name":
-                return self.auth_get_data_controller.get_user_data().get("nombre")
+                return self.auth_get_data_controller.get_user_data().get("name")
             case "email":
                 return self.auth_get_data_controller.get_user_data().get("email")
             case "dni":
-                if self.auth_get_data_controller.get_user_data().get("cedula"):
-                    return self.auth_get_data_controller.get_user_data().get("cedula")
+                if self.auth_get_data_controller.get_user_data().get("dni"):
+                    return self.auth_get_data_controller.get_user_data().get("dni")
                 else:
                     return "Escribe tu cédula..."
 
@@ -334,9 +335,9 @@ class Profile(ctk.CTk):
                         self.error_type = None
                         data_to_update["email"] = email
                 if name:
-                    data_to_update["nombre"] = name
+                    data_to_update["name"] = name
                 if dni:
-                    data_to_update["cedula"] = dni
+                    data_to_update["dni"] = dni
                 self.auth_update_controller.update(data=data_to_update)
                 self.__clear_widgets(self.widget_body_profile)
                 self.__render_data()

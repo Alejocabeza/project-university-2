@@ -3,8 +3,9 @@ import customtkinter as ctk
 from config import COLOR_THREE
 
 
-class Clients(ctk.CTk):
+class Clients(ctk.CTkFrame):
     def __init__(self, parent):
+        super().__init__(parent)
         self.parent = parent
         self.widgets()
         self.widget_header()
@@ -28,12 +29,38 @@ class Clients(ctk.CTk):
         )
         self.title.pack(side=ctk.LEFT, fill=ctk.X)
 
+        self.btn_refresh = ctk.CTkButton(
+            self.header,
+            text="  Refrescar",
+            font=("Roboto", 12),
+            command=self.refresh,
+        )
+        self.btn_refresh.pack(side=ctk.RIGHT, fill=ctk.X, padx=10)
+
         self.btn_create = ctk.CTkButton(
-            self.header, text="  Crear nuevo cliente", font=("Roboto", 12)
+            self.header,
+            text="  Crear nuevo usuario",
+            font=("Roboto", 12),
+            command=lambda: self.open_window_new_client(),
         )
         self.btn_create.pack(side=ctk.RIGHT, fill=ctk.X)
 
     def widget_body(self):
-        # container
-        self.container = ctk.CTkScrollableFrame(self.screen, fg_color=COLOR_THREE, height=300)
-        self.container.pack(side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10)
+        self.container = ctk.CTkScrollableFrame(
+            self.screen, fg_color=COLOR_THREE, height=300
+        )
+        self.container.pack(
+            side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10
+        )
+
+    def refresh(self):
+        self.__clear_widgets(self.screen)
+        self.__render_data()
+
+    def __clear_widgets(self, widget):
+        for w in widget.winfo_children():
+            w.destroy()
+
+    def __render_data(self):
+        self.widget_header()
+        self.widget_body()

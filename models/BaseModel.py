@@ -11,6 +11,15 @@ class BaseModel:
         self.connect = db
 
     def _save(self, data):
+        """
+        Crea un nuevo registro
+
+        Args:
+            data (dict): el diccionario con los datos
+
+        Returns:
+            boolean: True si el registro se crea correctamente
+        """
         try:
             fields = ", ".join(data.keys())
             placeholders = ", ".join(["%s"] * len(data))
@@ -25,6 +34,16 @@ class BaseModel:
             return None
 
     def _update(self, id, data):
+        """
+        Actualiza un registro
+
+        Args:
+            id (int): el identificador
+            data (dict): el diccionario con los datos
+
+        Returns:
+            boolean: True si el registro se actualiza correctamente
+        """
         try:
             fields = ", ".join([f"{key} = %s" for key in data.keys()])
             sql = f"UPDATE {self.table} SET {fields} WHERE id = {id}"
@@ -38,6 +57,15 @@ class BaseModel:
             return None
 
     def _find_one_by(self, filters):
+        """
+        Busca un registro
+
+        Args:
+            filters (dict): el diccionario con los filtros
+
+        Returns:
+            dict: el diccionario con los datos del registro
+        """
         try:
             where_clause = " AND ".join([f"{key} = %s" for key in filters.keys()])
             sql = f"SELECT * FROM {self.table} WHERE {where_clause}"
@@ -52,6 +80,15 @@ class BaseModel:
             return None
 
     def _find_by(self, filters):
+        """
+        Busca un registro
+
+        Args:
+            filters (dict): el diccionario con los filtros
+
+        Returns:
+            dict: el diccionario con los datos del registro
+        """
         try:
             where_clause = " AND ".join([f"{key} = %s" for key in filters.keys()])
             sql = f"SELECT * FROM {self.table} WHERE {where_clause}"
@@ -66,6 +103,15 @@ class BaseModel:
             return None
 
     def _remove(self, id):
+        """
+        Elimina un registro
+
+        Args:
+            id (int): el identificador
+
+        Returns:
+            boolean: True si el registro se elimina correctamente
+        """
         try:
             sql = f"DELETE FROM {self.table} WHERE id = {id}"
             cursor = self.connect.cursor()
@@ -78,6 +124,12 @@ class BaseModel:
             return None
 
     def _find_all(self):
+        """
+        Busca todos los registros
+
+        Returns:
+            list: Lista con los registros
+        """
         try:
             sql = f"SELECT * FROM {self.table}"
             cursor = self.connect.cursor(dictionary=True)

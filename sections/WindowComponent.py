@@ -44,7 +44,7 @@ class WindowComponent(ctk.CTkToplevel):
             self.container,
             text_color="white",
             text=self.window_name,
-            font=("Roboto", 20),
+            font=("Roboto", 30),
             anchor="w",
         )
         self.label.pack(side=ctk.TOP, fill=ctk.X, expand=ctk.NO)
@@ -192,28 +192,44 @@ class WindowComponent(ctk.CTkToplevel):
         match self.type_action:
             case "update":
                 match name:
-                    case "nombre":
+                    case "name":
                         return self.values.get("name")
                     case "email":
                         return self.values.get("email")
-                    case "cedula":
+                    case "dni":
                         return self.values.get("dni")
                     case "password":
                         return self.values.get("password")
+                    case "location":
+                        return self.values.get("location")
+                    case "country":
+                        return self.values.get("country")
+                    case "city":
+                        return self.values.get("city")
+                    case "main_address":
+                        return self.values.get("main_address")
             case "create":
                 match name:
-                    case "nombre":
+                    case "name":
                         return "Escribe el nombre aquí..."
                     case "email":
                         return "Escribe el email aquí..."
-                    case "cedula":
+                    case "dni":
                         return "Escribe la cédula aquí..."
                     case "password":
                         return "Escribe la contraseña aquí..."
+                    case "location":
+                        return "Escribe el Municipio aquí..."
+                    case "country":
+                        return "Escribe el País aquí..."
+                    case "city":
+                        return "Escribe el Departamento aquí..."
+                    case "main_address":
+                        return "Escribe la Dirección Principal aquí..."
 
     def get_role_user(self):
         if self.type_action == "update":
-            match self.values.get("rol"):
+            match self.values.get("role"):
                 case "user":
                     return "Usuario"
                 case "admin":

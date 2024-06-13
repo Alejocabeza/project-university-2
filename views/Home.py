@@ -1,13 +1,14 @@
 import customtkinter as ctk
 
 from controller.Auth.AuthCloseSessionController import AuthCloseSessionController
-from controller.Auth.AuthGetDataController import AuthGetDataController
+from controller.User.GetUserController import GetUserController
 from lib.util_window import window_center
 from lib.navigation import NAVIGATION
 from config import COLOR_ONE, COLOR_TWO
 from views.Profile import Profile
 from views.Dashboard import Dashboard
 from views.Clients import Clients
+from views.Address import Address
 
 # from views.Projects import Projects
 # from views.Reports import Reports
@@ -19,7 +20,7 @@ class Home(ctk.CTk):
         super().__init__()
         self.option_navigations = NAVIGATION
         self.session_close_controller = AuthCloseSessionController()
-        self.auth_get_data_controller = AuthGetDataController()
+        self.auth_get_data_controller = GetUserController()
         self.config_windows()
         self.create_widgets()
         self.widget_top_config()
@@ -32,7 +33,6 @@ class Home(ctk.CTk):
         self.resizable(False, False)
         w, h = 1024, 600
         window_center(self, w, h)
-
     def create_widgets(self):
         """
         Crea los elementos de la interfaz
@@ -60,7 +60,7 @@ class Home(ctk.CTk):
         font_awesome = ctk.CTkFont(family="FontAwesome", size=20)
         self.label_title = ctk.CTkLabel(
             self.widget_top,
-            text=f"Bienvenido {self.auth_get_data_controller.get_user_data().get('nombre')}",
+            text=f"Bienvenido {self.auth_get_data_controller.get_user_data().get('name')}",
             font=("Roboto", 16),
             pady=10,
             padx=10,
@@ -105,6 +105,7 @@ class Home(ctk.CTk):
         self.buttonClients = ctk.CTkButton(self.widget_left)
         # self.buttonProjects = ctk.CTkButton(self.widget_left)
         # self.buttonReports = ctk.CTkButton(self.widget_left)
+        self.buttonAddress = ctk.CTkButton(self.widget_left)
         self.buttonUsers = ctk.CTkButton(self.widget_left)
 
         buttons_info = [
@@ -112,13 +113,14 @@ class Home(ctk.CTk):
             ("Clientes", "", self.buttonClients, self.open_clients),
             # ("Proyectos", "", self.buttonProjects, self.open_projects),
             # ("Reportes", "", self.buttonReports, self.open_reports),
+            ("Direcciones", "", self.buttonAddress, self.open_address),
             ("Usuarios", "", self.buttonUsers, self.open_users),
         ]
 
         for text, icon, button, command in buttons_info:
             if (
                 text == "Usuarios"
-                and self.auth_get_data_controller.get_user_data().get("rol") != "admin"
+                and self.auth_get_data_controller.get_user_data().get("role") != "admin"
             ):
                 continue
             self.config_btn_menu(
@@ -154,6 +156,10 @@ class Home(ctk.CTk):
     def open_users(self):
         self.clear_widgets(self.widget_body)
         Users(self.widget_body)
+
+    def open_address(self):
+        self.clear_widgets(self.widget_body)
+        Address(self.widget_body)
 
     def clear_widgets(self, widget):
         for widget in widget.winfo_children():

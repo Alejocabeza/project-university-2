@@ -16,8 +16,9 @@ class Controller:
 
     def _current_user(self):
         try:
+            print(self._current_session())
             return self.user_repository.finder_user_by_id(
-                self._current_session().get("usuario_id")
+                self._current_session().get("user")
             )
         except Exception as ex:
             print(f"Error al obtener el usuario actual: {ex}")
