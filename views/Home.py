@@ -31,7 +31,7 @@ class Home(ctk.CTk):
         self.title("Grupo Imnova")
         # self.iconbitmap('../resources/logo.png')
         self.resizable(False, False)
-        w, h = 1024, 600
+        w, h = 1200, 600
         window_center(self, w, h)
     def create_widgets(self):
         """
