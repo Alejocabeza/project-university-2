@@ -5,6 +5,7 @@ from controller.Clients.GetAllClientController import GetAllClientController
 from controller.Clients.RemoveClientController import RemoveClientController
 from controller.Clients.UpdateClientController import UpdateClientController
 from controller.Address.GetAllAddressController import GetAllAddressController
+from controller.Address.FindAddressByIdController import FindAddressByIdController
 from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
 from sections.WindowComponent import WindowComponent
 from tkinter import ttk
@@ -19,6 +20,7 @@ class Clients(ctk.CTkFrame):
         self.remove_client_controller = RemoveClientController()
         self.get_all_client_controller = GetAllClientController()
         self.get_all_address_controller = GetAllAddressController()
+        self.find_address_by_id = FindAddressByIdController()
         self.widgets()
         self.widget_header()
         self.widget_body()
@@ -34,7 +36,7 @@ class Clients(ctk.CTkFrame):
                 "options": [
                     "Persona Natural",
                     "Persona Jurídica",
-                    "Ente Gubernamental",
+                    "Gubernamental",
                 ],
             },
             {
@@ -148,6 +150,8 @@ class Clients(ctk.CTkFrame):
         data = self.get_all_client_controller.find_all()
         if data:
             for i in range(len(data)):
+                type_client = self.__get_type_client(data[i].get("type"))
+                address = self.__get_name_address(data[i].get("address"))
                 self.table.insert(
                     parent="",
                     index=0,
@@ -157,8 +161,8 @@ class Clients(ctk.CTkFrame):
                         data[i].get("dni"),
                         data[i].get("email"),
                         data[i].get("phone"),
-                        data[i].get("type"),
-                        data[i].get("address"),
+                        type_client,
+                        address,
                     ),
                 )
             self.table.bind("<Button-1>", self.on_row_click)
@@ -192,7 +196,7 @@ class Clients(ctk.CTkFrame):
         self.window_modal = WindowComponent(
             self.options,
             self.create_client_controller,
-            "Crear Nuevo CLiente",
+            "Crear Nuevo Cliente",
             "create",
             None,
             None,
@@ -223,6 +227,18 @@ class Clients(ctk.CTkFrame):
         data = self.get_all_address_controller.find_all()
         if data:
             for address in data:
-                data_to_return.append(address.get("id"))
-        print(data_to_return)
+                data_to_return.append(address.get("name"))
         return data_to_return
+
+    def __get_name_address(self, id):
+        address = self.find_address_by_id.find_by_id(id)
+        return address.get("name")
+
+    def __get_type_client(self, type):
+        match type:
+            case "person":
+                return "Persona Natural"
+            case "company":
+                return "Persona Jurídica"
+            case 'government':
+                return 'Gubernamental'

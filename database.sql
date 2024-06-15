@@ -23,7 +23,7 @@ CREATE TABLE `project_university`.`user_session` (
 
 CREATE TABLE `project_university`.`address` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(100),
+  `name` VARCHAR(100) UNIQUE,
   `city` VARCHAR(100),
   `country` VARCHAR(100),
   `state` VARCHAR(100),

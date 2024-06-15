@@ -45,6 +45,24 @@ class AddressModel(BaseModel):
 
     def find_by_main_address(self, main_address):
         """
-        Busca la direccion por la direccion principal
+        Busca la dirección por la dirección principal
         """
         return self._find_one_by({"main_address": main_address, "deleted_at": None})
+
+    def find_by_id(self, id):
+        """
+        Buscar una dirección por su identificador
+
+        Args:
+            id (int): El identificador de la dirección
+        """
+        return self._find_one_by({"id": id})
+
+    def find_by_name(self, name):
+        """
+        Buscar una dirección por su nombre
+
+        Args:
+            name (str): El nombre de la dirección
+        """
+        return self._find_one_by({"name": name})

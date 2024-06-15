@@ -2,9 +2,7 @@ import re
 import customtkinter as ctk
 
 from lib.util_window import window_center
-from controller.Address.FindAddressByMainAddressController import (
-    FindAddressByMainAddressController,
-)
+from controller.Address.FindAddressByNameController import FindAddressByNameController
 
 
 class WindowComponent(ctk.CTkToplevel):
@@ -20,9 +18,7 @@ class WindowComponent(ctk.CTkToplevel):
         height=600,
     ):
         super().__init__()
-        self.find_address_by_main_address_controller = (
-            FindAddressByMainAddressController()
-        )
+        self.find_address_by_name = FindAddressByNameController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -68,7 +64,6 @@ class WindowComponent(ctk.CTkToplevel):
         for field in self.field_options:
             self.input_container = ctk.CTkFrame(self.container, fg_color="transparent")
             self.input_container.pack(expand=ctk.NO, fill=ctk.BOTH, pady=5)
-
             self.input_label = ctk.CTkLabel(
                 self.input_container,
                 text=field["label"],
@@ -93,10 +88,11 @@ class WindowComponent(ctk.CTkToplevel):
                     self.inputs[field["name"]] = self.entry
                 case "combobox":
                     self.combobox = ctk.CTkComboBox(
-                        self.input_container, values=field["options"]
+                        self.input_container,
+                        values=field["options"],
                     )
                     self.combobox.pack(expand=ctk.NO, fill=ctk.X)
-                    self.combobox.set(self.get_combobox_value(field['name']))
+                    self.combobox.set(self.get_combobox_value(field["name"]))
                     self.inputs[field["name"]] = self.combobox
 
     def create_button_submit(self):
@@ -124,7 +120,6 @@ class WindowComponent(ctk.CTkToplevel):
     def on_submit(self):
         try:
             res = False
-            print(self.__get_input_data())
             if self.type_action == "update":
                 res = self.controller.update(
                     self.values.get("id"), self.__get_input_data()
@@ -195,14 +190,30 @@ class WindowComponent(ctk.CTkToplevel):
                         if value:
                             data[name.lower()] = value
             elif isinstance(widget, ctk.CTkComboBox):
-                if name == "role":
-                    rol = widget.get()
-                    if rol == "Administrador":
-                        data[name.lower()] = "admin"
-                    elif rol == "Usuario":
-                        data[name.lower()] = "user"
-                if name == "address":
-                    print(widget.get())
+                match name:
+                    case "role":
+                        rol = widget.get()
+                        if rol == "Administrador":
+                            data[name.lower()] = "admin"
+                        elif rol == "Usuario":
+                            data[name.lower()] = "user"
+                    case "address":
+                        value = widget.get()
+                        if value:
+                            address = self.find_address_by_name.find_by_name(
+                                widget.get()
+                            )
+                            data[name.lower()] = address.get("id")
+                    case "type":
+                        type_option = widget.get()
+                        if type_option == "Persona Natural":
+                            data[name.lower()] = "person"
+                        elif type_option == "Persona Jurídica":
+                            data[name.lower()] = "company"
+                        else:
+                            data[name.lower()] = "government"
+                    case _:
+                        data[name.lower()] = widget.get()
 
         if not new_errors:
             return data
@@ -214,20 +225,6 @@ class WindowComponent(ctk.CTkToplevel):
             return ""
 
     def get_combobox_value(self, name):
-        match name:
-            case "role":
-                if self.type_action == "update":
-                    match self.values.get("role"):
-                        case "user":
-                            return "Usuario"
-                        case "admin":
-                            return "Administrador"
-                else:
-                    return ""
-            case "address":
-                if self.type_action == "update":
-                    print(self.values.get('role'))
-                else:
-                    return ""
-            case _:
-                return ""
+        if self.type_action == 'update':
+            return self.values.get(name)
+        return ""

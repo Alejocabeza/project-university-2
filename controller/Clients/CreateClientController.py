@@ -9,7 +9,6 @@ class CreateClientController(Controller):
 
     def create(self, data):
         try:
-            print(data)
             data["created_by"] = self._current_user().get("id")
             return self.client_model.client_create(data)
         except Exception as ex:
