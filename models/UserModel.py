@@ -8,7 +8,7 @@ class UserModel(BaseModel):
     """
 
     def __init__(self):
-        super().__init__("users")
+        super().__init__("user")
         self.bcrypt = bcrypt
 
     def login(self, email, password):
@@ -89,10 +89,19 @@ class UserModel(BaseModel):
         return self._find_one_by({"id": user_id})
 
     def find_all(self):
+        """
+        Devuelve todos los usuarios
+        """
         return self._find_all()
 
     def _hash_password(self, password):
+        """
+        Este metodo encripta la contraseña del usuario
+        """
         return self.bcrypt.hash(password)
 
     def _verify_password(self, password, hash_pass):
+        """
+        Este Metodo verifica la contraseña encripta al momento del login
+        """
         return self.bcrypt.verify(password, hash_pass)

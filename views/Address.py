@@ -4,6 +4,7 @@ from controller.Address.CreateAddressController import CreateAddressController
 from controller.Address.UpdateAddressController import UpdateAddressController
 from controller.Address.RemoveAddressController import RemoveAddressController
 from controller.Address.GetAllAddressController import GetAllAddressController
+from controller.User.FindUserController import FindUserController
 from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
 from sections.WindowComponent import WindowComponent
 from tkinter import ttk
@@ -13,20 +14,24 @@ class Address(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.options = [
+            {"name": "name", "label": "Nombre", "type": "entry"},
+            {"name": "city", "label": "Ciudad", "type": "entry"},
+            {"name": "country", "label": "País", "type": "entry"},
+            {"name": "state", "label": "Estado", "type": "entry"},
+            {"name": "street", "label": "Calle", "type": "entry"},
+            {"name": "postal_code", "label": "Código Postal", "type": "entry"},
+            {"name": "location", "label": "Municipio/Localidad", "type": "entry"},
+            {"name": "department", "label": "Urbanización/Departamento/Casa", "type": "entry"},
+        ]
         self.create_address_controller = CreateAddressController()
         self.update_address_controller = UpdateAddressController()
         self.remove_address_controller = RemoveAddressController()
         self.get_all_address_controller = GetAllAddressController()
+        self.find_user_controller = FindUserController()
         self.widgets()
         self.widget_header()
         self.widget_body()
-        self.options = [
-            {"name": "name", "label": "Nombre", "type": "entry"},
-            {"name": "location", "label": "Municipio", "type": "entry"},
-            {"name": "country", "label": "País", "type": "entry"},
-            {"name": "city", "label": "Departamento", "type": "entry"},
-            {"name": "main_address", "label": "Dirección Principal", "type": "entry"},
-        ]
 
     def widgets(self):
         self.screen = ctk.CTkFrame(self.parent, fg_color="transparent")
@@ -100,28 +105,18 @@ class Address(ctk.CTkFrame):
             columns=(
                 "ID",
                 "Nombre",
-                "Municipio",
-                "País",
-                "Departamento",
-                "Dirección Principal",
+                "Dirección Principal"
             ),
             show="headings",
-            height=500,
         )
         self.table.heading("ID", text="ID")
         self.table.heading("Nombre", text="Nombre")
-        self.table.heading("Municipio", text="Municipio")
-        self.table.heading("País", text="País")
-        self.table.heading("Departamento", text="Departamento")
         self.table.heading("Dirección Principal", text="Dirección Principal")
-        self.table.pack(padx=10)
+        self.table.pack(padx=10, expand=ctk.YES, fill=ctk.BOTH)
 
         # Configurar columnas y centrado de texto
         self.table.column("ID", anchor="center")
         self.table.column("Nombre", anchor="center")
-        self.table.column("Municipio", anchor="center")
-        self.table.column("País", anchor="center")
-        self.table.column("Departamento", anchor="center")
         self.table.column("Dirección Principal", anchor="center")
 
         # insert table
@@ -134,10 +129,14 @@ class Address(ctk.CTkFrame):
                     values=(
                         data[i].get("id"),
                         data[i].get("name"),
-                        data[i].get("location"),
-                        data[i].get("country"),
+                        data[i].get('main_address'),
                         data[i].get("city"),
-                        data[i].get("main_address"),
+                        data[i].get("country"),
+                        data[i].get("state"),
+                        data[i].get("street"),
+                        data[i].get("postal_code"),
+                        data[i].get("location"),
+                        data[i].get('department')
                     ),
                 )
             self.table.bind("<Button-1>", self.on_row_click)
@@ -150,10 +149,13 @@ class Address(ctk.CTkFrame):
                 data = {
                     "id": values[0],
                     "name": values[1],
-                    "location": values[2],
-                    "country": values[3],
-                    "city": values[4],
-                    "main_address": values[5],
+                    "city": values[3],
+                    "country": values[4],
+                    "state": values[5],
+                    "street": values[6],
+                    "postal_code": values[7],
+                    "location": values[8],
+                    "department": values[9]
                 }
                 self.window_modal = WindowComponent(
                     self.options,
@@ -162,6 +164,7 @@ class Address(ctk.CTkFrame):
                     "update",
                     data,
                     self.remove_address_controller,
+                    height=800
                 )
                 self.window_modal.grab_set()
                 self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
@@ -174,6 +177,7 @@ class Address(ctk.CTkFrame):
             "create",
             None,
             None,
+            height=700
         )
         self.window_modal.grab_set()
         self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
@@ -195,3 +199,8 @@ class Address(ctk.CTkFrame):
     def __render_data(self):
         self.widget_header()
         self.widget_body()
+
+    def __get_user_name(self, id):
+        user = self.find_user_controller.find_user(id)
+        return user.get('name')
+

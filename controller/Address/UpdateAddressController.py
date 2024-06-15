@@ -9,6 +9,7 @@ class UpdateAddressController(Controller):
 
     def update(self, id, data):
         try:
+            data['updated_by'] = self._current_user().get('id')
             return self.address_mode.update_address(id, data)
         except Exception as ex:
             print(f"Error al crear la dirección: {ex}")

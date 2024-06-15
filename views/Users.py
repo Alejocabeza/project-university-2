@@ -111,7 +111,7 @@ class Users(ctk.CTkFrame):
         self.table.heading("Cédula", text="Cédula")
         self.table.heading("Rol", text="Rol")
         self.table.heading("Email", text="Email")
-        self.table.pack(padx=10)
+        self.table.pack(padx=10, fill=ctk.BOTH, expand=ctk.YES)
 
         # Configurar columnas y centrado de texto
         self.table.column("ID", anchor="center")

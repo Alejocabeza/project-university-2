@@ -1,3 +1,4 @@
+from datetime import datetime
 from models.UserModel import UserModel
 from models.SessionModel import SessionModel
 
@@ -22,3 +23,6 @@ class Controller:
         except Exception as ex:
             print(f"Error al obtener el usuario actual: {ex}")
             return None
+
+    def _current_time(self):
+        return datetime.now().strftime("%Y-%m-%d %H:%M:%S")

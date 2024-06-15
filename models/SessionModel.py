@@ -24,8 +24,8 @@ class SessionModel(BaseModel):
 
         data_to_insert = {
             "user": id,
-            "start_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "end_date": None,
+            "startDate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "endDate": None,
             "is_active": True,
         }
 
@@ -34,13 +34,12 @@ class SessionModel(BaseModel):
     def close_session(self, session_id):
         """
         Cambia el estado de una sesión
-
         Args:
             session_id (int): el identificador de la sesión
         """
 
         data_to_update = {
-            "start_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "endDate": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "is_active": False,
         }
 

@@ -131,7 +131,7 @@ class BaseModel:
             list: Lista con los registros
         """
         try:
-            sql = f"SELECT * FROM {self.table}"
+            sql = f"SELECT * FROM {self.table} WHERE deleted_at IS NULL"
             cursor = self.connect.cursor(dictionary=True)
             cursor.execute(sql)
             result = cursor.fetchall()

@@ -5,6 +5,7 @@ class AddressModel(BaseModel):
     """
     Clase para las direcciones
     """
+
     def __init__(self):
         super().__init__("address")
 
@@ -18,7 +19,9 @@ class AddressModel(BaseModel):
         Returns:
             Boolean: True si la dirección se crea correctamente
         """
-        address_check = self._find_one_by({"name": data.get("name")})
+        address_check = self._find_one_by(
+            {"name": data.get("name"), "deleted_at": None}
+        )
         if address_check is not None:
             return f"La dirección con el nombre {data.get('name')} ya existe"
 
@@ -34,17 +37,14 @@ class AddressModel(BaseModel):
         """
         return self._update(id, data)
 
-    def remove_address(self, id):
-        """
-        Remove una dirección
-
-        Args:
-            id(int): el identificador de la dirección
-        """
-        return self._remove(id)
-
     def find_all_address(self):
         """
         Busca todas las direcciones
         """
         return self._find_all()
+
+    def find_by_main_address(self, main_address):
+        """
+        Busca la direccion por la direccion principal
+        """
+        return self._find_one_by({"main_address": main_address, "deleted_at": None})

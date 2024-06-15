@@ -9,7 +9,7 @@ class RemoveAddressController(Controller):
 
     def remove(self, id):
         try:
-            return self.address_model.remove_address(id)
+            return self.address_model.update_address(id, {"deleted_at": self._current_time()})
         except Exception as ex:
             print(f"Error al eliminar la dirección: {ex}")
             return None

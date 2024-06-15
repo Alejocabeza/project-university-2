@@ -2,13 +2,29 @@ import re
 import customtkinter as ctk
 
 from lib.util_window import window_center
+from controller.Address.FindAddressByMainAddressController import (
+    FindAddressByMainAddressController,
+)
 
 
 class WindowComponent(ctk.CTkToplevel):
     def __init__(
-        self, field_options, controller, window_name, type, values, ctrl_remove
+        self,
+        field_options,
+        controller,
+        window_name,
+        type,
+        values,
+        ctrl_remove,
+        width=450,
+        height=600,
     ):
         super().__init__()
+        self.find_address_by_main_address_controller = (
+            FindAddressByMainAddressController()
+        )
+        self.width = width
+        self.height = height
         self.show_errors = False
         self.type_action = type
         self.field_options = field_options
@@ -25,9 +41,8 @@ class WindowComponent(ctk.CTkToplevel):
 
     def window_config(self):
         self.title(self.window_name)
-        w, h = 450, 600
         self.resizable(False, False)
-        window_center(self, w, h)
+        window_center(self, self.width, self.height)
 
     def main_widget(self):
         self.screen = ctk.CTkScrollableFrame(
@@ -81,7 +96,7 @@ class WindowComponent(ctk.CTkToplevel):
                         self.input_container, values=field["options"]
                     )
                     self.combobox.pack(expand=ctk.NO, fill=ctk.X)
-                    self.combobox.set(self.get_role_user())
+                    self.combobox.set(self.get_combobox_value(field['name']))
                     self.inputs[field["name"]] = self.combobox
 
     def create_button_submit(self):
@@ -109,6 +124,7 @@ class WindowComponent(ctk.CTkToplevel):
     def on_submit(self):
         try:
             res = False
+            print(self.__get_input_data())
             if self.type_action == "update":
                 res = self.controller.update(
                     self.values.get("id"), self.__get_input_data()
@@ -179,60 +195,39 @@ class WindowComponent(ctk.CTkToplevel):
                         if value:
                             data[name.lower()] = value
             elif isinstance(widget, ctk.CTkComboBox):
-                rol = widget.get()
-                if rol == "Administrador":
-                    data[name.lower()] = "admin"
-                elif rol == "Usuario":
-                    data[name.lower()] = "user"
+                if name == "role":
+                    rol = widget.get()
+                    if rol == "Administrador":
+                        data[name.lower()] = "admin"
+                    elif rol == "Usuario":
+                        data[name.lower()] = "user"
+                if name == "address":
+                    print(widget.get())
 
         if not new_errors:
             return data
 
     def __set_placeholder(self, name):
-        match self.type_action:
-            case "update":
-                match name:
-                    case "name":
-                        return self.values.get("name")
-                    case "email":
-                        return self.values.get("email")
-                    case "dni":
-                        return self.values.get("dni")
-                    case "password":
-                        return self.values.get("password")
-                    case "location":
-                        return self.values.get("location")
-                    case "country":
-                        return self.values.get("country")
-                    case "city":
-                        return self.values.get("city")
-                    case "main_address":
-                        return self.values.get("main_address")
-            case "create":
-                match name:
-                    case "name":
-                        return "Escribe el nombre aquí..."
-                    case "email":
-                        return "Escribe el email aquí..."
-                    case "dni":
-                        return "Escribe la cédula aquí..."
-                    case "password":
-                        return "Escribe la contraseña aquí..."
-                    case "location":
-                        return "Escribe el Municipio aquí..."
-                    case "country":
-                        return "Escribe el País aquí..."
-                    case "city":
-                        return "Escribe el Departamento aquí..."
-                    case "main_address":
-                        return "Escribe la Dirección Principal aquí..."
-
-    def get_role_user(self):
         if self.type_action == "update":
-            match self.values.get("role"):
-                case "user":
-                    return "Usuario"
-                case "admin":
-                    return "Administrador"
+            return self.values.get(name)
         else:
-            return "Usuario"
+            return ""
+
+    def get_combobox_value(self, name):
+        match name:
+            case "role":
+                if self.type_action == "update":
+                    match self.values.get("role"):
+                        case "user":
+                            return "Usuario"
+                        case "admin":
+                            return "Administrador"
+                else:
+                    return ""
+            case "address":
+                if self.type_action == "update":
+                    print(self.values.get('role'))
+                else:
+                    return ""
+            case _:
+                return ""
