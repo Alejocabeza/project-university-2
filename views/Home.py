@@ -9,6 +9,7 @@ from views.Profile import Profile
 from views.Dashboard import Dashboard
 from views.Clients import Clients
 from views.Address import Address
+from views.ClientOffice import ClientOffice
 
 # from views.Projects import Projects
 # from views.Reports import Reports
@@ -29,9 +30,11 @@ class Home(ctk.CTk):
 
     def config_windows(self):
         self.title("Grupo Imnova")
+        self.resizable(False,False)
         # self.iconbitmap('../resources/logo.png')
         w, h = 1024, 600
         window_center(self, w, h)
+
     def create_widgets(self):
         """
         Crea los elementos de la interfaz
@@ -106,10 +109,12 @@ class Home(ctk.CTk):
         # self.buttonReports = ctk.CTkButton(self.widget_left)
         self.buttonAddress = ctk.CTkButton(self.widget_left)
         self.buttonUsers = ctk.CTkButton(self.widget_left)
+        self.buttonClientOffice = ctk.CTkButton(self.widget_left)
 
         buttons_info = [
             ("Dashboard", "", self.buttonDashboard, self.open_dashboard),
             ("Clientes", "", self.buttonClients, self.open_clients),
+            ("Sucursales de Clientes", "", self.buttonClientOffice, self.open_client_office),
             # ("Proyectos", "", self.buttonProjects, self.open_projects),
             # ("Reportes", "", self.buttonReports, self.open_reports),
             ("Direcciones", "", self.buttonAddress, self.open_address),
@@ -159,6 +164,10 @@ class Home(ctk.CTk):
     def open_address(self):
         self.clear_widgets(self.widget_body)
         Address(self.widget_body)
+
+    def open_client_office(self):
+        self.clear_widgets(self.widget_body)
+        ClientOffice(self.widget_body)
 
     def clear_widgets(self, widget):
         for widget in widget.winfo_children():
