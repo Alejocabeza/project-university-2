@@ -1,9 +1,17 @@
 import customtkinter as ctk
 
-from controller.ClientOffice.CreateClientOfficeController import CreateClientOfficeController
-from controller.ClientOffice.GetAllClientOfficeController import GetAllClientOfficeController
-from controller.ClientOffice.RemoveClientOfficeController import RemoveClientOfficeController
-from controller.ClientOffice.UpdateClientOfficeController import UpdateClientOfficeController
+from controller.ClientOffice.CreateClientOfficeController import (
+    CreateClientOfficeController,
+)
+from controller.ClientOffice.GetAllClientOfficeController import (
+    GetAllClientOfficeController,
+)
+from controller.ClientOffice.RemoveClientOfficeController import (
+    RemoveClientOfficeController,
+)
+from controller.ClientOffice.UpdateClientOfficeController import (
+    UpdateClientOfficeController,
+)
 from controller.Address.GetAllAddressController import GetAllAddressController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
 from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
@@ -12,6 +20,10 @@ from tkinter import ttk
 
 
 class ClientOffice(ctk.CTkFrame):
+    """
+    Vista de ClientOffice
+    """
+
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -21,6 +33,7 @@ class ClientOffice(ctk.CTkFrame):
         self.get_all_client_office_controller = GetAllClientOfficeController()
         self.get_all_address_controller = GetAllAddressController()
         self.find_address_by_id = FindAddressByIdController()
+        self.window_modal = None
         self.widgets()
         self.widget_header()
         self.widget_body()
@@ -37,11 +50,16 @@ class ClientOffice(ctk.CTkFrame):
         ]
 
     def widgets(self):
+        """
+        Crea los elementos de la vista
+        """
         self.screen = ctk.CTkFrame(self.parent, fg_color="transparent")
         self.screen.pack(expand=ctk.YES, fill=ctk.BOTH)
 
     def widget_header(self):
-        # container
+        """
+        Crea los elementos del encabezado
+        """
         self.header = ctk.CTkFrame(self.screen, fg_color="transparent")
         self.header.pack(side=ctk.TOP, fill=ctk.X, pady=10, padx=10)
 
@@ -66,12 +84,14 @@ class ClientOffice(ctk.CTkFrame):
             self.header,
             text="  Crear Sucursal",
             font=("Roboto", 12),
-            command=self.open_window_new_client,
+            command=self.open_window_new,
         )
         self.btn_create.pack(side=ctk.RIGHT, fill=ctk.X)
 
     def widget_body(self):
-        # container
+        """
+        Crea los elementos del cuerpo principal
+        """
         self.container = ctk.CTkScrollableFrame(self.screen, fg_color=COLOR_THREE)
         self.container.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10
@@ -133,7 +153,6 @@ class ClientOffice(ctk.CTkFrame):
         data = self.get_all_client_office_controller.find_all()
         if data:
             for i in range(len(data)):
-                type_client = self.__get_type_client(data[i].get("type"))
                 address = self.__get_name_address(data[i].get("address"))
                 self.table.insert(
                     parent="",
@@ -149,6 +168,9 @@ class ClientOffice(ctk.CTkFrame):
             self.table.bind("<Button-1>", self.on_row_click)
 
     def on_row_click(self, event):
+        """
+        Evento de click sobre una fila
+        """
         item = self.table.identify_row(event.y)
         if item:
             values = self.table.item(item, "values")
@@ -168,12 +190,15 @@ class ClientOffice(ctk.CTkFrame):
                     "update",
                     data,
                     self.remove_client_office_controller,
-                    height=500
+                    height=500,
                 )
                 self.window_modal.grab_set()
                 self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
 
-    def open_window_new_client(self):
+    def open_window_new(self):
+        """
+        Crea una nueva sucursal
+        """
         self.window_modal = WindowComponent(
             self.options,
             self.create_client_office_controller,
@@ -181,12 +206,15 @@ class ClientOffice(ctk.CTkFrame):
             "create",
             None,
             None,
-            height=450
+            height=450,
         )
         self.window_modal.grab_set()
         self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
 
     def refresh(self):
+        """
+        Refresca la tabla
+        """
         self.__clear_widgets(self.screen)
         self.__render_data()
 
@@ -195,6 +223,9 @@ class ClientOffice(ctk.CTkFrame):
             w.destroy()
 
     def close_window_modal(self):
+        """
+        Cierra la ventana Emergente
+        """
         self.__clear_widgets(self.screen)
         self.__render_data()
         self.window_modal.grab_release()
@@ -215,12 +246,3 @@ class ClientOffice(ctk.CTkFrame):
     def __get_name_address(self, id):
         address = self.find_address_by_id.find_by_id(id)
         return address.get("name")
-
-    def __get_type_client(self, type):
-        match type:
-            case "person":
-                return "Persona Natural"
-            case "company":
-                return "Persona Jurídica"
-            case "government":
-                return "Gubernamental"

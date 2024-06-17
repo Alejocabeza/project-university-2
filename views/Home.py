@@ -32,7 +32,7 @@ class Home(ctk.CTk):
         self.title("Grupo Imnova")
         self.resizable(False,False)
         # self.iconbitmap('../resources/logo.png')
-        w, h = 1024, 600
+        w, h = 1920, 1080
         window_center(self, w, h)
 
     def create_widgets(self):
@@ -98,27 +98,27 @@ class Home(ctk.CTk):
         """
         Crea los elementos de la barra lateral
         """
-        width = 200
+        width = 300
         height = 40
         font_awesome = ctk.CTkFont(family="FontAwesome", size=15)
 
         # Menu Buttons
-        self.buttonDashboard = ctk.CTkButton(self.widget_left)
-        self.buttonClients = ctk.CTkButton(self.widget_left)
+        self.buttonDashboard = ctk.CTkButton(self.widget_left, anchor="w")
+        self.buttonClients = ctk.CTkButton(self.widget_left, anchor="w")
+        self.buttonAddress = ctk.CTkButton(self.widget_left, anchor="w")
+        self.buttonUsers = ctk.CTkButton(self.widget_left, anchor="w")
+        self.buttonClientOffice = ctk.CTkButton(self.widget_left, anchor="w")
         # self.buttonProjects = ctk.CTkButton(self.widget_left)
         # self.buttonReports = ctk.CTkButton(self.widget_left)
-        self.buttonAddress = ctk.CTkButton(self.widget_left)
-        self.buttonUsers = ctk.CTkButton(self.widget_left)
-        self.buttonClientOffice = ctk.CTkButton(self.widget_left)
 
         buttons_info = [
             ("Dashboard", "", self.buttonDashboard, self.open_dashboard),
-            ("Clientes", "", self.buttonClients, self.open_clients),
+            ("Usuarios", "", self.buttonUsers, self.open_users),
+            ("Direcciones", "", self.buttonAddress, self.open_address),
             ("Sucursales de Clientes", "", self.buttonClientOffice, self.open_client_office),
+            ("Clientes", "", self.buttonClients, self.open_clients),
             # ("Proyectos", "", self.buttonProjects, self.open_projects),
             # ("Reportes", "", self.buttonReports, self.open_reports),
-            ("Direcciones", "", self.buttonAddress, self.open_address),
-            ("Usuarios", "", self.buttonUsers, self.open_users),
         ]
 
         for text, icon, button, command in buttons_info:
@@ -143,7 +143,6 @@ class Home(ctk.CTk):
     def logout(self):
         self.session_close_controller.close_session()
         self.destroy()
-        Login()
 
     def init_profile_widget(self):
         self.clear_widgets(self.widget_body)

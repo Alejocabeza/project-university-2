@@ -6,6 +6,12 @@ from controller.Clients.RemoveClientController import RemoveClientController
 from controller.Clients.UpdateClientController import UpdateClientController
 from controller.Address.GetAllAddressController import GetAllAddressController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
+from controller.ClientOffice.GetAllClientOfficeController import (
+    GetAllClientOfficeController,
+)
+from controller.ClientOffice.FindClientOfficeByIdController import (
+    FindClientOfficeByIdController,
+)
 from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
 from sections.WindowComponent import WindowComponent
 from tkinter import ttk
@@ -21,6 +27,8 @@ class Clients(ctk.CTkFrame):
         self.get_all_client_controller = GetAllClientController()
         self.get_all_address_controller = GetAllAddressController()
         self.find_address_by_id = FindAddressByIdController()
+        self.get_all_client_office_controller = GetAllClientOfficeController()
+        self.find_client_office_by_id = FindClientOfficeByIdController()
         self.widgets()
         self.widget_header()
         self.widget_body()
@@ -38,6 +46,12 @@ class Clients(ctk.CTkFrame):
                     "Persona Jurídica",
                     "Gubernamental",
                 ],
+            },
+            {
+                "name": "client_office",
+                "label": "Sucursal del Cliente",
+                "type": "combobox",
+                "options": self.__get_client_office_all(),
             },
             {
                 "name": "address",
@@ -124,6 +138,7 @@ class Clients(ctk.CTkFrame):
                 "phone",
                 "type",
                 "address",
+                "client_office",
             ),
             show="headings",
             height=500,
@@ -135,6 +150,7 @@ class Clients(ctk.CTkFrame):
         self.table.heading("phone", text="Telefono")
         self.table.heading("type", text="Tipo de Cliente")
         self.table.heading("address", text="Dirección")
+        self.table.heading("client_office", text="Sucursal del Cliente")
         self.table.pack(padx=10, expand=ctk.YES, fill=ctk.BOTH)
 
         # Configurar columnas y centrado de texto
@@ -145,6 +161,7 @@ class Clients(ctk.CTkFrame):
         self.table.column("phone", anchor="center")
         self.table.column("type", anchor="center")
         self.table.column("address", anchor="center")
+        self.table.column("client_office", anchor="center")
 
         # insert table
         data = self.get_all_client_controller.find_all()
@@ -152,6 +169,7 @@ class Clients(ctk.CTkFrame):
             for i in range(len(data)):
                 type_client = self.__get_type_client(data[i].get("type"))
                 address = self.__get_name_address(data[i].get("address"))
+                client_office = self.__get_name_client_office(data[i].get("client_office"))
                 self.table.insert(
                     parent="",
                     index=0,
@@ -163,6 +181,7 @@ class Clients(ctk.CTkFrame):
                         data[i].get("phone"),
                         type_client,
                         address,
+                        client_office,
                     ),
                 )
             self.table.bind("<Button-1>", self.on_row_click)
@@ -180,6 +199,7 @@ class Clients(ctk.CTkFrame):
                     "phone": values[4],
                     "type": values[5],
                     "address": values[6],
+                    "client_office": values[7],
                 }
                 self.window_modal = WindowComponent(
                     self.options,
@@ -188,6 +208,7 @@ class Clients(ctk.CTkFrame):
                     "update",
                     data,
                     self.remove_client_controller,
+                    height=700,
                 )
                 self.window_modal.grab_set()
                 self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
@@ -200,6 +221,7 @@ class Clients(ctk.CTkFrame):
             "create",
             None,
             None,
+            height=700,
         )
         self.window_modal.grab_set()
         self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
@@ -230,9 +252,25 @@ class Clients(ctk.CTkFrame):
                 data_to_return.append(address.get("name"))
         return data_to_return
 
+    def __get_client_office_all(self):
+        data_to_return = list()
+        data = self.get_all_client_office_controller.find_all()
+        if data:
+            for client_office in data:
+                data_to_return.append(client_office.get("name"))
+        return data_to_return
+
     def __get_name_address(self, id):
         address = self.find_address_by_id.find_by_id(id)
-        return address.get("name")
+        if address:
+            return address.get("name")
+        return "Sin Dirección"
+
+    def __get_name_client_office(self, id):
+        client_office = self.find_client_office_by_id.find_by_id(id)
+        if client_office:
+            return client_office.get("name")
+        return "Sin Sucursal"
 
     def __get_type_client(self, type):
         match type:

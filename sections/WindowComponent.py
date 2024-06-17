@@ -3,6 +3,9 @@ import customtkinter as ctk
 
 from lib.util_window import window_center
 from controller.Address.FindAddressByNameController import FindAddressByNameController
+from controller.ClientOffice.FindClientOfficeByNameController import (
+    FindClientOfficeByNameController,
+)
 
 
 class WindowComponent(ctk.CTkToplevel):
@@ -19,6 +22,7 @@ class WindowComponent(ctk.CTkToplevel):
     ):
         super().__init__()
         self.find_address_by_name = FindAddressByNameController()
+        self.find_client_office_by_name = FindClientOfficeByNameController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -204,6 +208,14 @@ class WindowComponent(ctk.CTkToplevel):
                                 widget.get()
                             )
                             data[name.lower()] = address.get("id")
+                    case "client_office":
+                        value = widget.get()
+                        print(value)
+                        if value:
+                            office = self.find_client_office_by_name.find_by_name(
+                                widget.get()
+                            )
+                            data[name.lower()] = office.get("id")
                     case "type":
                         type_option = widget.get()
                         if type_option == "Persona Natural":
@@ -225,6 +237,6 @@ class WindowComponent(ctk.CTkToplevel):
             return ""
 
     def get_combobox_value(self, name):
-        if self.type_action == 'update':
+        if self.type_action == "update":
             return self.values.get(name)
         return ""

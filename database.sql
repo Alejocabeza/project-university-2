@@ -1,4 +1,7 @@
-CREATE DATABASE IF NOT EXISTS `project_university` ;
+CREATE DATABASE IF NOT EXISTS `project_university`
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
 
 CREATE TABLE `project_university`.`user` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
@@ -41,6 +44,22 @@ CREATE TABLE `project_university`.`address` (
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
 
+CREATE TABLE `project_university`.`client_office` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(100) UNIQUE,
+  `email` VARCHAR(100) UNIQUE,
+  `phone` VARCHAR(40),
+  `address` INT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` TIMESTAMP NULL,
+  `created_by` INT,
+  `updated_by` INT,
+  FOREIGN KEY (`address`) REFERENCES `address` (`id`),
+  FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
+);
+
 CREATE TABLE `project_university`.`client` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(100),
@@ -49,12 +68,14 @@ CREATE TABLE `project_university`.`client` (
   `phone` VARCHAR(40),
   `type` ENUM('person', 'company', 'government') DEFAULT 'person',
   `address` INT,
+  `client_office` INT,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,
   `created_by` INT,
   `updated_by` INT,
   FOREIGN KEY (`address`) REFERENCES `address` (`id`),
+  FOREIGN KEY (`client_office`) REFERENCES `client_office` (`id`),
   FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
@@ -66,28 +87,14 @@ CREATE TABLE `project_university`.`branch` (
   `email` VARCHAR(100) UNIQUE,
   `phone` VARCHAR(40),
   `address` INT,
+  `client` INT,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,
   `created_by` INT,
   `updated_by` INT,
   FOREIGN KEY (`address`) REFERENCES `address` (`id`),
-  FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
-);
-
-CREATE TABLE `project_university`.`client_office` (
-  `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(100),
-  `email` VARCHAR(100) UNIQUE,
-  `phone` VARCHAR(40),
-  `address` INT,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` TIMESTAMP NULL,
-  `created_by` INT,
-  `updated_by` INT,
-  FOREIGN KEY (`address`) REFERENCES `address` (`id`),
+  FOREIGN KEY (`client`) REFERENCES `client` (`id`),
   FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
@@ -148,5 +155,5 @@ CREATE TABLE `project_university`.`tasks` (
 );
 
 
-INSERT INTO project_university.user (name, dni, role, email, password, avatar)
+INSERT INTO `project_university`.`user` (name, dni, role, email, password, avatar)
 VALUES ('Admin', '0011223344', 'admin', 'admin@gmail.com', '$2y$10$2iHXFO1BcJT9si.1laGbRObBaryVVrCza7sJsXLQaUT4.7aT5ewKS', NULL);

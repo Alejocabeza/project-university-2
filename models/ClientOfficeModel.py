@@ -1,5 +1,6 @@
 from models.BaseModel import BaseModel
 
+
 class ClientOfficeModel(BaseModel):
     def __init__(self):
         super().__init__("client_office")
@@ -36,3 +37,22 @@ class ClientOfficeModel(BaseModel):
         Busca todas las sucursales
         """
         return self._find_all()
+
+    def find_by_id(self, id):
+        """
+        Buscar una sucursal por su id
+
+        Args:
+            id (int): El identificador de la sucursal
+        """
+        return self._find_one_by({"id": id})
+
+
+    def find_by_name(self, name):
+        """
+        Buscar una sucursal por su nombre
+
+        Args:
+            name (str): Nombre de la sucursal
+        """
+        return self._find_one_by({"name": name})
