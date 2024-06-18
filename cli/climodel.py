@@ -7,6 +7,21 @@ from models.BaseModel import BaseModel
 class {name}Model(BaseModel):
     def __init__(self):
         super().__init__('{name_lower}')
+
+    def create_{name_lower}(self, data):
+        return self._save(data)
+
+    def update_{name_lower}(self, id, data):
+        return self._update(id, data)
+
+    def remove_{name_lower}(self, id):
+        return self._remove(id)
+
+    def {name_lower}_all(self):
+        return self._find_all()
+
+    def find_{name_lower}_by_id(self, id):
+        return self._find_one_by({{"id": id}})
 """
 
 

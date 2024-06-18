@@ -92,7 +92,7 @@ class ClientOffice(ctk.CTkFrame):
         """
         Crea los elementos del cuerpo principal
         """
-        self.container = ctk.CTkScrollableFrame(self.screen, fg_color=COLOR_THREE)
+        self.container = ctk.CTkScrollableFrame(self.screen, fg_color="transparent")
         self.container.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10
         )
@@ -133,7 +133,7 @@ class ClientOffice(ctk.CTkFrame):
                 "address",
             ),
             show="headings",
-            height=500,
+            height=35,
         )
         self.table.heading("id", text="ID")
         self.table.heading("name", text="Nombre")

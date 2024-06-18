@@ -1,36 +1,32 @@
 import customtkinter as ctk
-
-from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
-from controller.Auth.AuthRegisterController import AuthRegisterController
-from controller.User.FindAllUserController import FindAllUserController
-from controller.User.UpdateUserController import UpdateUserController
-from controller.User.RemoveUserController import RemoveUserController
-from sections.WindowComponent import WindowComponent
 from tkinter import ttk
 
+from controller.Employee.CreateEmployeeController import CreateEmployeeController
+from controller.Employee.GetAllEmployeeController import GetAllEmployeeController
+from controller.Employee.RemoveEmployeeController import RemoveEmployeeController
+from controller.Employee.UpdateEmployeeController import UpdateEmployeeController
+from sections.WindowComponent import WindowComponent
+from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
 
-class Users(ctk.CTkFrame):
+
+class Employee(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.auth_find_all_user = FindAllUserController()
-        self.auth_register_controller = AuthRegisterController()
-        self.update_user_controller = UpdateUserController()
-        self.remove_user_controller = RemoveUserController()
+        self.create_employee_controller = CreateEmployeeController()
+        self.update_employee_controller = UpdateEmployeeController()
+        self.remove_employee_controller = RemoveEmployeeController()
+        self.get_all_employee_controller = GetAllEmployeeController()
         self.widgets()
         self.widget_header()
         self.widget_body()
+        self.window_modal = None
         self.options = [
-            {"name": "name", "label": "Nombre", "type": "entry"},
+            {"name": "firstname", "label": "Nombre", "type": "entry"},
+            {"name": "lastname", "label": "Apellido", "type": "entry"},
+            {"name": "dni", "label": "Cédula/RIF", "type": "entry"},
             {"name": "email", "label": "Email", "type": "entry"},
-            {
-                "name": "role",
-                "label": "Rol",
-                "type": "combobox",
-                "options": ["Usuario", "Administrador"],
-            },
-            {"name": "dni", "label": "Cedula", "type": "entry"},
-            {"name": "password", "label": "Contraseña", "type": "entry"},
+            {"name": "phone", "label": "Teléfono", "type": "entry"},
         ]
 
     def widgets(self):
@@ -44,7 +40,7 @@ class Users(ctk.CTkFrame):
 
         self.title = ctk.CTkLabel(
             self.header,
-            text="Listado de Usuarios",
+            text="Operario",
             font=("Roboto", 25),
             anchor="w",
             text_color="black",
@@ -61,9 +57,9 @@ class Users(ctk.CTkFrame):
 
         self.btn_create = ctk.CTkButton(
             self.header,
-            text="  Crear nuevo usuario",
+            text="  Crear un operario",
             font=("Roboto", 12),
-            command=lambda: self.open_window_new_user(),
+            command=self.open_window_new_employee,
         )
         self.btn_create.pack(side=ctk.RIGHT, fill=ctk.X)
 
@@ -102,46 +98,51 @@ class Users(ctk.CTkFrame):
         self.table = ttk.Treeview(
             self.container,
             style="Custom.Treeview",
-            columns=("ID", "Nombre", "Cédula", "Rol", "Email"),
+            columns=("ID", "firstname", "lastname", "dni", "email", "phone"),
             show="headings",
             height=35,
         )
+
         self.table.heading("ID", text="ID")
-        self.table.heading("Nombre", text="Nombre")
-        self.table.heading("Cédula", text="Cédula")
-        self.table.heading("Rol", text="Rol")
-        self.table.heading("Email", text="Email")
-        self.table.pack(padx=10, fill=ctk.BOTH, expand=ctk.YES)
+        self.table.heading("firstname", text="Nombre")
+        self.table.heading("lastname", text="Apellido")
+        self.table.heading("dni", text="Cedula/RIF")
+        self.table.heading("email", text="Email")
+        self.table.heading("phone", text="Telefono")
+        self.table.pack(padx=10, fill=ctk.X, expand=ctk.YES)
 
         # Configurar columnas y centrado de texto
         self.table.column("ID", anchor="center")
-        self.table.column("Nombre", anchor="center")
-        self.table.column("Cédula", anchor="center")
-        self.table.column("Rol", anchor="center")
-        self.table.column("Email", anchor="center")
+        self.table.column("firstname", anchor="center")
+        self.table.column("lastname", anchor="center")
+        self.table.column("dni", anchor="center")
+        self.table.column("email", anchor="center")
+        self.table.column("phone", anchor="center")
 
         # insert table
-        users = self.auth_find_all_user.find_all()
-        for i in range(len(users)):
-            self.table.insert(
-                parent="",
-                index=0,
-                values=(
-                    users[i].get("id"),
-                    users[i].get("name"),
-                    users[i].get("dni"),
-                    users[i].get("role"),
-                    users[i].get("email"),
-                ),
-            )
+        data = self.get_all_employee_controller.find_all()
+        if data:
+            for item in data:
+                self.table.insert(
+                    parent="",
+                    index=0,
+                    values=(
+                        item.get("id"),
+                        item.get("firstname"),
+                        item.get("lastname"),
+                        item.get("dni"),
+                        item.get("email"),
+                        item.get("phone"),
+                    ),
+                )
 
         self.table.bind("<Button-1>", self.on_row_click)
 
-    def open_window_new_user(self):
+    def open_window_new_employee(self):
         self.window_modal = WindowComponent(
             self.options,
-            self.auth_register_controller,
-            "Crear un nuevo usuario",
+            self.create_employee_controller,
+            "Crear un nuevo Operario",
             "create",
             None,
             None,
@@ -156,18 +157,19 @@ class Users(ctk.CTkFrame):
             if values:
                 data = {
                     "id": values[0],
-                    "name": values[1],
-                    "dni": values[2],
-                    "role": values[3],
+                    "firstname": values[1],
+                    "lastname": values[2],
+                    "dni": values[3],
                     "email": values[4],
+                    "phone": values[5],
                 }
                 self.window_modal = WindowComponent(
                     self.options,
-                    self.update_user_controller,
-                    "Actualizar el usuario",
+                    self.update_employee_controller,
+                    "Actualizar Operario",
                     "update",
                     data,
-                    self.remove_user_controller,
+                    self.remove_employee_controller,
                 )
                 self.window_modal.grab_set()
                 self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)

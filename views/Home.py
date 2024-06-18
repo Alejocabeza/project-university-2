@@ -10,6 +10,7 @@ from views.Dashboard import Dashboard
 from views.Clients import Clients
 from views.Address import Address
 from views.ClientOffice import ClientOffice
+from views.Employee import Employee
 
 # from views.Projects import Projects
 # from views.Reports import Reports
@@ -30,7 +31,7 @@ class Home(ctk.CTk):
 
     def config_windows(self):
         self.title("Grupo Imnova")
-        self.resizable(False,False)
+        self.resizable(False, False)
         # self.iconbitmap('../resources/logo.png')
         w, h = 1920, 1080
         window_center(self, w, h)
@@ -108,6 +109,7 @@ class Home(ctk.CTk):
         self.buttonAddress = ctk.CTkButton(self.widget_left, anchor="w")
         self.buttonUsers = ctk.CTkButton(self.widget_left, anchor="w")
         self.buttonClientOffice = ctk.CTkButton(self.widget_left, anchor="w")
+        self.buttonEmployee = ctk.CTkButton(self.widget_left, anchor="w")
         # self.buttonProjects = ctk.CTkButton(self.widget_left)
         # self.buttonReports = ctk.CTkButton(self.widget_left)
 
@@ -115,8 +117,14 @@ class Home(ctk.CTk):
             ("Dashboard", "", self.buttonDashboard, self.open_dashboard),
             ("Usuarios", "", self.buttonUsers, self.open_users),
             ("Direcciones", "", self.buttonAddress, self.open_address),
-            ("Sucursales de Clientes", "", self.buttonClientOffice, self.open_client_office),
+            (
+                "Sucursales de Clientes",
+                "",
+                self.buttonClientOffice,
+                self.open_client_office,
+            ),
             ("Clientes", "", self.buttonClients, self.open_clients),
+            ("Empleados", "", self.buttonEmployee, self.open_employee),
             # ("Proyectos", "", self.buttonProjects, self.open_projects),
             # ("Reportes", "", self.buttonReports, self.open_reports),
         ]
@@ -167,6 +175,10 @@ class Home(ctk.CTk):
     def open_client_office(self):
         self.clear_widgets(self.widget_body)
         ClientOffice(self.widget_body)
+
+    def open_employee(self):
+        self.clear_widgets(self.widget_body)
+        Employee(self.widget_body)
 
     def clear_widgets(self, widget):
         for widget in widget.winfo_children():

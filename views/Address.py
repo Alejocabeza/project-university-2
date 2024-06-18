@@ -69,7 +69,7 @@ class Address(ctk.CTkFrame):
 
     def widget_body(self):
         # container
-        self.container = ctk.CTkScrollableFrame(self.screen, fg_color=COLOR_THREE)
+        self.container = ctk.CTkScrollableFrame(self.screen, fg_color="transparent")
         self.container.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10
         )
@@ -108,6 +108,7 @@ class Address(ctk.CTkFrame):
                 "Dirección Principal"
             ),
             show="headings",
+            height=35
         )
         self.table.heading("ID", text="ID")
         self.table.heading("Nombre", text="Nombre")

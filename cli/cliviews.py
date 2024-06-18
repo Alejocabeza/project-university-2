@@ -9,13 +9,13 @@ from controller.{name}.Create{name}Controller import Create{name}Controller
 from controller.{name}.GetAll{name}Controller import GetAll{name}Controller
 from controller.{name}.Remove{name}Controller import Remove{name}Controller
 from controller.{name}.Update{name}Controller import Update{name}Controller
+from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
 from sections.WindowComponent import WindowComponent
 
 class {name}(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.options = []
         self.create_{name_lower}_controller = Create{name}Controller()
         self.update_{name_lower}_controller = Update{name}Controller()
         self.remove_{name_lower}_controller = Remove{name}Controller()
@@ -23,6 +23,8 @@ class {name}(ctk.CTkFrame):
         self.widgets()
         self.widget_header()
         self.widget_body()
+        self.window_modal = None
+        self.options = {options}
 
     def widgets(self):
         self.screen = ctk.CTkFrame(self.parent, fg_color="transparent")
@@ -68,23 +70,23 @@ class {name}(ctk.CTkFrame):
         style = ttk.Style()
         style.configure(
             "Custom.Treeview",
-            background="white",
+            background=COLOR_THREE,
             foreground="black",
             rowheight=25,
-            fieldbackground="white",
+            fieldbackground=COLOR_THREE,
             borderwidth=0,
         )
         style.configure(
             "Custom.Treeview.Heading",
-            background="blue",
+            background=COLOR_BLUE_PRIMARY,
             foreground="black",
             font=("Roboto", 12, "bold"),
         )
         style.map(
             "Custom.Treeview.Heading",
             background=[
-                ("active", "lightblue"),
-                ("!active", "blue"),
+                ("active", COLOR_BLUE_SECONDARY),
+                ("!active", COLOR_BLUE_PRIMARY),
             ],
             foreground=[("active", "white"), ("!active", "white")],
         )
@@ -95,7 +97,7 @@ class {name}(ctk.CTkFrame):
             style="Custom.Treeview",
             columns=("ID"),
             show="headings",
-            height=300,
+            height=35
         )
         self.table.heading("ID", text="ID")
         self.table.pack(padx=10, fill=ctk.BOTH, expand=ctk.YES)
@@ -105,14 +107,15 @@ class {name}(ctk.CTkFrame):
 
         # insert table
         data = self.get_all_{name_lower}_controller.find_all()
-        for item in data:
-            self.table.insert(
-                parent="",
-                index=0,
-                values=(
-                    item.get("id"),
-                ),
-            )
+        if data:
+            for item in data:
+                self.table.insert(
+                    parent="",
+                    index=0,
+                    values=(
+                        item.get("id"),
+                    ),
+                )
 
         self.table.bind("<Button-1>", self.on_row_click)
 
@@ -175,11 +178,10 @@ def create_file(content, path):
 
 
 # Crear un nuevo controlador
-def create_view(name):
+def create_view(name, options):
     view_name = name.capitalize()
     view_content = view_template.format(
-        name=view_name,
-        name_lower=name.lower(),
+        name=view_name, name_lower=name.lower(), options=options
     )
     view_path = os.path.join("views", f"{view_name}.py")
     create_file(view_content, view_path)

@@ -1,0 +1,15 @@
+from controller.Controller import Controller
+from models.EmployeeModel import EmployeeModel
+
+
+class GetAllEmployeeController(Controller):
+    def __init__(self):
+        super().__init__()
+        self.employee_repository = EmployeeModel()
+
+    def find_all(self):
+        try:
+            return self.employee_repository.employee_all()
+        except Exception as e:
+            print(f"Error al optener todos los empleados: {e}")
+            return None

@@ -97,7 +97,7 @@ class Clients(ctk.CTkFrame):
 
     def widget_body(self):
         # container
-        self.container = ctk.CTkScrollableFrame(self.screen, fg_color=COLOR_THREE)
+        self.container = ctk.CTkScrollableFrame(self.screen, fg_color="transparent")
         self.container.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10
         )
@@ -141,7 +141,7 @@ class Clients(ctk.CTkFrame):
                 "client_office",
             ),
             show="headings",
-            height=500,
+            height=35,
         )
         self.table.heading("id", text="ID")
         self.table.heading("name", text="Nombre")
@@ -166,25 +166,26 @@ class Clients(ctk.CTkFrame):
         # insert table
         data = self.get_all_client_controller.find_all()
         if data:
-            for i in range(len(data)):
-                type_client = self.__get_type_client(data[i].get("type"))
-                address = self.__get_name_address(data[i].get("address"))
-                client_office = self.__get_name_client_office(data[i].get("client_office"))
+            for item in data:
+                type_client = self.__get_type_client(item.get("type"))
+                address = self.__get_name_address(item.get("address"))
+                client_office = self.__get_name_client_office(item.get("client_office"))
                 self.table.insert(
                     parent="",
                     index=0,
                     values=(
-                        data[i].get("id"),
-                        data[i].get("name"),
-                        data[i].get("dni"),
-                        data[i].get("email"),
-                        data[i].get("phone"),
+                        item.get("id"),
+                        item.get("name"),
+                        item.get("dni"),
+                        item.get("email"),
+                        item.get("phone"),
                         type_client,
                         address,
                         client_office,
                     ),
                 )
-            self.table.bind("<Button-1>", self.on_row_click)
+
+        self.table.bind("<Button-1>", self.on_row_click)
 
     def on_row_click(self, event):
         item = self.table.identify_row(event.y)
