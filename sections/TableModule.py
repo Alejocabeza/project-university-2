@@ -4,6 +4,10 @@ import customtkinter as ctk
 
 from config import COLOR_THREE, COLOR_TWO
 from sections.WindowComponent import WindowComponent
+from controller.Clients.FindClientByIdController import FindClientByIdController
+from controller.Address.FindAddressByIdController import FindAddressByIdController
+from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
+from controller.ClientOffice.FindClientOfficeByIdController import FindClientOfficeByIdController
 
 
 class TableModule(ctk.CTkFrame):
@@ -21,6 +25,10 @@ class TableModule(ctk.CTkFrame):
     ):
         super().__init__(parent)
         self.parent = parent
+        self.find_client_by_id = FindClientByIdController()
+        self.find_address_by_id= FindAddressByIdController()
+        self.find_employee_by_id= FindEmployeeByIdController()
+        self.find_client_office_by_id= FindClientOfficeByIdController()
         self.headers = headers
         self.data = data
         self.function_find = function_find
@@ -77,7 +85,7 @@ class TableModule(ctk.CTkFrame):
 
         if self.data:
             for i in range(len(self.data)):
-                values = tuple(self.data[i].get(key) for key in self.headers.keys())
+                values = tuple(self.__get_values_relation(key, self.data[i].get(key)) for key in self.headers.keys())
                 self.table.insert(
                     parent="",
                     index=0,
@@ -108,3 +116,40 @@ class TableModule(ctk.CTkFrame):
     def __close_modal(self):
         self.modal.grab_release()
         self.modal.destroy()
+
+    def __get_values_relation(self, key, value):
+        match key:
+            case 'type':
+                match value:
+                    case "person":
+                        return "Persona Natural"
+                    case "company":
+                        return "Persona Jurídica"
+                    case "government":
+                        return "Gubernamental"
+            case "client":
+                if value:
+                    client = self.find_client_by_id.find_by_id(value)
+                    return client.get('name')
+                else:
+                    return 'Sin Cliente'
+            case "address":
+                if value:
+                    address = self.find_address_by_id.find_by_id(value)
+                    return address.get('name')
+                else:
+                    return 'Sin Dirección'
+            case "foreman":
+                if value:
+                    employee = self.find_employee_by_id.find_by_id(value)
+                    return employee.get('fullname')
+                else:
+                    return 'Sin Maestro de Obra'
+            case "client_office":
+                if value:
+                    client_office = self.find_client_office_by_id.find_by_id(value)
+                    return client_office.get('name')
+                else:
+                    return 'Sin Sucursal'
+            case _:
+                return value

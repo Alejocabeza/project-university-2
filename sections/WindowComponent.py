@@ -4,11 +4,14 @@ import customtkinter as ctk
 from tkcalendar import DateEntry
 
 from lib.util_window import window_center
+from controller.Clients.FindClientByIdController import FindClientByIdController
+from controller.Address.FindAddressByIdController import FindAddressByIdController
 from controller.Clients.FindClientByNameController import FindClientByNameController
+from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
 from controller.Address.FindAddressByNameController import FindAddressByNameController
+from controller.ClientOffice.FindClientOfficeByIdController import FindClientOfficeByIdController
 from controller.Employee.FindEmployeeByFullNameController import FindEmployeeByFullNameController
 from controller.ClientOffice.FindClientOfficeByNameController import FindClientOfficeByNameController
-
 
 class WindowComponent(ctk.CTkToplevel):
     def __init__(
@@ -27,6 +30,10 @@ class WindowComponent(ctk.CTkToplevel):
         self.find_address_by_name = FindAddressByNameController()
         self.find_employee_by_fullname = FindEmployeeByFullNameController()
         self.find_client_office_by_name = FindClientOfficeByNameController()
+        self.find_client_by_id = FindClientByIdController()
+        self.find_address_by_id= FindAddressByIdController()
+        self.find_employee_by_id= FindEmployeeByIdController()
+        self.find_client_office_by_id= FindClientOfficeByIdController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -113,6 +120,8 @@ class WindowComponent(ctk.CTkToplevel):
                         date_pattern="yyyy-mm-dd",
                     )
                     self.calender.pack(expand=ctk.NO, fill=ctk.X)
+                    if self.type_action == 'update':
+                        self.calender.set_date(self.values.get(field["name"]))
                     self.inputs[field["name"]] = self.calender
                 case "combobox":
                     self.combobox = ctk.CTkComboBox(
@@ -282,5 +291,33 @@ class WindowComponent(ctk.CTkToplevel):
 
     def get_combobox_value(self, name):
         if self.type_action == "update":
-            return self.values.get(name)
+            match name:
+                case 'type':
+                    if self.values.get(name) and self.values.get(name) != "Sin Tipo":
+                        match self.values.get(name):
+                            case "person":
+                                return "Persona Natural"
+                            case "company":
+                                return "Persona Jurídica"
+                            case "government":
+                                return "Gubernamental"
+                    return "Sin Tipo"
+                case "address":
+                    if self.values.get(name) and self.values.get(name) != "Sin Dirección":
+                        return self.find_address_by_id.find_by_id(self.values.get(name)).get('name')
+                    return "Sin Dirección"
+                case "foreman":
+                    if self.values.get(name) and self.values.get(name) != "Sin Operador":
+                        return self.find_employee_by_id.find_by_id(self.values.get(name)).get("fullname")
+                    return "Sin Maestro de Obra"
+                case "client_office":
+                    if self.values.get(name) and self.values.get(name) != "Sin Sucursal":
+                        return self.find_client_office_by_id.find_by_id(self.values.get(name)).get('name')
+                    return "Sin Sucursal"
+                case "client":
+                    if self.values.get(name) and self.values.get(name) != "Sin Cliente":
+                        return self.find_client_by_id.find_by_id(self.values.get(name)).get('name')
+                    return "Sin Cliente"
+                case _:
+                    return self.values.get(name)
         return ""

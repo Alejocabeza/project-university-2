@@ -124,24 +124,3 @@ class Clients(ctk.CTkFrame):
         else:
             data_to_return.append("Sin Sucursal")
         return data_to_return
-
-    def __get_name_address(self, id):
-        address = self.find_address_by_id.find_by_id(id)
-        if address:
-            return address.get("name")
-        return "Sin Dirección"
-
-    def __get_name_client_office(self, id):
-        client_office = self.find_client_office_by_id.find_by_id(id)
-        if client_office:
-            return client_office.get("name")
-        return "Sin Sucursal"
-
-    def __get_type_client(self, type):
-        match type:
-            case "person":
-                return "Persona Natural"
-            case "company":
-                return "Persona Jurídica"
-            case "government":
-                return "Gubernamental"
