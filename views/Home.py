@@ -1,24 +1,19 @@
 import fontawesome as fa
 import customtkinter as ctk
 
-from controller.Auth.AuthCloseSessionController import AuthCloseSessionController
-from controller.User.GetUserController import GetUserController
-from lib.util_window import window_center
-from lib.navigation import NAVIGATION
-from config import COLOR_ONE, COLOR_TWO
-from views.Profile import Profile
-from views.Dashboard import Dashboard
-from views.Clients import Clients
-from views.Address import Address
-from views.ClientOffice import ClientOffice
-from views.Employee import Employee
-from views.Project import Project
-
-# icons imports
-
-# from views.Projects import Projects
-# from views.Reports import Reports
 from views.Users import Users
+from views.Address import Address
+from views.Clients import Clients
+from views.Profile import Profile
+from views.Project import Project
+from views.Employee import Employee
+from lib.navigation import NAVIGATION
+from views.Dashboard import Dashboard
+from config import COLOR_ONE, COLOR_TWO
+from lib.util_window import window_center
+from views.ClientOffice import ClientOffice
+from controller.User.GetUserController import GetUserController
+from controller.Auth.AuthCloseSessionController import AuthCloseSessionController
 
 
 class Home(ctk.CTk):

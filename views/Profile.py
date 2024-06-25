@@ -1,10 +1,6 @@
 import re
 import customtkinter as ctk
 
-from controller.Auth.AuthUpdateController import AuthUpdateController
-from controller.User.GetUserController import GetUserController
-from controller.Auth.AuthNewPasswordController import AuthNewPasswordController
-from controller.Auth.AuthRemoveAccountController import AuthRemoveAccountController
 from config import (
     COLOR_THREE,
     COLOR_FOR,
@@ -13,6 +9,10 @@ from config import (
     COLOR_BLUE_PRIMARY,
     COLOR_BLUE_SECONDARY,
 )
+from controller.User.GetUserController import GetUserController
+from controller.Auth.AuthUpdateController import AuthUpdateController
+from controller.Auth.AuthNewPasswordController import AuthNewPasswordController
+from controller.Auth.AuthRemoveAccountController import AuthRemoveAccountController
 
 
 class Profile(ctk.CTkFrame):

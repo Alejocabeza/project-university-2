@@ -1,12 +1,12 @@
 import customtkinter as ctk
 
+from sections.TableModule import TableModule
+from sections.HeaderModule import HeaderModule
 from controller.Employee.CreateEmployeeController import CreateEmployeeController
 from controller.Employee.GetAllEmployeeController import GetAllEmployeeController
 from controller.Employee.RemoveEmployeeController import RemoveEmployeeController
 from controller.Employee.UpdateEmployeeController import UpdateEmployeeController
 from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
-from sections.TableModule import TableModule
-from sections.HeaderModule import HeaderModule
 
 
 class Employee(ctk.CTkFrame):

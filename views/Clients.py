@@ -1,20 +1,16 @@
 import customtkinter as ctk
 
+from sections.TableModule import TableModule
+from sections.HeaderModule import HeaderModule
 from controller.Clients.CreateClientController import CreateClientController
 from controller.Clients.GetAllClientController import GetAllClientController
 from controller.Clients.RemoveClientController import RemoveClientController
 from controller.Clients.UpdateClientController import UpdateClientController
-from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.GetAllAddressController import GetAllAddressController
+from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
-from controller.ClientOffice.GetAllClientOfficeController import (
-    GetAllClientOfficeController,
-)
-from controller.ClientOffice.FindClientOfficeByIdController import (
-    FindClientOfficeByIdController,
-)
-from sections.HeaderModule import HeaderModule
-from sections.TableModule import TableModule
+from controller.ClientOffice.GetAllClientOfficeController import GetAllClientOfficeController
+from controller.ClientOffice.FindClientOfficeByIdController import FindClientOfficeByIdController
 
 
 class Clients(ctk.CTkFrame):

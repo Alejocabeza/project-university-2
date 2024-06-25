@@ -1,13 +1,17 @@
 import re
+from tkinter import ttk
 import customtkinter as ctk
 from tkcalendar import DateEntry
-from tkinter import ttk
 
 from lib.util_window import window_center
-from controller.Clients.FindClientByIdController import FindClientByIdController
+from controller.Clients.FindClientByNameController import FindClientByNameController
 from controller.Address.FindAddressByNameController import FindAddressByNameController
-from controller.Employee.FindEmployeeByFullNameController import FindEmployeeByFullNameController
-from controller.ClientOffice.FindClientOfficeByNameController import FindClientOfficeByNameController
+from controller.Employee.FindEmployeeByFullNameController import (
+    FindEmployeeByFullNameController,
+)
+from controller.ClientOffice.FindClientOfficeByNameController import (
+    FindClientOfficeByNameController,
+)
 
 
 class WindowComponent(ctk.CTkToplevel):
@@ -23,9 +27,10 @@ class WindowComponent(ctk.CTkToplevel):
         height=600,
     ):
         super().__init__()
+        self.find_client_by_name = FindClientByNameController()
         self.find_address_by_name = FindAddressByNameController()
-        self.find_client_office_by_name = FindClientOfficeByNameController()
         self.find_employee_by_fullname = FindEmployeeByFullNameController()
+        self.find_client_office_by_name = FindClientOfficeByNameController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -226,24 +231,28 @@ class WindowComponent(ctk.CTkToplevel):
                     case "address":
                         value = widget.get()
                         if value:
-                            address = self.find_address_by_name.find_by_name(
-                                widget.get()
-                            )
-                            data[name.lower()] = address.get("id")
+                            if value != "Sin dirección" or value != "":
+                                address = self.find_address_by_name.find_by_name(value)
+                                data[name.lower()] = address.get("id")
                     case "foreman":
                         value = widget.get()
-                        if value:
+                        if value and (value != "Sin Operador" or value != ""):
                             foreman = self.find_employee_by_fullname.find_by_fullname(
-                                widget.get()
+                                value
                             )
                             data[name.lower()] = foreman.get("id")
                     case "client_office":
                         value = widget.get()
-                        if value:
+                        if value and (value != "Sin Sucursal" or value != ""):
                             office = self.find_client_office_by_name.find_by_name(
                                 widget.get()
                             )
                             data[name.lower()] = office.get("id")
+                    case "client":
+                        value = widget.get()
+                        if value and (value != "Sin Cliente" or value != ""):
+                            client = self.find_client_by_name.find_by_name(value)
+                            data[name.lower()] = client.get("id")
                     case "type":
                         type_option = widget.get()
                         if type_option == "Persona Natural":
@@ -254,10 +263,11 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = "government"
                     case _:
                         data[name.lower()] = widget.get()
-            elif isinstance(widget, ctk.CTkCheckBox):
-                text = widget.get()
-                if text:
-                    data[name.lower()] = text
+            elif isinstance(widget, ctk.CTkTextbox):
+                print(widget.get("0.0", "end"))
+                # text = widget.get()
+                # if text and text != "":
+                #     data[name.lower()] = text
             elif isinstance(widget, DateEntry):
                 date = widget.get_date()
                 if date:

@@ -1,6 +1,6 @@
+from tkinter import ttk
 import fontawesome as fa
 import customtkinter as ctk
-from tkinter import ttk
 
 from config import COLOR_THREE, COLOR_TWO
 from sections.WindowComponent import WindowComponent

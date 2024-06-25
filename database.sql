@@ -154,6 +154,5 @@ CREATE TABLE `project_university`.`tasks` (
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
 
-
 INSERT INTO `project_university`.`user` (name, dni, role, email, password, avatar)
 VALUES ('Admin', '0011223344', 'admin', 'admin@gmail.com', '$2y$10$2iHXFO1BcJT9si.1laGbRObBaryVVrCza7sJsXLQaUT4.7aT5ewKS', NULL);

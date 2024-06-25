@@ -1,6 +1,5 @@
 from models.BaseModel import BaseModel
 
-
 class AddressModel(BaseModel):
     """
     Clase para las direcciones

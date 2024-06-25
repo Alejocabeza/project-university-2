@@ -1,24 +1,14 @@
 import customtkinter as ctk
 
-from controller.ClientOffice.CreateClientOfficeController import (
-    CreateClientOfficeController,
-)
-from controller.ClientOffice.GetAllClientOfficeController import (
-    GetAllClientOfficeController,
-)
-from controller.ClientOffice.RemoveClientOfficeController import (
-    RemoveClientOfficeController,
-)
-from controller.ClientOffice.UpdateClientOfficeController import (
-    UpdateClientOfficeController,
-)
-from controller.ClientOffice.FindClientOfficeByIdController import (
-    FindClientOfficeByIdController,
-)
-from controller.Address.GetAllAddressController import GetAllAddressController
-from controller.Address.FindAddressByIdController import FindAddressByIdController
 from sections.TableModule import TableModule
 from sections.HeaderModule import HeaderModule
+from controller.Address.GetAllAddressController import GetAllAddressController
+from controller.Address.FindAddressByIdController import FindAddressByIdController
+from controller.ClientOffice.CreateClientOfficeController import CreateClientOfficeController
+from controller.ClientOffice.GetAllClientOfficeController import GetAllClientOfficeController
+from controller.ClientOffice.RemoveClientOfficeController import RemoveClientOfficeController
+from controller.ClientOffice.UpdateClientOfficeController import UpdateClientOfficeController
+from controller.ClientOffice.FindClientOfficeByIdController import FindClientOfficeByIdController
 
 
 class ClientOffice(ctk.CTkFrame):

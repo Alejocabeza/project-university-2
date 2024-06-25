@@ -1,19 +1,19 @@
 import customtkinter as ctk
 from tkinter import ttk
 
+from sections.TableModule import TableModule
+from sections.HeaderModule import HeaderModule
+from controller.Clients.GetAllClientController import GetAllClientController
 from controller.Project.CreateProjectController import CreateProjectController
 from controller.Project.GetAllProjectController import GetAllProjectController
 from controller.Project.RemoveProjectController import RemoveProjectController
 from controller.Project.UpdateProjectController import UpdateProjectController
-from controller.Project.FindProjectByIdController import FindProjectByIdController
 from controller.Address.GetAllAddressController import GetAllAddressController
-from controller.Address.FindAddressByIdController import FindAddressByIdController
-from controller.Employee.GetAllEmployeeController import GetAllEmployeeController
-from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
-from controller.Clients.GetAllClientController import GetAllClientController
 from controller.Clients.FindClientByIdController import FindClientByIdController
-from sections.TableModule import TableModule
-from sections.HeaderModule import HeaderModule
+from controller.Employee.GetAllEmployeeController import GetAllEmployeeController
+from controller.Project.FindProjectByIdController import FindProjectByIdController
+from controller.Address.FindAddressByIdController import FindAddressByIdController
+from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
 
 
 class Project(ctk.CTkFrame):

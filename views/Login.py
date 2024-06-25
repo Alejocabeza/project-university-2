@@ -1,11 +1,11 @@
 import re
 import customtkinter as ctk
 
-from controller.Auth.AuthLoginController import AuthLoginController
-from controller.Auth.AuthCreateSessionController import AuthCreateSessionController
-from lib.util_window import window_center
 from views.Home import Home
 from config import COLOR_ONE, COLOR_TWO
+from lib.util_window import window_center
+from controller.Auth.AuthLoginController import AuthLoginController
+from controller.Auth.AuthCreateSessionController import AuthCreateSessionController
 
 
 class Login(ctk.CTk):

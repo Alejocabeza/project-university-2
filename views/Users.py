@@ -1,13 +1,12 @@
 import customtkinter as ctk
 
-from controller.Auth.AuthRegisterController import AuthRegisterController
-from controller.User.FindAllUserController import FindAllUserController
-from controller.User.UpdateUserController import UpdateUserController
-from controller.User.RemoveUserController import RemoveUserController
-from controller.User.FindUserByIdController import FindUserByIdController
 from sections.TableModule import TableModule
 from sections.HeaderModule import HeaderModule
-
+from controller.User.UpdateUserController import UpdateUserController
+from controller.User.RemoveUserController import RemoveUserController
+from controller.User.FindAllUserController import FindAllUserController
+from controller.Auth.AuthRegisterController import AuthRegisterController
+from controller.User.FindUserByIdController import FindUserByIdController
 
 class Users(ctk.CTkFrame):
     def __init__(self, parent):
