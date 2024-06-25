@@ -17,5 +17,5 @@ class GetAllAddressController(Controller):
         try:
             return self.address_model.find_all_address()
         except Exception as ex:
-            print(f"Error al optener todas las direcciones: {ex}")
+            print(f"Error al obtener todas las direcciones: {ex}")
             return None

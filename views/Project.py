@@ -72,6 +72,7 @@ class Project(ctk.CTkFrame):
             self.refresh,
             self.options,
             self.create_project_controller,
+            height=750,
         )
 
     def widget_body(self):
@@ -94,6 +95,7 @@ class Project(ctk.CTkFrame):
             self.options,
             self.update_project_controller,
             self.remove_project_controller,
+            height=750,
         )
 
     def refresh(self):
@@ -139,7 +141,7 @@ class Project(ctk.CTkFrame):
             for client in data:
                 data_to_return.append(client.get("name"))
         else:
-            data_to_return.append("Sin cliente")
+            data_to_return.append("Sin Cliente")
         return data_to_return
 
     def __get_address_name(self, id):

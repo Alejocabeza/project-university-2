@@ -55,7 +55,7 @@ def command(type):
                 input("Path of the Controller(default: 'controller'): ") or "controller"
             )
             name_spanish = input("Name of the Resource in Spanish: ")
-            controllers = ["Create", "GetAll", "Remove", "Update"]
+            controllers = ["Create", "GetAll", "FindById" "Remove", "Update"]
             create_model(name_res)
             click.echo("Model Created")
             for controller in controllers:
@@ -91,6 +91,14 @@ def command(type):
                             path=path,
                             model=name_res.capitalize(),
                             type="update",
+                        )
+                        click.echo(f"Controller {controller_name} created")
+                    case "FindById":
+                        create_controller(
+                            name=controller_name,
+                            path=path,
+                            model=name_res.capitalize(),
+                            type="find_by_id",
                         )
                         click.echo(f"Controller {controller_name} created")
             options = []

@@ -31,3 +31,6 @@ class ClientModel(BaseModel):
 
     def find_by_id(self, id):
         return self._find_one_by({"id": id})
+
+    def find_by_name(self, name):
+        return self._find_one_by({'name': name})

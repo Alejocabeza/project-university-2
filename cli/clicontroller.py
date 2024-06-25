@@ -12,7 +12,7 @@ class {name}Controller(Controller):
     def create(self, data):
         try:
             data['created_at'] = self._current_time()
-            self.{model_lower}_repository.create(data)
+            return self.{model_lower}_repository.create(data)
         except Exception as ex:
             print(f"Error new {model_lower}: {{ex}}")
             return None
@@ -27,10 +27,10 @@ class {name}Controller(Controller):
         super().__init__()
         self.{model_lower}_repository = {model}Model()
 
-    def create(self, id, data):
+    def update(self, id, data):
         try:
             data['updated_at'] = self._current_time()
-            self.{model_lower}_repository.update(id, data)
+            return self.{model_lower}_repository.update(id, data)
         except Exception as ex:
             print(f"Error update {name}: {{ex}}")
             return None
@@ -45,9 +45,9 @@ class {name}Controller(Controller):
         super().__init__()
         self.{model_lower}_repository = {model}Model()
 
-    def create(self, id):
+    def remove(self, id):
         try:
-            self.{model_lower}_repository.update(id, {'deleted_at': self._current_time()})
+            return self.{model_lower}_repository.update(id, {'deleted_at': self._current_time()})
         except Exception as ex:
             print(f"Error remove {name}: {{ex}}")
             return None
@@ -64,9 +64,26 @@ class {name}Controller(Controller):
 
     def find_all(self):
         try:
-            self.{model_lower}_repository.find_all()
+            return self.{model_lower}_repository.find_all()
         except Exception as ex:
             print(f"Error finder all {name}: {{ex}}")
+            return None
+"""
+
+controller_find_by_id_template = """
+from controller.Controller import Controller
+from models.{model}Model import {model}Model
+
+class {name}Controller(Controller):
+    def __init__(self):
+        super().__init__()
+        slef.{model_lower}_repository = {model}Model()
+
+    def find_by_id(self, id):
+        try:
+            return self.{model_lower}_repository.find_by_id(id)
+        except Exception as ex:
+            print(f"Cannot find {name} by id: {{ex}}")
             return None
 """
 
@@ -115,6 +132,13 @@ def create_controller(name, path, model, type="default"):
             )
         case "find_all":
             controller_content = controller_find_all_template.format(
+                name=controller_name,
+                name_lower=name.lower(),
+                model=model,
+                model_lower=model.lower(),
+            )
+        case "find_by_id":
+            controller_content = controller_find_by_id_template.format(
                 name=controller_name,
                 name_lower=name.lower(),
                 model=model,

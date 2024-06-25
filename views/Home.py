@@ -190,7 +190,7 @@ class Home(ctk.CTk):
 
     def config_btn_menu(self, button, text, font_awesome, width, height, command):
         button.configure(
-            text=f"{text}   ",
+            text=f" {text}   ",
             font=font_awesome,
             width=width,
             height=height,

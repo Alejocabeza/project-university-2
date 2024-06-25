@@ -6,12 +6,8 @@ from tkcalendar import DateEntry
 from lib.util_window import window_center
 from controller.Clients.FindClientByNameController import FindClientByNameController
 from controller.Address.FindAddressByNameController import FindAddressByNameController
-from controller.Employee.FindEmployeeByFullNameController import (
-    FindEmployeeByFullNameController,
-)
-from controller.ClientOffice.FindClientOfficeByNameController import (
-    FindClientOfficeByNameController,
-)
+from controller.Employee.FindEmployeeByFullNameController import FindEmployeeByFullNameController
+from controller.ClientOffice.FindClientOfficeByNameController import FindClientOfficeByNameController
 
 
 class WindowComponent(ctk.CTkToplevel):
@@ -108,6 +104,7 @@ class WindowComponent(ctk.CTkToplevel):
                         border_width=2,
                     )
                     self.textarea.pack(expand=ctk.NO, fill=ctk.X)
+                    self.inputs[field["name"]] = self.textarea
                 case "dateentry":
                     self.calender = DateEntry(
                         self.input_container,
@@ -116,6 +113,7 @@ class WindowComponent(ctk.CTkToplevel):
                         date_pattern="yyyy-mm-dd",
                     )
                     self.calender.pack(expand=ctk.NO, fill=ctk.X)
+                    self.inputs[field["name"]] = self.calender
                 case "combobox":
                     self.combobox = ctk.CTkComboBox(
                         self.input_container,
@@ -150,13 +148,12 @@ class WindowComponent(ctk.CTkToplevel):
     def on_submit(self):
         try:
             res = False
-            print(self.__get_input_data())
-            # if self.type_action == "update":
-            #     res = self.controller.update(
-            #         self.values.get("id"), self.__get_input_data()
-            #     )
-            # else:
-            #     res = self.controller.create(self.__get_input_data())
+            if self.type_action == "update":
+                res = self.controller.update(
+                    self.values.get("id"), self.__get_input_data()
+                )
+            else:
+                res = self.controller.create(self.__get_input_data())
 
             if res:
                 self.destroy()
@@ -230,27 +227,29 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = "user"
                     case "address":
                         value = widget.get()
-                        if value:
-                            if value != "Sin dirección" or value != "":
-                                address = self.find_address_by_name.find_by_name(value)
-                                data[name.lower()] = address.get("id")
+                        print('address: %s' % value)
+                        if value and value != "Sin Dirección":
+                            address = self.find_address_by_name.find_by_name(value)
+                            data[name.lower()] = address.get("id")
                     case "foreman":
                         value = widget.get()
-                        if value and (value != "Sin Operador" or value != ""):
+                        print('foreman: %s' % value)
+                        if value and value != "Sin Operador":
                             foreman = self.find_employee_by_fullname.find_by_fullname(
                                 value
                             )
                             data[name.lower()] = foreman.get("id")
                     case "client_office":
                         value = widget.get()
-                        if value and (value != "Sin Sucursal" or value != ""):
+                        if value and value != "Sin Sucursal":
                             office = self.find_client_office_by_name.find_by_name(
                                 widget.get()
                             )
                             data[name.lower()] = office.get("id")
                     case "client":
                         value = widget.get()
-                        if value and (value != "Sin Cliente" or value != ""):
+                        print('client: %s' % value)
+                        if value and value != "Sin Cliente":
                             client = self.find_client_by_name.find_by_name(value)
                             data[name.lower()] = client.get("id")
                     case "type":
@@ -264,14 +263,13 @@ class WindowComponent(ctk.CTkToplevel):
                     case _:
                         data[name.lower()] = widget.get()
             elif isinstance(widget, ctk.CTkTextbox):
-                print(widget.get("0.0", "end"))
-                # text = widget.get()
-                # if text and text != "":
-                #     data[name.lower()] = text
+                text = widget.get("0.0", "end")
+                if text and text != "":
+                    data[name.lower()] = text
             elif isinstance(widget, DateEntry):
                 date = widget.get_date()
                 if date:
-                    data[name.lower()] = widget.get_date()
+                    data[name.lower()] = date.strftime("%Y-%m-%d")
 
         if not new_errors:
             return data
