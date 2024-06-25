@@ -8,19 +8,19 @@ class {name}Model(BaseModel):
     def __init__(self):
         super().__init__('{name_lower}')
 
-    def create_{name_lower}(self, data):
+    def create(self, data):
         return self._save(data)
 
-    def update_{name_lower}(self, id, data):
+    def update(self, id, data):
         return self._update(id, data)
 
-    def remove_{name_lower}(self, id):
+    def remove(self, id):
         return self._remove(id)
 
-    def {name_lower}_all(self):
+    def find_all(self):
         return self._find_all()
 
-    def find_{name_lower}_by_id(self, id):
+    def find_by_id(self, id):
         return self._find_one_by({{"id": id}})
 """
 

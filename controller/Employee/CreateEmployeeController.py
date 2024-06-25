@@ -10,6 +10,7 @@ class CreateEmployeeController(Controller):
     def create(self, data):
         try:
             data['created_by'] = self._current_user().get('id')
+            data['fullname'] = f"{data.get('firstname')} {data.get('lastname')}"
             return self.employee_repository.create_employee(data)
         except Exception as e:
             print(f"Error al crear un empleado: {e}")

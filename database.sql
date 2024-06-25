@@ -62,7 +62,7 @@ CREATE TABLE `project_university`.`client_office` (
 
 CREATE TABLE `project_university`.`client` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(100),
+  `name` VARCHAR(100) UNIQUE,
   `dni` VARCHAR(20) UNIQUE,
   `email` VARCHAR(100) UNIQUE,
   `phone` VARCHAR(40),
@@ -103,6 +103,7 @@ CREATE TABLE `project_university`.`employee` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `firstname` VARCHAR(100),
   `lastname` VARCHAR(100),
+  `fullname` VARCHAR(100) UNIQUE,
   `dni` VARCHAR(20) UNIQUE,
   `email` VARCHAR(100) UNIQUE,
   `phone` VARCHAR(40),
@@ -122,6 +123,8 @@ CREATE TABLE `project_university`.`project` (
   `foreman` INT,
   `client` INT,
   `address` INT,
+  `start_date` DATE,
+  `end_date` DATE,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,

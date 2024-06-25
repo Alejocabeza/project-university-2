@@ -1,11 +1,13 @@
 import re
 import customtkinter as ctk
+from tkcalendar import DateEntry
+from tkinter import ttk
 
 from lib.util_window import window_center
+from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.FindAddressByNameController import FindAddressByNameController
-from controller.ClientOffice.FindClientOfficeByNameController import (
-    FindClientOfficeByNameController,
-)
+from controller.Employee.FindEmployeeByFullNameController import FindEmployeeByFullNameController
+from controller.ClientOffice.FindClientOfficeByNameController import FindClientOfficeByNameController
 
 
 class WindowComponent(ctk.CTkToplevel):
@@ -23,6 +25,7 @@ class WindowComponent(ctk.CTkToplevel):
         super().__init__()
         self.find_address_by_name = FindAddressByNameController()
         self.find_client_office_by_name = FindClientOfficeByNameController()
+        self.find_employee_by_fullname = FindEmployeeByFullNameController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -90,6 +93,24 @@ class WindowComponent(ctk.CTkToplevel):
                     )
                     self.entry.pack(expand=ctk.NO, fill=ctk.X)
                     self.inputs[field["name"]] = self.entry
+                case "textbox":
+                    self.textarea = ctk.CTkTextbox(
+                        self.input_container,
+                        fg_color="transparent",
+                        bg_color="transparent",
+                        height=150,
+                        border_color="gray",
+                        border_width=2,
+                    )
+                    self.textarea.pack(expand=ctk.NO, fill=ctk.X)
+                case "dateentry":
+                    self.calender = DateEntry(
+                        self.input_container,
+                        background="darkblue",
+                        foreground="white",
+                        date_pattern="yyyy-mm-dd",
+                    )
+                    self.calender.pack(expand=ctk.NO, fill=ctk.X)
                 case "combobox":
                     self.combobox = ctk.CTkComboBox(
                         self.input_container,
@@ -124,12 +145,13 @@ class WindowComponent(ctk.CTkToplevel):
     def on_submit(self):
         try:
             res = False
-            if self.type_action == "update":
-                res = self.controller.update(
-                    self.values.get("id"), self.__get_input_data()
-                )
-            else:
-                res = self.controller.create(self.__get_input_data())
+            print(self.__get_input_data())
+            # if self.type_action == "update":
+            #     res = self.controller.update(
+            #         self.values.get("id"), self.__get_input_data()
+            #     )
+            # else:
+            #     res = self.controller.create(self.__get_input_data())
 
             if res:
                 self.destroy()
@@ -208,9 +230,15 @@ class WindowComponent(ctk.CTkToplevel):
                                 widget.get()
                             )
                             data[name.lower()] = address.get("id")
+                    case "foreman":
+                        value = widget.get()
+                        if value:
+                            foreman = self.find_employee_by_fullname.find_by_fullname(
+                                widget.get()
+                            )
+                            data[name.lower()] = foreman.get("id")
                     case "client_office":
                         value = widget.get()
-                        print(value)
                         if value:
                             office = self.find_client_office_by_name.find_by_name(
                                 widget.get()
@@ -226,6 +254,14 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = "government"
                     case _:
                         data[name.lower()] = widget.get()
+            elif isinstance(widget, ctk.CTkCheckBox):
+                text = widget.get()
+                if text:
+                    data[name.lower()] = text
+            elif isinstance(widget, DateEntry):
+                date = widget.get_date()
+                if date:
+                    data[name.lower()] = widget.get_date()
 
         if not new_errors:
             return data

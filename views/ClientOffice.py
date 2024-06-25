@@ -12,11 +12,13 @@ from controller.ClientOffice.RemoveClientOfficeController import (
 from controller.ClientOffice.UpdateClientOfficeController import (
     UpdateClientOfficeController,
 )
+from controller.ClientOffice.FindClientOfficeByIdController import (
+    FindClientOfficeByIdController,
+)
 from controller.Address.GetAllAddressController import GetAllAddressController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
-from config import COLOR_THREE, COLOR_BLUE_PRIMARY, COLOR_BLUE_SECONDARY
-from sections.WindowComponent import WindowComponent
-from tkinter import ttk
+from sections.TableModule import TableModule
+from sections.HeaderModule import HeaderModule
 
 
 class ClientOffice(ctk.CTkFrame):
@@ -33,10 +35,8 @@ class ClientOffice(ctk.CTkFrame):
         self.get_all_client_office_controller = GetAllClientOfficeController()
         self.get_all_address_controller = GetAllAddressController()
         self.find_address_by_id = FindAddressByIdController()
+        self.find_client_office_by_id = FindClientOfficeByIdController()
         self.window_modal = None
-        self.widgets()
-        self.widget_header()
-        self.widget_body()
         self.options = [
             {"name": "name", "label": "Nombre", "type": "entry"},
             {"name": "email", "label": "Email", "type": "entry"},
@@ -48,6 +48,9 @@ class ClientOffice(ctk.CTkFrame):
                 "options": self.__get_address_all(),
             },
         ]
+        self.widgets()
+        self.widget_header()
+        self.widget_body()
 
     def widgets(self):
         """
@@ -60,156 +63,35 @@ class ClientOffice(ctk.CTkFrame):
         """
         Crea los elementos del encabezado
         """
-        self.header = ctk.CTkFrame(self.screen, fg_color="transparent")
-        self.header.pack(side=ctk.TOP, fill=ctk.X, pady=10, padx=10)
-
-        self.title = ctk.CTkLabel(
-            self.header,
-            text="Listado de Sucursales",
-            font=("Roboto", 25),
-            anchor="w",
-            text_color="black",
+        HeaderModule(
+            self.screen,
+            "Sucursales",
+            self.refresh,
+            self.options,
+            self.create_client_office_controller,
         )
-        self.title.pack(side=ctk.LEFT, fill=ctk.X)
-
-        self.btn_refresh = ctk.CTkButton(
-            self.header,
-            text="  Refrescar",
-            font=("Roboto", 12),
-            command=self.refresh,
-        )
-        self.btn_refresh.pack(side=ctk.RIGHT, fill=ctk.X, padx=10)
-
-        self.btn_create = ctk.CTkButton(
-            self.header,
-            text="  Crear Sucursal",
-            font=("Roboto", 12),
-            command=self.open_window_new,
-        )
-        self.btn_create.pack(side=ctk.RIGHT, fill=ctk.X)
 
     def widget_body(self):
         """
         Crea los elementos del cuerpo principal
         """
-        self.container = ctk.CTkScrollableFrame(self.screen, fg_color="transparent")
-        self.container.pack(
-            side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=10, pady=10
-        )
-
-        style = ttk.Style()
-        style.configure(
-            "Custom.Treeview",
-            background=COLOR_THREE,
-            foreground="black",
-            rowheight=25,
-            fieldbackground=COLOR_THREE,
-            borderwidth=0,
-        )
-        style.configure(
-            "Custom.Treeview.Heading",
-            background=COLOR_BLUE_PRIMARY,
-            foreground="black",
-            font=("Roboto", 12, "bold"),
-        )
-        style.map(
-            "Custom.Treeview.Heading",
-            background=[
-                ("active", COLOR_BLUE_SECONDARY),
-                ("!active", COLOR_BLUE_PRIMARY),
-            ],
-            foreground=[("active", "white"), ("!active", "white")],
-        )
-
-        # table
-        self.table = ttk.Treeview(
-            self.container,
-            style="Custom.Treeview",
-            columns=(
-                "id",
-                "name",
-                "email",
-                "phone",
-                "address",
-            ),
-            show="headings",
-            height=35,
-        )
-        self.table.heading("id", text="ID")
-        self.table.heading("name", text="Nombre")
-        self.table.heading("email", text="Email")
-        self.table.heading("phone", text="Teléfono")
-        self.table.heading("address", text="Dirección")
-        self.table.pack(padx=10, expand=ctk.YES, fill=ctk.BOTH)
-
-        # Configurar columnas y centrado de texto
-        self.table.column("id", anchor="center")
-        self.table.column("name", anchor="center")
-        self.table.column("email", anchor="center")
-        self.table.column("phone", anchor="center")
-        self.table.column("address", anchor="center")
-
-        # insert table
         data = self.get_all_client_office_controller.find_all()
-        if data:
-            for i in range(len(data)):
-                address = self.__get_name_address(data[i].get("address"))
-                self.table.insert(
-                    parent="",
-                    index=0,
-                    values=(
-                        data[i].get("id"),
-                        data[i].get("name"),
-                        data[i].get("email"),
-                        data[i].get("phone"),
-                        address,
-                    ),
-                )
-            self.table.bind("<Button-1>", self.on_row_click)
-
-    def on_row_click(self, event):
-        """
-        Evento de click sobre una fila
-        """
-        item = self.table.identify_row(event.y)
-        if item:
-            values = self.table.item(item, "values")
-            if values:
-                data = {
-                    "id": values[0],
-                    "name": values[1],
-                    "email": values[2],
-                    "phone": values[3],
-                    "address": values[4],
-                }
-
-                self.window_modal = WindowComponent(
-                    self.options,
-                    self.update_client_office_controller,
-                    "Actualizar Sucursal",
-                    "update",
-                    data,
-                    self.remove_client_office_controller,
-                    height=500,
-                )
-                self.window_modal.grab_set()
-                self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
-
-    def open_window_new(self):
-        """
-        Crea una nueva sucursal
-        """
-        self.window_modal = WindowComponent(
-            self.options,
-            self.create_client_office_controller,
-            "Crear Sucursal",
-            "create",
-            None,
-            None,
-            height=450,
+        TableModule(
+            parent=self.screen,
+            headers={
+                "id": "ID",
+                "name": "Nombre",
+                "email": "Email",
+                "phone": "Teléfono",
+                "address": "Dirección",
+            },
+            data=data,
+            function_find=self.find_client_office_by_id,
+            options=self.options,
+            update_controller=self.update_client_office_controller,
+            remove_controller=self.remove_client_office_controller,
+            height=500,
         )
-        self.window_modal.grab_set()
-        self.window_modal.protocol("WM_DELETE_WINDOW", self.close_window_modal)
 
     def refresh(self):
         """
@@ -222,15 +104,6 @@ class ClientOffice(ctk.CTkFrame):
         for w in widget.winfo_children():
             w.destroy()
 
-    def close_window_modal(self):
-        """
-        Cierra la ventana Emergente
-        """
-        self.__clear_widgets(self.screen)
-        self.__render_data()
-        self.window_modal.grab_release()
-        self.window_modal.destroy()
-
     def __render_data(self):
         self.widget_header()
         self.widget_body()
@@ -241,6 +114,8 @@ class ClientOffice(ctk.CTkFrame):
         if data:
             for address in data:
                 data_to_return.append(address.get("name"))
+        else:
+            data_to_return.append("Sin Dirección")
         return data_to_return
 
     def __get_name_address(self, id):

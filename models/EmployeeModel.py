@@ -1,9 +1,9 @@
-
 from models.BaseModel import BaseModel
+
 
 class EmployeeModel(BaseModel):
     def __init__(self):
-        super().__init__('employee')
+        super().__init__("employee")
 
     def create_employee(self, data):
         return self._save(data)
@@ -19,3 +19,6 @@ class EmployeeModel(BaseModel):
 
     def find_employee_by_id(self, id):
         return self._find_one_by({"id": id})
+
+    def find_employee_by_fullname(self, fullname):
+        return self._find_one_by({"fullname": fullname})

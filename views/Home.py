@@ -1,3 +1,4 @@
+import fontawesome as fa
 import customtkinter as ctk
 
 from controller.Auth.AuthCloseSessionController import AuthCloseSessionController
@@ -11,6 +12,9 @@ from views.Clients import Clients
 from views.Address import Address
 from views.ClientOffice import ClientOffice
 from views.Employee import Employee
+from views.Project import Project
+
+# icons imports
 
 # from views.Projects import Projects
 # from views.Reports import Reports
@@ -33,7 +37,7 @@ class Home(ctk.CTk):
         self.title("Grupo Imnova")
         self.resizable(False, False)
         # self.iconbitmap('../resources/logo.png')
-        w, h = 1920, 1080
+        w, h = 1440, 800
         window_center(self, w, h)
 
     def create_widgets(self):
@@ -66,8 +70,9 @@ class Home(ctk.CTk):
             text=f"Bienvenido {self.auth_get_data_controller.get_user_data().get('name')}",
             font=("Roboto", 16),
             pady=10,
-            padx=10,
+            padx=0,
             width=16,
+            anchor=ctk.W,
         )
         self.label_title.pack(side=ctk.LEFT, padx=20)
 
@@ -99,45 +104,45 @@ class Home(ctk.CTk):
         """
         Crea los elementos de la barra lateral
         """
-        width = 300
+        width = 50
         height = 40
-        font_awesome = ctk.CTkFont(family="FontAwesome", size=15)
+        font_awesome = ctk.CTkFont(family="FontAwesome", size=20)
 
         # Menu Buttons
-        self.buttonDashboard = ctk.CTkButton(self.widget_left, anchor="w")
-        self.buttonClients = ctk.CTkButton(self.widget_left, anchor="w")
-        self.buttonAddress = ctk.CTkButton(self.widget_left, anchor="w")
-        self.buttonUsers = ctk.CTkButton(self.widget_left, anchor="w")
-        self.buttonClientOffice = ctk.CTkButton(self.widget_left, anchor="w")
-        self.buttonEmployee = ctk.CTkButton(self.widget_left, anchor="w")
-        # self.buttonProjects = ctk.CTkButton(self.widget_left)
-        # self.buttonReports = ctk.CTkButton(self.widget_left)
+        self.buttonDashboard = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonClients = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonAddress = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonUsers = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonClientOffice = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonEmployee = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonProject = ctk.CTkButton(self.widget_left, anchor="center")
+
+        # icons
+        house_icon = fa.icons["warehouse"]
+        users_icon = fa.icons["users"]
+        address_icon = fa.icons["location-arrow"]
+        office_icon = fa.icons["building"]
+        client_icon = fa.icons["fire"]
+        employee_icon = fa.icons["user-plus"]
+        project_icon = fa.icons["project-diagram"]
 
         buttons_info = [
-            ("Dashboard", "", self.buttonDashboard, self.open_dashboard),
-            ("Usuarios", "", self.buttonUsers, self.open_users),
-            ("Direcciones", "", self.buttonAddress, self.open_address),
-            (
-                "Sucursales de Clientes",
-                "",
-                self.buttonClientOffice,
-                self.open_client_office,
-            ),
-            ("Clientes", "", self.buttonClients, self.open_clients),
-            ("Empleados", "", self.buttonEmployee, self.open_employee),
-            # ("Proyectos", "", self.buttonProjects, self.open_projects),
-            # ("Reportes", "", self.buttonReports, self.open_reports),
+            (house_icon, self.buttonDashboard, self.open_dashboard),
+            (users_icon, self.buttonUsers, self.open_users),
+            (address_icon, self.buttonAddress, self.open_address),
+            (office_icon, self.buttonClientOffice, self.open_client_office),
+            (client_icon, self.buttonClients, self.open_clients),
+            (employee_icon, self.buttonEmployee, self.open_employee),
+            (project_icon, self.buttonProject, self.open_projects),
         ]
 
-        for text, icon, button, command in buttons_info:
+        for text, button, command in buttons_info:
             if (
                 text == "Usuarios"
                 and self.auth_get_data_controller.get_user_data().get("role") != "admin"
             ):
                 continue
-            self.config_btn_menu(
-                button, text, icon, font_awesome, width, height, command
-            )
+            self.config_btn_menu(button, text, font_awesome, width, height, command)
 
     def widget_body_config(self):
         """
@@ -180,13 +185,17 @@ class Home(ctk.CTk):
         self.clear_widgets(self.widget_body)
         Employee(self.widget_body)
 
+    def open_projects(self):
+        self.clear_widgets(self.widget_body)
+        Project(self.widget_body)
+
     def clear_widgets(self, widget):
         for widget in widget.winfo_children():
             widget.destroy()
 
-    def config_btn_menu(self, button, text, icon, font_awesome, width, height, command):
+    def config_btn_menu(self, button, text, font_awesome, width, height, command):
         button.configure(
-            text=f"{icon}   {text}",
+            text=f"{text}   ",
             font=font_awesome,
             width=width,
             height=height,

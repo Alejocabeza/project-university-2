@@ -28,3 +28,6 @@ class ClientModel(BaseModel):
         Devuelve todos los usuarios
         """
         return self._find_all()
+
+    def find_by_id(self, id):
+        return self._find_one_by({"id": id})
