@@ -107,7 +107,3 @@ class ClientOffice(ctk.CTkFrame):
         else:
             data_to_return.append("Sin Dirección")
         return data_to_return
-
-    def __get_name_address(self, id):
-        address = self.find_address_by_id.find_by_id(id)
-        return address.get("name")

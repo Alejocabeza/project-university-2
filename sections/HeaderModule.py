@@ -1,7 +1,7 @@
 import fontawesome as fa
 import customtkinter as ctk
 
-from config import COLOR_TWO
+from config import  THREE_COLOR, THREE_COLOR_HOVER
 from sections.WindowComponent import WindowComponent
 
 
@@ -39,7 +39,8 @@ class HeaderModule(ctk.CTkFrame):
             font=font_awesome,
             command=self.refresh,
             bg_color="transparent",
-            fg_color=COLOR_TWO,
+            fg_color=THREE_COLOR,
+            hover_color=THREE_COLOR_HOVER,
             anchor="center",
             width=40,
         )
@@ -51,7 +52,8 @@ class HeaderModule(ctk.CTkFrame):
             font=font_awesome,
             command=lambda: self.open_modal(),
             bg_color="transparent",
-            fg_color=COLOR_TWO,
+            fg_color=THREE_COLOR,
+            hover_color=THREE_COLOR_HOVER,
             anchor="center",
             width=40,
         )

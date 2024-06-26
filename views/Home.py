@@ -9,7 +9,7 @@ from views.Project import Project
 from views.Employee import Employee
 from lib.navigation import NAVIGATION
 from views.Dashboard import Dashboard
-from config import COLOR_ONE, COLOR_TWO
+from config import ONE_COLOR, TWO_COLOR, THREE_COLOR, THREE_COLOR_HOVER
 from lib.util_window import window_center
 from views.ClientOffice import ClientOffice
 from controller.User.GetUserController import GetUserController
@@ -41,18 +41,18 @@ class Home(ctk.CTk):
         """
         # Barra Superior
         self.widget_top = ctk.CTkFrame(
-            self, height=100, fg_color=COLOR_TWO, bg_color=COLOR_TWO
+            self, height=100, fg_color=TWO_COLOR, bg_color=TWO_COLOR
         )
         self.widget_top.pack(side=ctk.TOP, fill=ctk.BOTH, expand=ctk.NO)
 
         # Barra Lateral
         self.widget_left = ctk.CTkFrame(
-            self, height=200, fg_color=COLOR_TWO, bg_color=COLOR_TWO
+            self, height=200, fg_color=TWO_COLOR, bg_color=TWO_COLOR
         )
         self.widget_left.pack(side=ctk.LEFT, fill=ctk.BOTH, expand=ctk.NO)
 
         # Cuerpo
-        self.widget_body = ctk.CTkFrame(self, height=200, fg_color=COLOR_ONE)
+        self.widget_body = ctk.CTkFrame(self, height=200, fg_color=ONE_COLOR)
         self.widget_body.pack(side=ctk.RIGHT, fill=ctk.BOTH, expand=ctk.YES)
 
     def widget_top_config(self):
@@ -71,17 +71,17 @@ class Home(ctk.CTk):
         )
         self.label_title.pack(side=ctk.LEFT, padx=20)
 
-        # self.btn_close_session = ctk.CTkButton(
-        #     self.widget_top,
-        #     text="  ",
-        #     font=font_awesome,
-        #     fg_color="transparent",
-        #     bg_color="transparent",
-        #     hover_color="red",
-        #     width=40,
-        #     command=self.logout,
-        # )
-        # self.btn_close_session.pack(side=ctk.RIGHT, padx=10)
+        self.btn_close_session = ctk.CTkButton(
+            self.widget_top,
+            text="   ",
+            font=font_awesome,
+            fg_color="transparent",
+            bg_color="transparent",
+            hover_color=THREE_COLOR_HOVER,
+            width=40,
+            command=self.logout,
+        )
+        self.btn_close_session.pack(side=ctk.RIGHT, padx=10)
 
         self.btn_profile_config = ctk.CTkButton(
             self.widget_top,
@@ -89,7 +89,7 @@ class Home(ctk.CTk):
             font=font_awesome,
             fg_color="transparent",
             bg_color="transparent",
-            hover_color="blue",
+            hover_color=THREE_COLOR_HOVER,
             width=40,
             command=lambda: self.init_profile_widget(),
         )
@@ -99,18 +99,18 @@ class Home(ctk.CTk):
         """
         Crea los elementos de la barra lateral
         """
-        width = 50
+        width = 150
         height = 40
-        font_awesome = ctk.CTkFont(family="FontAwesome", size=20)
+        font_awesome = ctk.CTkFont(family="FontAwesome", size=15)
 
         # Menu Buttons
-        self.buttonDashboard = ctk.CTkButton(self.widget_left, anchor="center")
-        self.buttonClients = ctk.CTkButton(self.widget_left, anchor="center")
-        self.buttonAddress = ctk.CTkButton(self.widget_left, anchor="center")
-        self.buttonUsers = ctk.CTkButton(self.widget_left, anchor="center")
-        self.buttonClientOffice = ctk.CTkButton(self.widget_left, anchor="center")
-        self.buttonEmployee = ctk.CTkButton(self.widget_left, anchor="center")
-        self.buttonProject = ctk.CTkButton(self.widget_left, anchor="center")
+        self.buttonDashboard = ctk.CTkButton(self.widget_left)
+        self.buttonClients = ctk.CTkButton(self.widget_left)
+        self.buttonAddress = ctk.CTkButton(self.widget_left)
+        self.buttonUsers = ctk.CTkButton(self.widget_left)
+        self.buttonClientOffice = ctk.CTkButton(self.widget_left)
+        self.buttonEmployee = ctk.CTkButton(self.widget_left)
+        self.buttonProject = ctk.CTkButton(self.widget_left)
 
         # icons
         house_icon = fa.icons["warehouse"]
@@ -122,22 +122,22 @@ class Home(ctk.CTk):
         project_icon = fa.icons["project-diagram"]
 
         buttons_info = [
-            (house_icon, self.buttonDashboard, self.open_dashboard),
-            (users_icon, self.buttonUsers, self.open_users),
-            (address_icon, self.buttonAddress, self.open_address),
-            (office_icon, self.buttonClientOffice, self.open_client_office),
-            (client_icon, self.buttonClients, self.open_clients),
-            (employee_icon, self.buttonEmployee, self.open_employee),
-            (project_icon, self.buttonProject, self.open_projects),
+            ('Dashboard', house_icon, self.buttonDashboard, self.open_dashboard),
+            ('Usuarios', users_icon, self.buttonUsers, self.open_users),
+            ('Direcciones', address_icon, self.buttonAddress, self.open_address),
+            ('Sucursales', office_icon, self.buttonClientOffice, self.open_client_office),
+            ('Clientes', client_icon, self.buttonClients, self.open_clients),
+            ('Operarios', employee_icon, self.buttonEmployee, self.open_employee),
+            ('Proyectos', project_icon, self.buttonProject, self.open_projects),
         ]
 
-        for text, button, command in buttons_info:
+        for text, icon, button, command in buttons_info:
             if (
                 text == "Usuarios"
                 and self.auth_get_data_controller.get_user_data().get("role") != "admin"
             ):
                 continue
-            self.config_btn_menu(button, text, font_awesome, width, height, command)
+            self.config_btn_menu(button, text, icon, font_awesome, width, height, command)
 
     def widget_body_config(self):
         """
@@ -188,14 +188,16 @@ class Home(ctk.CTk):
         for widget in widget.winfo_children():
             widget.destroy()
 
-    def config_btn_menu(self, button, text, font_awesome, width, height, command):
+    def config_btn_menu(self, button, text, icon, font_awesome, width, height, command):
         button.configure(
-            text=f" {text}   ",
+            text=f" {icon}    {text}",
             font=font_awesome,
             width=width,
             height=height,
             command=command,
             fg_color="transparent",
             bg_color="transparent",
+            hover_color=THREE_COLOR_HOVER,
+            anchor='w'
         )
         button.pack(side=ctk.TOP, pady=5, padx=10)

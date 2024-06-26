@@ -143,21 +143,3 @@ class Project(ctk.CTkFrame):
         else:
             data_to_return.append("Sin Cliente")
         return data_to_return
-
-    def __get_address_name(self, id):
-        address = self.find_by_id_address.find_by_id(id)
-        if address:
-            return address.get("name")
-        return "Sin Dirección"
-
-    def __get_employee_name(self, id):
-        employee = self.find_by_id_employee.find_by_id(id)
-        if employee:
-            return employee.get("fullname")
-        return "Sin Maestro de Obra"
-
-    def __get_client_name(self, id):
-        client = self.find_by_id_client.find_by_id(id)
-        if client:
-            return client.get("name")
-        return "Sin Cliente"

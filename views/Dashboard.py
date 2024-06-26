@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
 
-class Dashboard(ctk.CTk):
+class Dashboard(ctk.CTkFrame):
     def __init__(self, parent):
+        super().__init__(parent)
         self.parent = parent
         self.widgets()
 

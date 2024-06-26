@@ -40,7 +40,7 @@ class TableModule(ctk.CTkFrame):
         self.widget()
 
     def widget(self):
-        self.container = ctk.CTkScrollableFrame(self.parent, fg_color="transparent")
+        self.container = ctk.CTkScrollableFrame(self.parent, fg_color="transparent", corner_radius=10)
         self.container.pack(side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=5, pady=5)
 
         style = ttk.Style()

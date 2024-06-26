@@ -3,6 +3,7 @@ from tkinter import ttk
 import customtkinter as ctk
 from tkcalendar import DateEntry
 
+from config import TWO_COLOR, ONE_COLOR, THREE_COLOR, THREE_COLOR_HOVER
 from lib.util_window import window_center
 from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
@@ -57,12 +58,12 @@ class WindowComponent(ctk.CTkToplevel):
 
     def main_widget(self):
         self.screen = ctk.CTkScrollableFrame(
-            self, fg_color="transparent", corner_radius=0
+            self, fg_color=TWO_COLOR, corner_radius=0
         )
         self.screen.pack(expand=ctk.YES, fill=ctk.BOTH)
 
         self.container = ctk.CTkFrame(
-            self.screen, fg_color="transparent", corner_radius=5
+            self.screen, fg_color=TWO_COLOR, corner_radius=5
         )
         self.container.pack(expand=ctk.YES, fill=ctk.BOTH, pady=40, padx=20)
 
@@ -82,7 +83,7 @@ class WindowComponent(ctk.CTkToplevel):
             self.input_label = ctk.CTkLabel(
                 self.input_container,
                 text=field["label"],
-                text_color="white",
+                text_color=ONE_COLOR,
                 anchor="w",
             )
             self.input_label.pack(side=ctk.TOP, fill=ctk.X, expand=ctk.NO)
@@ -96,6 +97,7 @@ class WindowComponent(ctk.CTkToplevel):
                         self.input_container,
                         fg_color="transparent",
                         bg_color="transparent",
+                        border_color=ONE_COLOR,
                         placeholder_text=placeholder,
                         show=show,
                     )
@@ -107,7 +109,7 @@ class WindowComponent(ctk.CTkToplevel):
                         fg_color="transparent",
                         bg_color="transparent",
                         height=150,
-                        border_color="gray",
+                        border_color=ONE_COLOR,
                         border_width=2,
                     )
                     self.textarea.pack(expand=ctk.NO, fill=ctk.X)
@@ -115,8 +117,8 @@ class WindowComponent(ctk.CTkToplevel):
                 case "dateentry":
                     self.calender = DateEntry(
                         self.input_container,
-                        background="darkblue",
-                        foreground="white",
+                        background=TWO_COLOR,
+                        foreground=ONE_COLOR,
                         date_pattern="yyyy-mm-dd",
                     )
                     self.calender.pack(expand=ctk.NO, fill=ctk.X)
@@ -127,6 +129,8 @@ class WindowComponent(ctk.CTkToplevel):
                     self.combobox = ctk.CTkComboBox(
                         self.input_container,
                         values=field["options"],
+                        fg_color=TWO_COLOR,
+                        border_color=ONE_COLOR,
                     )
                     self.combobox.pack(expand=ctk.NO, fill=ctk.X)
                     self.combobox.set(self.get_combobox_value(field["name"]))
@@ -138,6 +142,8 @@ class WindowComponent(ctk.CTkToplevel):
                 self.container,
                 text="Guardar",
                 command=self.on_submit,
+                fg_color=THREE_COLOR,
+                hover_color=THREE_COLOR_HOVER
             )
             self.btn_submit.pack(fill=ctk.X, pady=20)
 
