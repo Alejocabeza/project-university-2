@@ -3,16 +3,30 @@ from tkinter import ttk
 import customtkinter as ctk
 from tkcalendar import DateEntry
 
-from config import TWO_COLOR, ONE_COLOR, THREE_COLOR, THREE_COLOR_HOVER
 from lib.util_window import window_center
 from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
 from controller.Clients.FindClientByNameController import FindClientByNameController
 from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
 from controller.Address.FindAddressByNameController import FindAddressByNameController
-from controller.ClientOffice.FindClientOfficeByIdController import FindClientOfficeByIdController
-from controller.Employee.FindEmployeeByFullNameController import FindEmployeeByFullNameController
-from controller.ClientOffice.FindClientOfficeByNameController import FindClientOfficeByNameController
+from controller.ClientOffice.FindClientOfficeByIdController import (
+    FindClientOfficeByIdController,
+)
+from controller.Employee.FindEmployeeByFullNameController import (
+    FindEmployeeByFullNameController,
+)
+from controller.ClientOffice.FindClientOfficeByNameController import (
+    FindClientOfficeByNameController,
+)
+from config import (
+    TWO_COLOR,
+    ONE_COLOR,
+    THREE_COLOR,
+    THREE_COLOR_HOVER,
+    COLOR_RED_PRIMARY,
+    COLOR_RED_SECONDARY,
+)
+
 
 class WindowComponent(ctk.CTkToplevel):
     def __init__(
@@ -32,9 +46,9 @@ class WindowComponent(ctk.CTkToplevel):
         self.find_employee_by_fullname = FindEmployeeByFullNameController()
         self.find_client_office_by_name = FindClientOfficeByNameController()
         self.find_client_by_id = FindClientByIdController()
-        self.find_address_by_id= FindAddressByIdController()
-        self.find_employee_by_id= FindEmployeeByIdController()
-        self.find_client_office_by_id= FindClientOfficeByIdController()
+        self.find_address_by_id = FindAddressByIdController()
+        self.find_employee_by_id = FindEmployeeByIdController()
+        self.find_client_office_by_id = FindClientOfficeByIdController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -57,14 +71,10 @@ class WindowComponent(ctk.CTkToplevel):
         window_center(self, self.width, self.height)
 
     def main_widget(self):
-        self.screen = ctk.CTkScrollableFrame(
-            self, fg_color=TWO_COLOR, corner_radius=0
-        )
+        self.screen = ctk.CTkScrollableFrame(self, fg_color=TWO_COLOR, corner_radius=0)
         self.screen.pack(expand=ctk.YES, fill=ctk.BOTH)
 
-        self.container = ctk.CTkFrame(
-            self.screen, fg_color=TWO_COLOR, corner_radius=5
-        )
+        self.container = ctk.CTkFrame(self.screen, fg_color=TWO_COLOR, corner_radius=5)
         self.container.pack(expand=ctk.YES, fill=ctk.BOTH, pady=40, padx=20)
 
         self.label = ctk.CTkLabel(
@@ -122,7 +132,7 @@ class WindowComponent(ctk.CTkToplevel):
                         date_pattern="yyyy-mm-dd",
                     )
                     self.calender.pack(expand=ctk.NO, fill=ctk.X)
-                    if self.type_action == 'update':
+                    if self.type_action == "update":
                         self.calender.set_date(self.values.get(field["name"]))
                     self.inputs[field["name"]] = self.calender
                 case "combobox":
@@ -143,7 +153,7 @@ class WindowComponent(ctk.CTkToplevel):
                 text="Guardar",
                 command=self.on_submit,
                 fg_color=THREE_COLOR,
-                hover_color=THREE_COLOR_HOVER
+                hover_color=THREE_COLOR_HOVER,
             )
             self.btn_submit.pack(fill=ctk.X, pady=20)
 
@@ -152,7 +162,8 @@ class WindowComponent(ctk.CTkToplevel):
                     self.container,
                     text="Eliminar",
                     command=self.on_remove,
-                    fg_color="red",
+                    fg_color=COLOR_RED_PRIMARY,
+                    hover_color=COLOR_RED_SECONDARY,
                 )
                 self.btn_remove.pack(fill=ctk.X, pady=5)
         else:
@@ -242,13 +253,13 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = "user"
                     case "address":
                         value = widget.get()
-                        print('address: %s' % value)
+                        print("address: %s" % value)
                         if value and value != "Sin Dirección":
                             address = self.find_address_by_name.find_by_name(value)
                             data[name.lower()] = address.get("id")
                     case "foreman":
                         value = widget.get()
-                        print('foreman: %s' % value)
+                        print("foreman: %s" % value)
                         if value and value != "Sin Operador":
                             foreman = self.find_employee_by_fullname.find_by_fullname(
                                 value
@@ -263,7 +274,7 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = office.get("id")
                     case "client":
                         value = widget.get()
-                        print('client: %s' % value)
+                        print("client: %s" % value)
                         if value and value != "Sin Cliente":
                             client = self.find_client_by_name.find_by_name(value)
                             data[name.lower()] = client.get("id")
@@ -298,7 +309,7 @@ class WindowComponent(ctk.CTkToplevel):
     def get_combobox_value(self, name):
         if self.type_action == "update":
             match name:
-                case 'type':
+                case "type":
                     if self.values.get(name) and self.values.get(name) != "Sin Tipo":
                         match self.values.get(name):
                             case "person":
@@ -309,20 +320,37 @@ class WindowComponent(ctk.CTkToplevel):
                                 return "Gubernamental"
                     return "Sin Tipo"
                 case "address":
-                    if self.values.get(name) and self.values.get(name) != "Sin Dirección":
-                        return self.find_address_by_id.find_by_id(self.values.get(name)).get('name')
+                    if (
+                        self.values.get(name)
+                        and self.values.get(name) != "Sin Dirección"
+                    ):
+                        return self.find_address_by_id.find_by_id(
+                            self.values.get(name)
+                        ).get("name")
                     return "Sin Dirección"
                 case "foreman":
-                    if self.values.get(name) and self.values.get(name) != "Sin Operador":
-                        return self.find_employee_by_id.find_by_id(self.values.get(name)).get("fullname")
+                    if (
+                        self.values.get(name)
+                        and self.values.get(name) != "Sin Operador"
+                    ):
+                        return self.find_employee_by_id.find_by_id(
+                            self.values.get(name)
+                        ).get("fullname")
                     return "Sin Maestro de Obra"
                 case "client_office":
-                    if self.values.get(name) and self.values.get(name) != "Sin Sucursal":
-                        return self.find_client_office_by_id.find_by_id(self.values.get(name)).get('name')
+                    if (
+                        self.values.get(name)
+                        and self.values.get(name) != "Sin Sucursal"
+                    ):
+                        return self.find_client_office_by_id.find_by_id(
+                            self.values.get(name)
+                        ).get("name")
                     return "Sin Sucursal"
                 case "client":
                     if self.values.get(name) and self.values.get(name) != "Sin Cliente":
-                        return self.find_client_by_id.find_by_id(self.values.get(name)).get('name')
+                        return self.find_client_by_id.find_by_id(
+                            self.values.get(name)
+                        ).get("name")
                     return "Sin Cliente"
                 case _:
                     return self.values.get(name)

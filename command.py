@@ -105,23 +105,26 @@ def command(type):
             while True:
                 name = input("option name: ")
                 label = input("option label: ")
-                type = input("This option is of type 'Entry'? (y/n)")
-                if type == "n":
+                type = input(
+                    "This option is of type (entry, dateentry, combobox, textbox, checkbox)? "
+                )
+                if type == "combobox":
                     combobox_option = []
                     while True:
                         request = input("You want to add a option (y/n)? ")
                         if request == "n":
                             break
                         combobox_option.append(input("option combobox: "))
-                    options.append(
-                        {
-                            "name": name,
-                            "label": label,
-                            "type": "combobox",
-                            "options": combobox_option,
-                        }
-                    )
-                options.append({"name": name, "label": label, "type": "entry"})
+                        options.append(
+                            {
+                                "name": name,
+                                "label": label,
+                                "type": "combobox",
+                                "options": combobox_option,
+                            }
+                        )
+                else:
+                    options.append({"name": name, "label": label, "type": type})
                 request = input("You want to add a new option (y/n)? ")
                 if request == "n":
                     break

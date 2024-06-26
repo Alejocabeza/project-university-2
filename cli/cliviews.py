@@ -34,7 +34,7 @@ class {name}(ctk.CTkFrame):
     def widget_header(self):
         # container
         HeaderModule(
-            self.screen, 
+            self.screen,
             "{name_spanish}",
             self.refresh,
             self.options,
@@ -46,7 +46,7 @@ class {name}(ctk.CTkFrame):
         data = self.get_all_{name_lower}_controller.find_all()
         TableModule(
             self.screen,
-            {"id": "ID"},
+            {{"id": "ID"}},
             data,
             self.find_{name_lower}_by_id_controller,
             self.options,
@@ -55,10 +55,6 @@ class {name}(ctk.CTkFrame):
         )
 
     def refresh(self):
-        self.__clear_widgets(self.screen)
-        self.__render_data()
-
-    def close_window_modal(self):
         self.__clear_widgets(self.screen)
         self.__render_data()
 

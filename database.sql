@@ -137,19 +137,22 @@ CREATE TABLE `project_university`.`project` (
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
 
-CREATE TABLE `project_university`.`tasks` (
+CREATE TABLE `project_university`.`task` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(100),
   `description` TEXT,
-  `startDate` DATETIME,
-  `endDate` DATETIME,
+  `start_date` DATETIME,
+  `end_date` DATETIME,
   `project` INT,
+  `employee` INT,
+  `is_active` BOOLEAN DEFAULT FALSE,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,
   `created_by` INT,
   `updated_by` INT,
   FOREIGN KEY (`project`) REFERENCES `project` (`id`),
+  FOREIGN KEY (`employee`) REFERENCES `employee` (`id`),
   FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
