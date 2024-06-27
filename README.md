@@ -20,4 +20,4 @@ Para este proyecto es vital tener XAMPP(Cross-Platform, Apache, MariaDB, PHP, y 
 
 Este proyecto tiene un archivo `.env` para manejar las variables de entorno, esto incluye las credenciales de la base de datos. para usarlas, puede crear este archivo y copiar el contenido del archivo `.env.example` a este. posteriormente en su manejado de base de datos, puede crear una base de datos y una tabla. puede usar las sentencias que se encuentra en el archivo `database.sql` que se encuentra en la raíz del proyecto.
 
-Si ejecuta la sentencia que esta en el archivo `database.sql` esto le va a crear la base de datos y las tablas ademas le va a agregar un usuario administrador para iniciar sesión.
+Si ejecuta la sentencia que esta en el archivo `database.sql` esto le va a crear la base de datos y las tablas ademas le va a agregar un usuario administrador para iniciar sesión. este usuario tiene como email: `admin@gmail.com` y la contraseña: `admin`
