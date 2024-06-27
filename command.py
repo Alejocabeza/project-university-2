@@ -55,7 +55,7 @@ def command(type):
                 input("Path of the Controller(default: 'controller'): ") or "controller"
             )
             name_spanish = input("Name of the Resource in Spanish: ")
-            controllers = ["Create", "GetAll", "FindById" "Remove", "Update"]
+            controllers = ["Create", "GetAll", "FindById", "Remove", "Update"]
             create_model(name_res)
             click.echo("Model Created")
             for controller in controllers:
@@ -111,10 +111,20 @@ def command(type):
                 if type == "combobox":
                     combobox_option = []
                     while True:
-                        request = input("You want to add a option (y/n)? ")
+                        request = input("You want to add a option on combobox (y/n)? ")
                         if request == "n":
+                            options.append(
+                                {
+                                    "name": name,
+                                    "label": label,
+                                    "type": "combobox",
+                                    "options": combobox_option,
+                                }
+                            )
                             break
-                        combobox_option.append(input("option combobox: "))
+                        combobox_option.append(
+                            input("name of the option for combobox: ")
+                        )
                         options.append(
                             {
                                 "name": name,

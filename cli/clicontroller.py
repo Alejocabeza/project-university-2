@@ -47,7 +47,7 @@ class {name}Controller(Controller):
 
     def remove(self, id):
         try:
-            return self.{model_lower}_repository.update(id, {'deleted_at': self._current_time()})
+            return self.{model_lower}_repository.update(id, {{'deleted_at': self._current_time()}})
         except Exception as ex:
             print(f"Error remove {name}: {{ex}}")
             return None
@@ -124,7 +124,7 @@ def create_controller(name, path, model, type="default"):
                 model_lower=model.lower(),
             )
         case "remove":
-            controller_content = controller_update_template.format(
+            controller_content = controller_remove_template.format(
                 name=controller_name,
                 name_lower=name.lower(),
                 model=model,

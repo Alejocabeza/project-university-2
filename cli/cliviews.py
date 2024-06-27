@@ -10,7 +10,7 @@ from controller.{name}.Create{name}Controller import Create{name}Controller
 from controller.{name}.GetAll{name}Controller import GetAll{name}Controller
 from controller.{name}.Remove{name}Controller import Remove{name}Controller
 from controller.{name}.Update{name}Controller import Update{name}Controller
-from controller.{name}.Find{name}ByIdController import Find{name}ByIdController
+from controller.{name}.FindById{name}Controller import FindById{name}Controller
 
 class {name}(ctk.CTkFrame):
     def __init__(self, parent):
@@ -20,7 +20,7 @@ class {name}(ctk.CTkFrame):
         self.update_{name_lower}_controller = Update{name}Controller()
         self.remove_{name_lower}_controller = Remove{name}Controller()
         self.get_all_{name_lower}_controller = GetAll{name}Controller()
-        self.find_{name_lower}_by_id_controller = Find{name}ByIdController()
+        self.find_{name_lower}_by_id_controller = FindById{name}Controller()
         self.options = {options}
         self.widgets()
         self.widget_header()
