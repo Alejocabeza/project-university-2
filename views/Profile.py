@@ -2,12 +2,12 @@ import re
 import customtkinter as ctk
 
 from config import (
-    COLOR_THREE,
-    COLOR_FOR,
+    ONE_COLOR,
+    THREE_COLOR,
+    THREE_COLOR_HOVER,
     COLOR_RED_PRIMARY,
     COLOR_RED_SECONDARY,
-    COLOR_BLUE_PRIMARY,
-    COLOR_BLUE_SECONDARY,
+    TWO_COLOR,
 )
 from controller.User.GetUserController import GetUserController
 from controller.Auth.AuthUpdateController import AuthUpdateController
@@ -46,7 +46,10 @@ class Profile(ctk.CTkFrame):
 
         # Boxes
         self.box_primary = ctk.CTkFrame(
-            self.widget_body_profile, fg_color=COLOR_THREE, border_color=COLOR_FOR
+            self.widget_body_profile,
+            fg_color=ONE_COLOR,
+            border_color=TWO_COLOR,
+            border_width=1,
         )
         self.box_primary.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=5, pady=5
@@ -144,8 +147,8 @@ class Profile(ctk.CTkFrame):
             self.box_container_input,
             text="Actualizar",
             font=("Roboto", 14),
-            fg_color=COLOR_BLUE_PRIMARY,
-            hover_color=COLOR_BLUE_SECONDARY,
+            fg_color=THREE_COLOR,
+            hover_color=THREE_COLOR_HOVER,
             width=250,
             height=40,
             command=lambda: self.__handle_submit("update"),
@@ -158,7 +161,10 @@ class Profile(ctk.CTkFrame):
         """
         # Boxes
         self.box_primary = ctk.CTkFrame(
-            self.widget_body_profile, fg_color=COLOR_THREE, border_color=COLOR_FOR
+            self.widget_body_profile,
+            fg_color=ONE_COLOR,
+            border_color=TWO_COLOR,
+            border_width=1,
         )
         self.box_primary.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=5, pady=5
@@ -240,8 +246,8 @@ class Profile(ctk.CTkFrame):
             self.box_container_input,
             text="Actualizar",
             font=("Roboto", 14),
-            fg_color=COLOR_BLUE_PRIMARY,
-            hover_color=COLOR_BLUE_SECONDARY,
+            fg_color=THREE_COLOR,
+            hover_color=THREE_COLOR_HOVER,
             width=250,
             height=40,
             command=lambda: self.__handle_submit("password"),
@@ -254,7 +260,10 @@ class Profile(ctk.CTkFrame):
         """
         # Boxes
         self.box_primary = ctk.CTkFrame(
-            self.widget_body_profile, fg_color=COLOR_THREE, border_color=COLOR_FOR
+            self.widget_body_profile,
+            fg_color=ONE_COLOR,
+            border_color=TWO_COLOR,
+            border_width=1,
         )
         self.box_primary.pack(
             side=ctk.TOP, fill=ctk.BOTH, expand=ctk.YES, padx=5, pady=5

@@ -1,9 +1,9 @@
+
 from models.BaseModel import BaseModel
 
-
-class ProjectModel(BaseModel):
+class TaskModel(BaseModel):
     def __init__(self):
-        super().__init__("project")
+        super().__init__('task')
 
     def create(self, data):
         return self._save(data)
@@ -19,6 +19,3 @@ class ProjectModel(BaseModel):
 
     def find_by_id(self, id):
         return self._find_one_by({"id": id})
-
-    def find_by_name(self, name):
-        return self._find_one_by({"name": name})

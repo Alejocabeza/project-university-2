@@ -118,7 +118,7 @@ CREATE TABLE `project_university`.`employee` (
 
 CREATE TABLE `project_university`.`project` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `name` VARCHAR(100),
+  `name` VARCHAR(100) UNIQUE,
   `description` VARCHAR(255),
   `foreman` INT,
   `client` INT,
@@ -145,7 +145,7 @@ CREATE TABLE `project_university`.`task` (
   `end_date` DATETIME,
   `project` INT,
   `employee` INT,
-  `is_active` BOOLEAN DEFAULT FALSE,
+  `status` INT DEFAULT 1,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,

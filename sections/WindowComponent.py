@@ -6,9 +6,11 @@ from tkcalendar import DateEntry
 from lib.util_window import window_center
 from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
+from controller.Project.FindProjectByIdController import FindProjectByIdController
 from controller.Clients.FindClientByNameController import FindClientByNameController
 from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
 from controller.Address.FindAddressByNameController import FindAddressByNameController
+from controller.Project.FindProjectByNameController import FindProjectByNameController
 from controller.ClientOffice.FindClientOfficeByIdController import (
     FindClientOfficeByIdController,
 )
@@ -49,6 +51,8 @@ class WindowComponent(ctk.CTkToplevel):
         self.find_address_by_id = FindAddressByIdController()
         self.find_employee_by_id = FindEmployeeByIdController()
         self.find_client_office_by_id = FindClientOfficeByIdController()
+        self.find_project_by_id = FindProjectByIdController()
+        self.find_project_by_name = FindProjectByNameController()
         self.width = width
         self.height = height
         self.show_errors = False
@@ -123,6 +127,8 @@ class WindowComponent(ctk.CTkToplevel):
                         border_width=2,
                     )
                     self.textarea.pack(expand=ctk.NO, fill=ctk.X)
+                    if self.type_action == "update":
+                        self.textarea.insert(ctk.INSERT, self.values.get(field["name"]))
                     self.inputs[field["name"]] = self.textarea
                 case "dateentry":
                     self.calender = DateEntry(
@@ -253,18 +259,23 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = "user"
                     case "address":
                         value = widget.get()
-                        print("address: %s" % value)
                         if value and value != "Sin Dirección":
                             address = self.find_address_by_name.find_by_name(value)
                             data[name.lower()] = address.get("id")
                     case "foreman":
                         value = widget.get()
-                        print("foreman: %s" % value)
                         if value and value != "Sin Operador":
                             foreman = self.find_employee_by_fullname.find_by_fullname(
                                 value
                             )
                             data[name.lower()] = foreman.get("id")
+                    case "employee":
+                        value = widget.get()
+                        if value and value != "Sin Operario":
+                            employee = self.find_employee_by_fullname.find_by_fullname(
+                                value
+                            )
+                            data[name.lower()] = employee.get("id")
                     case "client_office":
                         value = widget.get()
                         if value and value != "Sin Sucursal":
@@ -274,10 +285,22 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = office.get("id")
                     case "client":
                         value = widget.get()
-                        print("client: %s" % value)
                         if value and value != "Sin Cliente":
                             client = self.find_client_by_name.find_by_name(value)
                             data[name.lower()] = client.get("id")
+                    case "project":
+                        value = widget.get()
+                        if value and value != "Sin Proyectos":
+                            project = self.find_project_by_name.find_by_name(value)
+                            data[name.lower()] = project.get("id")
+                    case "status":
+                        value = widget.get()
+                        if value == "Pendiente":
+                            data[name.lower()] = 1
+                        elif value == "En Proceso":
+                            data[name.lower()] = 2
+                        else:
+                            data[name.lower()] = 3
                     case "type":
                         type_option = widget.get()
                         if type_option == "Persona Natural":
@@ -337,6 +360,15 @@ class WindowComponent(ctk.CTkToplevel):
                             self.values.get(name)
                         ).get("fullname")
                     return "Sin Maestro de Obra"
+                case 'employee':
+                    if (
+                        self.values.get(name)
+                        and self.values.get(name) != "Sin Operador"
+                    ):
+                        return self.find_employee_by_id.find_by_id(
+                            self.values.get(name)
+                        ).get("fullname")
+                    return "Sin Operador"
                 case "client_office":
                     if (
                         self.values.get(name)
@@ -352,6 +384,22 @@ class WindowComponent(ctk.CTkToplevel):
                             self.values.get(name)
                         ).get("name")
                     return "Sin Cliente"
+                case "project":
+                    if (
+                        self.values.get(name)
+                        and self.values.get(name) != "Sin Proyecto"
+                    ):
+                        return self.find_project_by_id.find_by_id(
+                            self.values.get(name)
+                        ).get("name")
+                    return "Sin Proyecto"
+                case 'status':
+                    if self.values.get(name) == 1:
+                        return "Pendiente"
+                    elif self.values.get(name) == 2:
+                        return "En Proceso"
+                    else:
+                        return "Finalizado"
                 case _:
                     return self.values.get(name)
         return ""

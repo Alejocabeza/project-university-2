@@ -77,7 +77,7 @@ from models.{model}Model import {model}Model
 class {name}Controller(Controller):
     def __init__(self):
         super().__init__()
-        slef.{model_lower}_repository = {model}Model()
+        self.{model_lower}_repository = {model}Model()
 
     def find_by_id(self, id):
         try:

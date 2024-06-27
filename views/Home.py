@@ -1,6 +1,7 @@
 import fontawesome as fa
 import customtkinter as ctk
 
+from views.Task import Task
 from views.Users import Users
 from views.Address import Address
 from views.Clients import Clients
@@ -111,24 +112,33 @@ class Home(ctk.CTk):
         self.buttonClientOffice = ctk.CTkButton(self.widget_left)
         self.buttonEmployee = ctk.CTkButton(self.widget_left)
         self.buttonProject = ctk.CTkButton(self.widget_left)
+        self.buttonTask = ctk.CTkButton(self.widget_left)
 
         # icons
+        print(fa.icons)
         house_icon = fa.icons["warehouse"]
         users_icon = fa.icons["users"]
         address_icon = fa.icons["location-arrow"]
         office_icon = fa.icons["building"]
         client_icon = fa.icons["fire"]
         employee_icon = fa.icons["user-plus"]
-        project_icon = fa.icons["project-diagram"]
+        project_icon = fa.icons["briefcase"]
+        task_icon = fa.icons["list"]
 
         buttons_info = [
-            ('Dashboard', house_icon, self.buttonDashboard, self.open_dashboard),
-            ('Usuarios', users_icon, self.buttonUsers, self.open_users),
-            ('Direcciones', address_icon, self.buttonAddress, self.open_address),
-            ('Sucursales', office_icon, self.buttonClientOffice, self.open_client_office),
-            ('Clientes', client_icon, self.buttonClients, self.open_clients),
-            ('Operarios', employee_icon, self.buttonEmployee, self.open_employee),
-            ('Proyectos', project_icon, self.buttonProject, self.open_projects),
+            ("Dashboard", house_icon, self.buttonDashboard, self.open_dashboard),
+            ("Usuarios", users_icon, self.buttonUsers, self.open_users),
+            ("Direcciones", address_icon, self.buttonAddress, self.open_address),
+            (
+                "Sucursales",
+                office_icon,
+                self.buttonClientOffice,
+                self.open_client_office,
+            ),
+            ("Clientes", client_icon, self.buttonClients, self.open_clients),
+            ("Operarios", employee_icon, self.buttonEmployee, self.open_employee),
+            ("Proyectos", project_icon, self.buttonProject, self.open_projects),
+            ("Tareas", task_icon, self.buttonTask, self.open_tasks),
         ]
 
         for text, icon, button, command in buttons_info:
@@ -137,7 +147,9 @@ class Home(ctk.CTk):
                 and self.auth_get_data_controller.get_user_data().get("role") != "admin"
             ):
                 continue
-            self.config_btn_menu(button, text, icon, font_awesome, width, height, command)
+            self.config_btn_menu(
+                button, text, icon, font_awesome, width, height, command
+            )
 
     def widget_body_config(self):
         """
@@ -184,6 +196,10 @@ class Home(ctk.CTk):
         self.clear_widgets(self.widget_body)
         Project(self.widget_body)
 
+    def open_tasks(self):
+        self.clear_widgets(self.widget_body)
+        Task(self.widget_body)
+
     def clear_widgets(self, widget):
         for widget in widget.winfo_children():
             widget.destroy()
@@ -198,6 +214,6 @@ class Home(ctk.CTk):
             fg_color="transparent",
             bg_color="transparent",
             hover_color=THREE_COLOR_HOVER,
-            anchor='w'
+            anchor="w",
         )
         button.pack(side=ctk.TOP, pady=5, padx=10)
