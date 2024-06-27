@@ -157,5 +157,18 @@ CREATE TABLE `project_university`.`task` (
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );
 
+CREATE TABLE `project_university`.`report` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(100),
+  `url` VARCHAR(255),
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` TIMESTAMP NULL,
+  `created_by` INT,
+  `updated_by` INT,
+  FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
+);
+
 INSERT INTO `project_university`.`user` (name, dni, role, email, password, avatar)
 VALUES ('Admin', '0011223344', 'admin', 'admin@gmail.com', '$2y$10$2iHXFO1BcJT9si.1laGbRObBaryVVrCza7sJsXLQaUT4.7aT5ewKS', NULL);
