@@ -3,6 +3,7 @@ import customtkinter as ctk
 
 from views.Task import Task
 from views.Users import Users
+from views.Report import Report
 from views.Address import Address
 from views.Clients import Clients
 from views.Profile import Profile
@@ -113,9 +114,9 @@ class Home(ctk.CTk):
         self.buttonEmployee = ctk.CTkButton(self.widget_left)
         self.buttonProject = ctk.CTkButton(self.widget_left)
         self.buttonTask = ctk.CTkButton(self.widget_left)
+        self.buttonReport = ctk.CTkButton(self.widget_left)
 
         # icons
-        print(fa.icons)
         house_icon = fa.icons["warehouse"]
         users_icon = fa.icons["users"]
         address_icon = fa.icons["location-arrow"]
@@ -124,6 +125,7 @@ class Home(ctk.CTk):
         employee_icon = fa.icons["user-plus"]
         project_icon = fa.icons["briefcase"]
         task_icon = fa.icons["list"]
+        report_icon = fa.icons["info-circle"]
 
         buttons_info = [
             ("Dashboard", house_icon, self.buttonDashboard, self.open_dashboard),
@@ -139,6 +141,7 @@ class Home(ctk.CTk):
             ("Operarios", employee_icon, self.buttonEmployee, self.open_employee),
             ("Proyectos", project_icon, self.buttonProject, self.open_projects),
             ("Tareas", task_icon, self.buttonTask, self.open_tasks),
+            ("Reportes", report_icon, self.buttonReport, self.open_reports),
         ]
 
         for text, icon, button, command in buttons_info:
@@ -199,6 +202,10 @@ class Home(ctk.CTk):
     def open_tasks(self):
         self.clear_widgets(self.widget_body)
         Task(self.widget_body)
+
+    def open_reports(self):
+        self.clear_widgets(self.widget_body)
+        Report(self.widget_body)
 
     def clear_widgets(self, widget):
         for widget in widget.winfo_children():

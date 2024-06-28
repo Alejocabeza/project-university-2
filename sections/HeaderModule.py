@@ -1,7 +1,7 @@
 import fontawesome as fa
 import customtkinter as ctk
 
-from config import  THREE_COLOR, THREE_COLOR_HOVER
+from config import THREE_COLOR, THREE_COLOR_HOVER
 from sections.WindowComponent import WindowComponent
 
 
@@ -35,7 +35,7 @@ class HeaderModule(ctk.CTkFrame):
 
         self.btn_refresh = ctk.CTkButton(
             self.header,
-            text=f" {fa.icons['arrow-alt-circle-right']}   ",
+            text=f" {fa.icons['retweet']}   ",
             font=font_awesome,
             command=self.refresh,
             bg_color="transparent",

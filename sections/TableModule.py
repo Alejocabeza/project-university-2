@@ -1,3 +1,5 @@
+import os
+import platform
 from tkinter import ttk
 import fontawesome as fa
 import customtkinter as ctk
@@ -7,6 +9,7 @@ from sections.WindowComponent import WindowComponent
 from controller.Clients.FindClientByIdController import FindClientByIdController
 from controller.Address.FindAddressByIdController import FindAddressByIdController
 from controller.Employee.FindEmployeeByIdController import FindEmployeeByIdController
+from controller.Project.FindProjectByIdController import FindProjectByIdController
 from controller.ClientOffice.FindClientOfficeByIdController import (
     FindClientOfficeByIdController,
 )
@@ -24,6 +27,7 @@ class TableModule(ctk.CTkFrame):
         remove_controller,
         height=600,
         width=450,
+        type="default",
     ):
         super().__init__(parent)
         self.parent = parent
@@ -31,6 +35,7 @@ class TableModule(ctk.CTkFrame):
         self.find_address_by_id = FindAddressByIdController()
         self.find_employee_by_id = FindEmployeeByIdController()
         self.find_client_office_by_id = FindClientOfficeByIdController()
+        self.find_project_by_id = FindProjectByIdController()
         self.headers = headers
         self.data = data
         self.function_find = function_find
@@ -39,6 +44,7 @@ class TableModule(ctk.CTkFrame):
         self.remove_controller = remove_controller
         self.height = height
         self.width = width
+        self.type = type
         self.widget()
 
     def widget(self):
@@ -107,25 +113,46 @@ class TableModule(ctk.CTkFrame):
             if values:
                 id = values[0]
                 data = self.function_find.find_by_id(id)
-                self.modal = WindowComponent(
-                    self.options,
-                    self.update_controller,
-                    "Actualizar",
-                    "update",
-                    data,
-                    self.remove_controller,
-                    width=self.width,
-                    height=self.height,
-                )
-                self.modal.grab_set()
-                self.modal.protocol("WM_DELETE_WINDOW", self.__close_modal)
+                if type == "default":
+                    self.modal = WindowComponent(
+                        self.options,
+                        self.update_controller,
+                        "Actualizar",
+                        "update",
+                        data,
+                        self.remove_controller,
+                        width=self.width,
+                        height=self.height,
+                    )
+                    self.modal.grab_set()
+                    self.modal.protocol("WM_DELETE_WINDOW", self.__close_modal)
+                else:
+                    file_path = data.get('path')
+                    self.open_file(file_path)
 
     def __close_modal(self):
         self.modal.grab_release()
         self.modal.destroy()
 
+    def open_file(self, file_path):
+        try:
+            if platform.system() == "Windows":
+                os.startfile(file_path)
+            elif platform.system() == "Darwin":
+                os.system(f"open '{file_path}'")
+            else:
+                os.system(f"xdg-open '{file_path}'")
+        except:
+            print("No se encontró el archivo")
+
     def __get_values_relation(self, key, value):
         match key:
+            case "project":
+                if value:
+                    project = self.find_project_by_id.find_by_id(value)
+                    return project.get("name")
+                else:
+                    return "Sin Proyecto"
             case "type":
                 match value:
                     case "person":
@@ -164,6 +191,14 @@ class TableModule(ctk.CTkFrame):
                     return client_office.get("name")
                 else:
                     return "Sin Sucursal"
+            case "report_type":
+                match value:
+                    case 1:
+                        return "Informe Diario"
+                    case 2:
+                        return "Informe de Avance de Obra"
+                    case 3:
+                        return "Informe de Entrega de Obra"
             case "status":
                 match value:
                     case 1:

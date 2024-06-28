@@ -160,12 +160,15 @@ CREATE TABLE `project_university`.`task` (
 CREATE TABLE `project_university`.`report` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `name` VARCHAR(100),
-  `url` VARCHAR(255),
+  `path` VARCHAR(255),
+  `project` INT,
+  `report_type` INT,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` TIMESTAMP NULL,
   `created_by` INT,
   `updated_by` INT,
+  FOREIGN KEY (`project`) REFERENCES `project` (`id`),
   FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`updated_by`) REFERENCES `user` (`id`)
 );

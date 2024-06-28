@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 20mm;
+        @top-center {
+          content: element(header);
+          margin-top: 20mm;
+          width: 100%;
+        }
+        @bottom-center {
+          content: element(footer);
+          margin-bottom: 20mm;
+          width: 100%;
+        }
+      }
+
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        font-size: 12pt;
+      }
+
+      header {
+        position: running(header);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2.5rem 0;
+      }
+
+      td {
+        font-size: 14pt;
+        border: 1px solid black;
+        padding: 0.5rem;
+      }
+
+      .font-bold {
+        font-weight: bold;
+      }
+
+      .text-end {
+        text-align: end;
+      }
+
+      .text-start {
+        text-align: start;
+      }
+
+      footer {
+        position: running(footer);
+        text-align: end;
+        margin: 2rem 0;
+      }
+
+      footer > p {
+        margin: 0.2rem 0;
+      }
+
+      section {
+        margin-top: 5rem;
+        page-break-after: always;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="{{ header_image }}" alt="Logo de la universidad" />
+      <address>
+        <p>Cll. 77B # 129 - 11 _ Bogotá D.C</p>
+        <p>Empresa dedicada al Diseño y la Construcción</p>
+        <p>www.grupoimnova.com.co</p>
+        <p>Bogota, d.c - Colombia</p>
+      </address>
+    </header>
+    <main>{% block main %} {% endblock %}</main>
+    <footer>
+      <p>Bogotá D.C - Colombia</p>
+      <p>grupoimnova2015@gmail.com</p>
+      <p>Tel: +57 301 2455838 * +57 304 2473716</p>
+      <p>www.grupoimnova.com.co</p>
+    </footer>
+  </body>
+</html>

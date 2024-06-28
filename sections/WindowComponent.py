@@ -264,7 +264,7 @@ class WindowComponent(ctk.CTkToplevel):
                             data[name.lower()] = address.get("id")
                     case "foreman":
                         value = widget.get()
-                        if value and value != "Sin Operador":
+                        if value and value != "Sin Operario":
                             foreman = self.find_employee_by_fullname.find_by_fullname(
                                 value
                             )
@@ -293,6 +293,12 @@ class WindowComponent(ctk.CTkToplevel):
                         if value and value != "Sin Proyectos":
                             project = self.find_project_by_name.find_by_name(value)
                             data[name.lower()] = project.get("id")
+                    case "report_type":
+                        values = widget.get()
+                        if values == "Informe de Avance de Obra":
+                            data[name.lower()] = 1
+                        else:
+                            data[name.lower()] = 2
                     case "status":
                         value = widget.get()
                         if value == "Pendiente":
@@ -360,7 +366,7 @@ class WindowComponent(ctk.CTkToplevel):
                             self.values.get(name)
                         ).get("fullname")
                     return "Sin Maestro de Obra"
-                case 'employee':
+                case "employee":
                     if (
                         self.values.get(name)
                         and self.values.get(name) != "Sin Operador"
@@ -393,7 +399,12 @@ class WindowComponent(ctk.CTkToplevel):
                             self.values.get(name)
                         ).get("name")
                     return "Sin Proyecto"
-                case 'status':
+                case "report_type":
+                    if self.values.get(name) == 1:
+                        return "Informe de Avance de Obra"
+                    elif self.values.get(name) == 2:
+                        return "Informe de Entrega de Obra"
+                case "status":
                     if self.values.get(name) == 1:
                         return "Pendiente"
                     elif self.values.get(name) == 2:
