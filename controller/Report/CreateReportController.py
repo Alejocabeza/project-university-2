@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from services.PDF import create_pdf
 from models.ReportModel import ReportModel
@@ -36,6 +37,8 @@ class CreateReportController(Controller):
         match data.get("report_type"):
             case 1:
                 data_to_insert = {
+                    "header_img": "/home/alejocabeza/Workspace/project-university-2/public/img/Grupo Imnova_Logo_2020_2.png",
+                    "alt_img": "Grupo Imnova",
                     "current_date": current_date,
                     "number_contract": f"000{project.get('id')}",
                     "start_date_project": project.get("start_date"),
@@ -50,11 +53,13 @@ class CreateReportController(Controller):
                     "transcurrent_days": transcurrent_days.days,
                     "additional_days": 0,
                     "remaining_days": remaining_days.days,
-                    "tasks": tasks
+                    "tasks": tasks,
                 }
                 return create_pdf("avance", data_to_insert, data.get("name"))
             case 2:
                 data_to_insert = {
+                    "header_img": "/home/alejocabeza/Workspace/project-university-2/public/img/Grupo Imnova_Logo_2020_2.png",
+                    "alt_img": "Grupo Imnova",
                     "current_date": current_date,
                     "number_contract": f"000{project.get('id')}",
                     "start_date_project": project.get("start_date"),
@@ -69,6 +74,6 @@ class CreateReportController(Controller):
                     "transcurrent_days": transcurrent_days.days,
                     "additional_days": 0,
                     "remaining_days": remaining_days.days,
-                    "tasks": tasks
+                    "tasks": tasks,
                 }
                 return create_pdf("finally", data_to_insert, data.get("name"))

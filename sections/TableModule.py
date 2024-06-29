@@ -113,7 +113,7 @@ class TableModule(ctk.CTkFrame):
             if values:
                 id = values[0]
                 data = self.function_find.find_by_id(id)
-                if type == "default":
+                if self.type == "default":
                     self.modal = WindowComponent(
                         self.options,
                         self.update_controller,
@@ -127,7 +127,7 @@ class TableModule(ctk.CTkFrame):
                     self.modal.grab_set()
                     self.modal.protocol("WM_DELETE_WINDOW", self.__close_modal)
                 else:
-                    file_path = data.get('path')
+                    file_path = data.get("path")
                     self.open_file(file_path)
 
     def __close_modal(self):
@@ -194,10 +194,8 @@ class TableModule(ctk.CTkFrame):
             case "report_type":
                 match value:
                     case 1:
-                        return "Informe Diario"
-                    case 2:
                         return "Informe de Avance de Obra"
-                    case 3:
+                    case 2:
                         return "Informe de Entrega de Obra"
             case "status":
                 match value:

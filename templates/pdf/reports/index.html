@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,16 +8,6 @@
       @page {
         size: A4;
         margin: 20mm;
-        @top-center {
-          content: element(header);
-          margin-top: 20mm;
-          width: 100%;
-        }
-        @bottom-center {
-          content: element(footer);
-          margin-bottom: 20mm;
-          width: 100%;
-        }
       }
 
       *,
@@ -33,7 +23,6 @@
       }
 
       header {
-        position: running(header);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -59,7 +48,6 @@
       }
 
       footer {
-        position: running(footer);
         text-align: end;
         margin: 2rem 0;
       }
@@ -69,15 +57,14 @@
       }
 
       section {
-        margin-top: 5rem;
         page-break-after: always;
       }
     </style>
   </head>
   <body>
     <header>
-      <img src="{{ header_image }}" alt="Logo de la universidad" />
-      <address>
+      <img src="/public/img/Grupo Imnova_Logo_2020_2.png" alt="{{alt_img}}" />
+      <address style="text-align: end">
         <p>Cll. 77B # 129 - 11 _ Bogotá D.C</p>
         <p>Empresa dedicada al Diseño y la Construcción</p>
         <p>www.grupoimnova.com.co</p>
@@ -85,11 +72,5 @@
       </address>
     </header>
     <main>{% block main %} {% endblock %}</main>
-    <footer>
-      <p>Bogotá D.C - Colombia</p>
-      <p>grupoimnova2015@gmail.com</p>
-      <p>Tel: +57 301 2455838 * +57 304 2473716</p>
-      <p>www.grupoimnova.com.co</p>
-    </footer>
   </body>
 </html>
