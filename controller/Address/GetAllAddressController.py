@@ -15,7 +15,10 @@ class GetAllAddressController(Controller):
             list: Lista con las direcciones
         """
         try:
-            return self.address_model.find_all_address()
+            if self._current_user().get("role") == "admin":
+                return self.address_model.find_all_address()
+            else:
+                return self.address_model.find_by_user(self._current_user().get("id"))
         except Exception as ex:
             print(f"Error al obtener todas las direcciones: {ex}")
             return None

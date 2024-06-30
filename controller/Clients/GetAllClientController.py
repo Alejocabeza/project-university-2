@@ -9,7 +9,10 @@ class GetAllClientController(Controller):
 
     def find_all(self):
         try:
-            return self.client_model.clients_all()
+            if self._current_user().get("role") == "admin":
+                return self.client_model.clients_all()
+            else:
+                return self.client_model.find_by_user(self._current_user().get("id"))
         except Exception as ex:
             print(f"Error al optener todos los clientes: {ex}")
             return None

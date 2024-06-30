@@ -47,7 +47,6 @@ class ClientOfficeModel(BaseModel):
         """
         return self._find_one_by({"id": id})
 
-
     def find_by_name(self, name):
         """
         Buscar una sucursal por su nombre
@@ -56,3 +55,12 @@ class ClientOfficeModel(BaseModel):
             name (str): Nombre de la sucursal
         """
         return self._find_one_by({"name": name})
+
+    def find_by_user(self, user_id):
+        """
+        Buscar un registro por el usuario
+
+        Args:
+            user_id (int): El identificador del usuario
+        """
+        return self._find_by({"created_by": user_id})

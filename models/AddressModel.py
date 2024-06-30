@@ -1,5 +1,6 @@
 from models.BaseModel import BaseModel
 
+
 class AddressModel(BaseModel):
     """
     Clase para las direcciones
@@ -65,3 +66,12 @@ class AddressModel(BaseModel):
             name (str): El nombre de la dirección
         """
         return self._find_one_by({"name": name})
+
+    def find_by_user(self, user_id):
+        """
+        Buscar un registro por el usuario
+
+        Args:
+            user_id (int): El identificador del usuario
+        """
+        return self._find_by({"created_by": user_id})

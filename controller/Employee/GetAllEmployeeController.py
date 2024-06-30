@@ -9,7 +9,12 @@ class GetAllEmployeeController(Controller):
 
     def find_all(self):
         try:
-            return self.employee_repository.employee_all()
+            if self._current_user().get("role") == "admin":
+                return self.employee_repository.employee_all()
+            else:
+                return self.employee_repository.find_by_user(
+                    self._current_user().get("id")
+                )
         except Exception as e:
             print(f"Error al optener todos los empleados: {e}")
             return None

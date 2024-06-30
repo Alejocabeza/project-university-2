@@ -22,3 +22,12 @@ class EmployeeModel(BaseModel):
 
     def find_employee_by_fullname(self, fullname):
         return self._find_one_by({"fullname": fullname})
+
+    def find_by_user(self, user_id):
+        """
+        Buscar un registro por el usuario
+
+        Args:
+            user_id (int): El identificador del usuario
+        """
+        return self._find_by({"created_by": user_id})

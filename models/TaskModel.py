@@ -1,9 +1,9 @@
-
 from models.BaseModel import BaseModel
+
 
 class TaskModel(BaseModel):
     def __init__(self):
-        super().__init__('task')
+        super().__init__("task")
 
     def create(self, data):
         return self._save(data)
@@ -22,3 +22,12 @@ class TaskModel(BaseModel):
 
     def find_by_project(self, id):
         return self._find_by({"project": id})
+
+    def find_by_user(self, user_id):
+        """
+        Buscar un registro por el usuario
+
+        Args:
+            user_id (int): El identificador del usuario
+        """
+        return self._find_by({"created_by": user_id})
